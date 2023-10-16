@@ -1,0 +1,17 @@
+.container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+}
+
+.pageContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.pageContent {
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin: var(--page-side-padding);
+}

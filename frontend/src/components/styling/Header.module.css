@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  padding: 20px 0;
+  background-color: var(--yellow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container a {
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.content {
+  align-items: center;
+  display: grid;
+  grid-template-columns: max-content 1fr max-content max-content;
+  margin: 0 var(--page-side-padding);
+  max-width: var(--page-max-width);
+  width: 100%;
+}
+
+.logo {
+  grid-column: 1;
+  height: 40px;
+  color: blue;
+}
+
+.linkToExterna {
+  grid-column: 3;
+}
+
+.logOutButton {
+  grid-column: 4;
+}
