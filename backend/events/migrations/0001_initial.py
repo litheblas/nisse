@@ -7,31 +7,63 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Member',
+            name="Member",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Event',
+            name="Event",
             fields=[
-                ('event_id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('location', models.CharField(max_length=100)),
-                ('end_time', models.DateTimeField()),
-                ('event_name', models.CharField(max_length=280)),
-                ('start_time', models.DateTimeField()),
-                ('event_type', models.IntegerField(choices=[(1, 'CONCERT'), (2, 'OFFICIAL'), (3, 'OTHER')], default=events.utils.EventTypes['OTHER'])),
-                ('event_descritption', models.TextField(blank=True)),
-                ('creator', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='events.member')),
-                ('event_attendees', models.ManyToManyField(blank=True, related_name='+', to='events.member')),
+                (
+                    "event_id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("location", models.CharField(max_length=100)),
+                ("end_time", models.DateTimeField()),
+                ("event_name", models.CharField(max_length=280)),
+                ("start_time", models.DateTimeField()),
+                (
+                    "event_type",
+                    models.IntegerField(
+                        choices=[(1, "CONCERT"), (2, "OFFICIAL"), (3, "OTHER")],
+                        default=events.utils.EventTypes["OTHER"],
+                    ),
+                ),
+                ("event_descritption", models.TextField(blank=True)),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="events.member",
+                    ),
+                ),
+                (
+                    "event_attendees",
+                    models.ManyToManyField(
+                        blank=True, related_name="+", to="events.member"
+                    ),
+                ),
             ],
         ),
     ]
