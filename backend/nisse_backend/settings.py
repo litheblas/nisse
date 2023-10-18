@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +29,7 @@ APP_DIR = Path(__file__).resolve().parent
 SECRET_KEY = "django-insecure-i1fnvplzs0%jfd9k@onnv=p5#_lbh6ywt=wj&%7!1gqg!oa^go"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("NISSE_DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -81,8 +86,12 @@ ASGI_APPLICATION = "nisse_backend.asgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("NISSE_DB_NAME"),
+        "USER": os.getenv("NISSE_DB_USER"),
+        "PASSWORD": os.getenv("NISSE_DB_PASSWORD"),
+        "HOST": os.getenv("NISSE_DB_HOST"),
+        "PORT": os.getenv("NISSE_DB_PORT"),
     }
 }
 
