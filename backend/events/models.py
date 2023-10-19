@@ -9,7 +9,7 @@ class Member(models.Model):
 
 
 class Event(models.Model):
-    creator = models.ForeignKey(Member, on_delete=models.CASCADE )
+    creator = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True )
     event_id = models.UUIDField(primary_key=True)
     location = models.CharField(max_length=100)
     end_time = models.DateTimeField()
