@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-daphne = "*"
-whitenoise = "*"
+django = "4.2.6"
+daphne = "4.0.0"
+whitenoise = "6.6.0"
 
 [dev-packages]
 
