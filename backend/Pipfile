@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 daphne = "*"
 whitenoise = "*"
+django-ical = "*"
 
 [dev-packages]
 
