@@ -1,4 +1,4 @@
-from django.db.models.base import Model
+#from django.db.models.base import Model
 #from django.shortcuts import render
 from .models import Event
 from .utils import EventTypes, CalendarTypes
