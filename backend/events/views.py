@@ -1,11 +1,9 @@
-# rom django.db.models.base import Model
-# from django.shortcuts import render
-from .models import Event
-from .utils import EventTypes, CalendarTypes
 from django_ical.views import ICalFeed
 
+from .models import Event
+from .utils import CalendarTypes, EventTypes
 
-# Create your views here.
+
 class EventFeed(ICalFeed):
     timezone = "Europe/Stockholm"
     file_name = "events.ics"
@@ -17,9 +15,13 @@ class EventFeed(ICalFeed):
     def items(self, obj: CalendarTypes):
         match obj:
             case CalendarTypes.CONCERT:
-                return Event.objects.filter(event_type=EventTypes.CONCERT)
+                return Event.objects.filter(event_type=EventTypes.CONCERT).order_by(
+                    "-start_time"
+                )
             case CalendarTypes.OFFICIAL:
-                return Event.objects.exclude(event_type=EventTypes.OTHER)
+                return Event.objects.exclude(event_type=EventTypes.OTHER).order_by(
+                    "-start_time"
+                )
             case CalendarTypes.ALL:
                 return Event.objects.all().order_by("-start_time")
 
@@ -35,12 +37,13 @@ class EventFeed(ICalFeed):
     def item_end_datetime(self, item):
         return item.end_time
 
-    def item_link(
-        self,
-    ) -> str:
-        return "/calendar"
+    def item_link(self) -> str:
+        return ""
 
-    def item_uid(self, item):
+    def item_location(self, item):
+        return item.location
+
+    def item_guid(self, item):
         """Unique ID for specific event"""
         return item.event_id
 
