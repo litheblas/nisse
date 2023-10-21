@@ -25,3 +25,15 @@ npm install
 - `npm run build` to build the project.
 - `npm run preview` to build and then serve the build locally.
 - `npm run lint` to lint the project.
+
+## Generating the API client
+
+The frontend uses an automatically generated API client to communicate with the
+backend. To generate the API client, run
+
+```bash
+npm run generate-api-client
+```
+
+This will generate the API client in `src/api/`. It assumes that the backend is
+installed and working, otherwise the command will fail.

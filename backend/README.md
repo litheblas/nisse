@@ -101,5 +101,18 @@ All commands for the backend need to be run in the virtual environment created
 by pipenv. All commands need to be run with `pipenv run <command>`, or by first
 activating the virtual environment with `pipenv shell`.
 
-- `pipenv run python manage.py runserver` to start the development server.
-- `pipenv run python manage.py startapp <app name>` to create a new Django app.
+To start the development server, run
+
+```bash
+pipenv run python manage.py runserver
+```
+
+and the backend will be hosted at <http://localhost:8000>. The admin interface
+is available at <http://localhost:8000/admin> and the API documentation is
+available at <http://localhost:8000/api/schema/redoc/>, or at
+<http://localhost:8000/api/schema/swagger-ui/> depending on which you prefer.
+
+### Extending the backend
+
+To add a new app to the backend, run
+`pipenv run python manage.py startapp <app name>`
