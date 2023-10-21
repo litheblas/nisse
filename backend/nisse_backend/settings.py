@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "events.apps.EventsConfig",
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,13 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Nisse Backend API",
+    "DESCRIPTION": "The API that powers LiTHe Blås Internal Website",
+    "VERSION": "0.0.0",
+    "SERVE_INCLUDE_SCHEMA": True,
 }
 
 # Password validation
