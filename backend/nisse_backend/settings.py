@@ -29,7 +29,7 @@ APP_DIR = Path(__file__).resolve().parent
 SECRET_KEY = "django-insecure-i1fnvplzs0%jfd9k@onnv=p5#_lbh6ywt=wj&%7!1gqg!oa^go"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("NISSE_DEBUG") == "True"
+DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "events.apps.EventsConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -95,6 +96,13 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

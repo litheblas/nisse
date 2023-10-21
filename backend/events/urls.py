@@ -1,5 +1,9 @@
-from django.urls import path
+from events import views
+from rest_framework import routers
 
-from . import views
+router = routers.DefaultRouter()
+router.register(r"", views.EventViewSet)
 
-urlpatterns = [path("", views.index, name="index"), path()]
+# TODO: Move this to the member app when it is created
+member_router = routers.DefaultRouter()
+member_router.register(r"", views.MemberViewSet)

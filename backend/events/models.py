@@ -1,6 +1,8 @@
-from django.db import models
-from .utils import EventTypes
 import uuid
+
+from django.db import models
+
+from .utils import EventTypes
 
 # Create your models here.
 
@@ -8,6 +10,8 @@ import uuid
 class Member(models.Model):
     "Member stub"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    objects = models.Manager()
 
 
 class Event(models.Model):
@@ -22,3 +26,5 @@ class Event(models.Model):
     )
     event_attendees = models.ManyToManyField(Member, related_name="+", blank=True)
     event_descritption = models.TextField(blank=True)
+
+    objects = models.Manager()
