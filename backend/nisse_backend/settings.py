@@ -26,7 +26,7 @@ APP_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-i1fnvplzs0%jfd9k@onnv=p5#_lbh6ywt=wj&%7!1gqg!oa^go"
+SECRET_KEY = os.getenv("NISSE_DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
