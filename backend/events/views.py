@@ -1,5 +1,5 @@
 from django.db.models.base import Model
-from django.shortcuts import render
+#from django.shortcuts import render
 from .models import Event
 from .utils import EventTypes, CalendarTypes
 from django_ical.views import ICalFeed

@@ -1,7 +1,7 @@
 {
-    "cSpell.words": ["nisse", "blottartuban"],
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true,
-        "source.sortImports": true
-    }
+  "cSpell.words": ["nisse", "blottartuban", "pipenv", "pyenv"],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.sortImports": true
+  }
 }
