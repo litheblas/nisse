@@ -5,4 +5,3 @@ urlpatterns = [
     path("", views.index, name="index"),
      path("calendar/<int:calendar>/events.ics", EventFeed()),
 ]
-
