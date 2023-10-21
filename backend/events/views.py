@@ -8,7 +8,6 @@ from django_ical.views import ICalFeed
 class EventFeed(ICalFeed):
     timezone = 'Europe/Stockholm'
     file_name = "events.ics"
-    product_id = '-//litheblas.org//EventFeed//'
 
     def get_object(self, request, calendar):
         return CalendarTypes(calendar)
@@ -34,5 +33,8 @@ class EventFeed(ICalFeed):
     def item_end_datetime(self, item):
         return item.end_time
 
-    def item_link(self, item: Model) -> str:
+    def item_link(self, ) -> str:
         return "www.litheblas.org"
+
+    def product_id(self,obj):
+        return "-//litheblas.org//EventFeed//" + str(obj)
