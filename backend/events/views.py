@@ -10,10 +10,11 @@ class EventFeed(ICalFeed):
     timezone = "Europe/Stockholm"
     file_name = "events.ics"
 
-    def get_object(self, request, calendar):
+    def get_object(self, request, calendar: CalendarTypes):
+        """This method returns param calendar sent in url"""
         return CalendarTypes(calendar)
 
-    def items(self, obj):
+    def items(self, obj: CalendarTypes):
         match obj:
             case CalendarTypes.CONCERT:
                 return Event.objects.filter(event_type=EventTypes.CONCERT)
@@ -37,7 +38,12 @@ class EventFeed(ICalFeed):
     def item_link(
         self,
     ) -> str:
-        return "www.litheblas.org"
+        return "/calendar"
+
+    def item_uid(self, item):
+        """Unique ID for specific event"""
+        return item.event_id
 
     def product_id(self, obj):
+        """Unique ID for specific calendar"""
         return "-//litheblas.org//EventFeed//" + str(obj)
