@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
+from .views import EventFeed
 
 urlpatterns = [
-    path("",views.EventFeed),
-    path("calendar/<int:calendar>/events.ics", views.EventFeed),
-     path("calendar/events.ics", views.EventFeed)
+    path("",EventFeed),
+     path("calendar/<int:calendar>/events.ics", EventFeed()),
 ]
