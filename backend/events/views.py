@@ -1,6 +1,7 @@
 from django_ical.views import ICalFeed
-
-from .models import Event
+from events.serializers import EventSerializer, MemberSerializer
+from rest_framework import viewsets
+from .models import Event,Member
 from .utils import CalendarTypes, EventTypes
 
 
@@ -50,3 +51,14 @@ class EventFeed(ICalFeed):
     def product_id(self, obj):
         """Unique ID for specific calendar"""
         return "-//litheblas.org//EventFeed//" + str(obj)
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+    # permission_classes = [permissions.IsAuthenticated]
