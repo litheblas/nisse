@@ -1,6 +1,7 @@
 from django.urls import path
 from events import views
 from rest_framework import routers
+
 from .views import EventFeed
 
 router = routers.DefaultRouter()
