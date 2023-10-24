@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "events.apps.EventsConfig",
+    "members.apps.MembersConfig",
     "rest_framework",
     "drf_spectacular",
 ]
@@ -141,6 +142,10 @@ TIME_ZONE = "Europe/Stockholm"
 USE_I18N = True
 
 USE_TZ = True
+
+PHONENUMBER_DEFAULT_REGION = "SE"
+
+AUTH_USER_MODEL = "members.Member"
 
 
 # Static files (CSS, JavaScript, Images)

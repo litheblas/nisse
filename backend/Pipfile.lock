@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c667ec5ee5b1deb8eac90c17bd448971f857f8892ce62ee3ae93218a8321125e"
+            "sha256": "87af5fda8fdfeef6e25052489d2103813ffa070cfd68600102e04e6bb940d8aa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -164,6 +164,17 @@
             "index": "pypi",
             "version": "==1.9.2"
         },
+        "django-phonenumber-field": {
+            "extras": [
+                "phonenumberslite"
+            ],
+            "hashes": [
+                "sha256:16778f2717ea2aecc6178beb0d6bc431c78c6a8b0474e1fa8face040efeb6e9e",
+                "sha256:20c7c5c449e33eed5fd45ef8d3dc668faabaeff3277eddd1892b262d686ba381"
+            ],
+            "index": "pypi",
+            "version": "==7.2.0"
+        },
         "django-recurrence": {
             "hashes": [
                 "sha256:0c65f30872599b5813a9bab6952dada23c55894f28674490a753ada559f14bc5",
@@ -240,6 +251,13 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2023.7.1"
+        },
+        "phonenumberslite": {
+            "hashes": [
+                "sha256:7c719e35ef551a895459382e9faf592f52647312dd90b543b06460aa0e1c49c4",
+                "sha256:cf6cf56c889c6787ec6b30b5791693f6dd678f633358f4aeea1fddf98d4cadcb"
+            ],
+            "version": "==8.13.23"
         },
         "psycopg": {
             "extras": [
@@ -357,7 +375,7 @@
                 "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
                 "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.8.2"
         },
         "python-dotenv": {
@@ -564,7 +582,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
         },
         "sqlparse": {
