@@ -1,8 +1,6 @@
 name: Node.js build and test
 
-on:
-  push:
-    branches: [main, dev]
+on: [push]
 
 jobs:
   npm-build:
