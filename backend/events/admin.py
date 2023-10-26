@@ -5,7 +5,7 @@ from . import models
 
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["event_name", "start_time"]
+    list_display = ["name", "start_time"]
 
 
 @admin.register(models.Member)

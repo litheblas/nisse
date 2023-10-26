@@ -17,21 +17,21 @@ class EventFeed(ICalFeed):
     def items(self, obj: CalendarTypes):
         match obj:
             case CalendarTypes.CONCERT:
-                return Event.objects.filter(event_type=EventTypes.CONCERT).order_by(
+                return Event.objects.filter(type=EventTypes.CONCERT).order_by(
                     "-start_time"
                 )
             case CalendarTypes.OFFICIAL:
-                return Event.objects.exclude(event_type=EventTypes.OTHER).order_by(
+                return Event.objects.exclude(type=EventTypes.OTHER).order_by(
                     "-start_time"
                 )
             case CalendarTypes.ALL:
                 return Event.objects.all().order_by("-start_time")
 
     def item_title(self, item):
-        return item.event_name
+        return item.name
 
     def item_description(self, item):
-        return item.event_descritption
+        return item.description
 
     def item_start_datetime(self, item):
         return item.start_time
@@ -47,7 +47,7 @@ class EventFeed(ICalFeed):
 
     def item_guid(self, item):
         """Unique ID for specific event"""
-        return item.event_id
+        return item.id
 
     def product_id(self, obj):
         """Unique ID for specific calendar"""
