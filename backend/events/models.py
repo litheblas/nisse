@@ -21,7 +21,9 @@ class Event(models.Model):
     end_time = models.DateTimeField()
     name = models.CharField(max_length=280)
     start_time = models.DateTimeField()
-    type = models.IntegerField(choices=EventTypes.choices(), default=EventTypes.OTHER)
+    event_type = models.IntegerField(
+        choices=EventTypes.choices(), default=EventTypes.OTHER
+    )
     attendees = models.ManyToManyField(Member, related_name="+", blank=True)
     description = models.TextField(blank=True)
 
