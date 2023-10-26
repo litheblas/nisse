@@ -4,11 +4,12 @@ import './App.css'
 import { AppShell } from './components/AppShell'
 import { eventsListLoader } from './loaders/EventsListLoader'
 import { memberLoader } from './loaders/MemberLoader'
+import { membersListLoader } from './loaders/MembersListLoader'
 import { EventsListPage } from './pages/EventsListPage'
 import { HomePage } from './pages/HomePage'
 import { MailinglistsPage } from './pages/MailinglistsPage'
 import { MemberPage } from './pages/MemberPage'
-import { MembersPage } from './pages/MembersPage'
+import { MembersListPage } from './pages/MembersListPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
 
 // Sets the URL of the backend API to the same as the frontend is served from
@@ -32,10 +33,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/members',
-        element: <MembersPage />,
+        element: <MembersListPage />,
+        loader: membersListLoader,
       },
       {
-        path: '/member/:memberId',
+        path: '/members/:memberId',
         element: <MemberPage />,
         loader: memberLoader,
       },
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
         path: '/events',
         element: <EventsListPage />,
         loader: eventsListLoader,
+      },
+      {
+        path: '/events/:eventId',
+        element: <></>,
       },
       {
         path: '/mailinglists',

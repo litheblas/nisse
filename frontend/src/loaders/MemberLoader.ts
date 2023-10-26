@@ -1,5 +1,5 @@
 import { LoaderFunction } from 'react-router-typesafe'
-import { Member } from '../types/Member'
+import { MembersService } from '../api'
 
 interface MemberLoaderParams {
   memberId: string
@@ -7,6 +7,6 @@ interface MemberLoaderParams {
 
 export const memberLoader = (({ params }) => {
   const typedParams = params as unknown as MemberLoaderParams
-  const m: Member = { id: typedParams.memberId, name: 'Kisac' }
-  return m
+  const member = MembersService.membersRetrieve(typedParams.memberId)
+  return member
 }) satisfies LoaderFunction
