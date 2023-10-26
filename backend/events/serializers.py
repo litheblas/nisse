@@ -14,7 +14,7 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
             "name",
             "start_time",
-            "type",
+            "event_type",
         ]
 
 

@@ -22,12 +22,10 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from events.urls import member_router
-from events.urls import router as event_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("events/", include("events.urls")),
-    path("api/events/", include(event_router.urls)),
+    path("api/events/", include("events.urls")),
     path("api/members/", include(member_router.urls)),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

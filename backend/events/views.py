@@ -17,11 +17,11 @@ class EventFeed(ICalFeed):
     def items(self, obj: CalendarTypes):
         match obj:
             case CalendarTypes.CONCERT:
-                return Event.objects.filter(type=EventTypes.CONCERT).order_by(
+                return Event.objects.filter(event_type=EventTypes.CONCERT).order_by(
                     "-start_time"
                 )
             case CalendarTypes.OFFICIAL:
-                return Event.objects.exclude(type=EventTypes.OTHER).order_by(
+                return Event.objects.exclude(event_type=EventTypes.OTHER).order_by(
                     "-start_time"
                 )
             case CalendarTypes.ALL:
