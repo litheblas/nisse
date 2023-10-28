@@ -10,7 +10,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'src/api'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -18,7 +18,7 @@ module.exports = {
     project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh'],
+  plugins: ['@typescript-eslint', 'react-refresh'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
