@@ -1,7 +1,6 @@
 name: pre-commit
 
-on:
-  push:
+on: [push]
 
 jobs:
   pre-commit:
@@ -13,4 +12,7 @@ jobs:
           python-version: "3.10"
       - uses: pre-commit/action@v3.0.0
     env:
-      SKIP: no-commit-to-branch
+      # Skip `no-commit-to-branch`, since it isn't relevant in a pipeline.
+      # Skip `eslint`, since it needs the frontend to be installed to work. It
+      # is instead run in the node.js pipeline.
+      SKIP: no-commit-to-branch,eslint
