@@ -1,10 +1,11 @@
 import { useQuery } from 'react-query'
-import { MembersService } from '../api'
+import { EventsService } from '../api'
+import { EventLite } from '../components/EventLite'
 
-export const MembersListPage = () => {
+export const EventsPage = () => {
   const { isLoading, isError, isIdle, data, error } = useQuery(
-    'member_list',
-    MembersService.membersList.bind(window)
+    'event_list',
+    EventsService.eventsList.bind(window)
   )
 
   if (isLoading || isIdle) {
@@ -18,10 +19,10 @@ export const MembersListPage = () => {
 
   return (
     <>
-      <h1>Blåsbasen</h1>
+      <h1>Events</h1>
       <div>
-        {data.map((member) => (
-          <p key={member.id}>{member.id}</p>
+        {data.map((event) => (
+          <EventLite key={event.id} event={event} />
         ))}
       </div>
     </>
