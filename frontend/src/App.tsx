@@ -1,11 +1,9 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { OpenAPI } from './api'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
+import { OpenAPI } from './api'
 import { AppShell } from './components/AppShell'
-import { eventsListLoader } from './loaders/EventsListLoader'
-import { memberLoader } from './loaders/MemberLoader'
-import { membersListLoader } from './loaders/MembersListLoader'
-import { EventsListPage } from './pages/EventsListPage'
+import { EventsPage } from './pages/EventsPage'
 import { HomePage } from './pages/HomePage'
 import { MailinglistsPage } from './pages/MailinglistsPage'
 import { MemberPage } from './pages/MemberPage'
@@ -32,23 +30,21 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/members',
-        element: <MembersListPage />,
-        loader: membersListLoader,
-      },
-      {
-        path: '/members/:memberId',
-        element: <MemberPage />,
-        loader: memberLoader,
+        path: '/members/',
+        children: [
+          {
+            path: '',
+            element: <MembersListPage />,
+          },
+          {
+            path: ':memberId',
+            element: <MemberPage />,
+          },
+        ],
       },
       {
         path: '/events',
-        element: <EventsListPage />,
-        loader: eventsListLoader,
-      },
-      {
-        path: '/events/:eventId',
-        element: <></>,
+        element: <EventsPage />,
       },
       {
         path: '/mailinglists',
@@ -58,8 +54,14 @@ const router = createBrowserRouter([
   },
 ])
 
+const queryClient = new QueryClient()
+
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  )
 }
 
 export default App

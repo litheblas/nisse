@@ -1,13 +1,12 @@
-import { useLoaderData } from 'react-router-typesafe'
-import { memberLoader } from '../loaders/MemberLoader'
+import { useParams } from 'react-router-dom'
 
 export const MemberPage = () => {
-  const member = useLoaderData<typeof memberLoader>()
+  const { memberId } = useParams()
 
   return (
     <>
       <p>Medlem</p>
-      <p>{member.id}</p>
+      <p>{memberId}</p>
     </>
   )
 }
