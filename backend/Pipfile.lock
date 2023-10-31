@@ -106,10 +106,11 @@
         },
         "constantly": {
             "hashes": [
-                "sha256:586372eb92059873e29eba4f9dec8381541b4d3834660707faf8ba59146dfc35",
-                "sha256:dd2fa9d6b1a51a83f0d7dd76293d734046aa176e384bf6e33b7e44880eb37c5d"
+                "sha256:3fd9b4d1c3dc1ec9757f3c52aef7e53ad9323dbe39f51dfd4c43853b68dfa3f9",
+                "sha256:aa92b70a33e2ac0bb33cd745eb61776594dc48764b06c35e0efd050b7f1c7cbd"
             ],
-            "version": "==15.1.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==23.10.4"
         },
         "cryptography": {
             "hashes": [
@@ -212,6 +213,7 @@
                 "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4",
                 "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"
             ],
+            "markers": "python_version >= '3.5'",
             "version": "==3.4"
         },
         "incremental": {
@@ -231,11 +233,11 @@
         },
         "jsonschema": {
             "hashes": [
-                "sha256:cd5f1f9ed9444e554b38ba003af06c0a8c2868131e56bfbef0550fb450c0330e",
-                "sha256:ec84cc37cfa703ef7cd4928db24f9cb31428a5d0fa77747b8b51a847458e0bbf"
+                "sha256:c9ff4d7447eed9592c23a12ccee508baf0dd0d59650615e847feb6cdca74f392",
+                "sha256:eee9e502c788e89cb166d4d37f43084e3b64ab405c795c03d343a4dbc2c810fc"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.19.1"
+            "version": "==4.19.2"
         },
         "jsonschema-specifications": {
             "hashes": [
@@ -585,11 +587,12 @@
                 "tls"
             ],
             "hashes": [
-                "sha256:3c73360add17336a622c0d811c2a2ce29866b6e59b1125fd6509b17252098a24",
-                "sha256:b8bdba145de120ffb36c20e6e071cce984e89fba798611ed0704216fb7f884cd"
+                "sha256:4ae8bce12999a35f7fe6443e7f1893e6fe09588c8d2bed9c35cdce8ff2d5b444",
+                "sha256:987847a0790a2c597197613686e2784fd54167df3a55d0fb17c8412305d76ce5"
             ],
-            "markers": "python_full_version >= '3.7.1'",
-            "version": "==23.8.0"
+            "index": "pypi",
+            "markers": "python_full_version >= '3.8.0'",
+            "version": "==23.10.0"
         },
         "txaio": {
             "hashes": [
