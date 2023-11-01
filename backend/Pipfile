@@ -8,11 +8,12 @@ django = "4.2.6"
 daphne = "4.0.0"
 whitenoise = "6.6.0"
 python-dotenv = "1.0.0"
-psycopg = {extras = ["binary"], version = "==3.1.12"}
+psycopg = {extras = ["binary"] }
 django-ical = "1.9.2"
 djangorestframework = "3.14.0"
 drf-spectacular = "0.26.5"
-django-phonenumber-field = {version = "7.2.0", extras = ["phonenumberslite"]}
+django-phonenumber-field = { extras = ["phonenumberslite"]}
+pillow = "*"
 
 [dev-packages]
 black = "23.10.0"
