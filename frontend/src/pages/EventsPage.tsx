@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Event, EventTypeEnum, EventsService } from '../api'
-import { EventLite } from '../components/EventLite'
+import { EventsList } from '../components/EventsList'
 
 interface FilterSettings {
   showConcerts: boolean
@@ -113,11 +113,7 @@ export const EventsPage = () => {
       />
       <label htmlFor="showPastEvents">Visa passerade events</label>
 
-      <div>
-        {data.map((event) => (
-          <EventLite key={event.id} event={event} />
-        ))}
-      </div>
+      <EventsList events={data} />
     </>
   )
 }
