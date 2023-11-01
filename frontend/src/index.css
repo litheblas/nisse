@@ -12,7 +12,7 @@
 }
 
 html {
-  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   background-color: var(--white);
@@ -20,6 +20,12 @@ html {
 }
 
 body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
