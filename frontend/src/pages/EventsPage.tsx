@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Event, EventTypeEnum, EventsService } from '../api'
+import { EventFilterBox } from '../components/EventFilterBox'
 import { EventsList } from '../components/EventsList'
+import style from './styling/EventsPage.module.css'
 
 interface FilterSettings {
   showConcerts: boolean
@@ -61,57 +63,28 @@ export const EventsPage = () => {
 
   return (
     <>
-      <h1>Events</h1>
-      {/* TODO: Style the filter settings */}
-      <input
-        type="checkbox"
-        checked={filterSettings.showConcerts}
-        onChange={() =>
-          setFilterSettings({
-            ...filterSettings,
-            showConcerts: !filterSettings.showConcerts,
-          })
-        }
-        id="showConcerts"
-      />
-      <label htmlFor="showConcerts">Visa konserter</label>
-      <input
-        type="checkbox"
-        checked={filterSettings.showOfficial}
-        onChange={() =>
-          setFilterSettings({
-            ...filterSettings,
-            showOfficial: !filterSettings.showOfficial,
-          })
-        }
-        id="showOfficial"
-      />
-      <label htmlFor="showOfficial">Visa officiella events</label>
-      <input
-        type="checkbox"
-        checked={filterSettings.showOther}
-        onChange={() =>
-          setFilterSettings({
-            ...filterSettings,
-            showOther: !filterSettings.showOther,
-          })
-        }
-        id="showOther"
-      />
-      <label htmlFor="showOther">Visa övriga events</label>
-
-      <input
-        type="checkbox"
-        checked={filterSettings.showPastEvents}
-        onChange={() =>
-          setFilterSettings({
-            ...filterSettings,
-            showPastEvents: !filterSettings.showPastEvents,
-          })
-        }
-        id="showPastEvents"
-      />
-      <label htmlFor="showPastEvents">Visa passerade events</label>
+      <div className={style.container}>
+        <div>
+          <h1 className="pageHeading">Events</h1>
+          <p>
+            Här kan man se kommande händelser för blåset, inklusive spelningar,
+            officiella events, och andra roliga saker. Om du har något kul som
+            händer som du tycker att hela föreningen borde känna till (inklusive
+            gamlingar) så kan du lägga till ett event själv.
+          </p>
+        </div>
+        <div className={style.buttonAndFilters}>
+          <button
+            className={`standardButton blueButton ${style.newEventButton}`}
+          >
+            Skapa nytt event
+          </button>
+          <EventFilterBox
+            filterSettings={filterSettings}
+            setFilterSettings={setFilterSettings}
+          />
+        </div>
+      </div>
 
       <EventsList events={data} />
     </>
