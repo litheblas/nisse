@@ -1,5 +1,20 @@
-#root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+.standardButton {
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+.blueButton {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.yellowButton {
+  background-color: var(--yellow);
+  color: var(--black);
+}
+
+.pageHeading {
+  margin: 0px;
 }
