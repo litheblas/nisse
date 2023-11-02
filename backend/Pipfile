@@ -14,6 +14,7 @@ djangorestframework = "3.14.0"
 drf-spectacular = "0.26.5"
 django-phonenumber-field = { extras = ["phonenumberslite"]}
 pillow = "*"
+django-imagekit = "*"
 
 [dev-packages]
 black = "23.10.0"

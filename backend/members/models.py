@@ -1,15 +1,24 @@
+import os
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 from django.db import models
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFit
 from phonenumber_field.modelfields import PhoneNumberField
 
-PLACEHOLDER_IMAGE = "profile_pictures/placeholderImage_400x400.png"
+AVATAR_LOCATION = "avatars"
+PLACEHOLDER_IMAGE = "placeholderImage_400x400.png"
+PLACEHOLDER_IMAGE_PATH = os.path.join(AVATAR_LOCATION, PLACEHOLDER_IMAGE)
 
 
 def member_profile_picture_path(instance, filename):
     # Produces a path for the image file for profile picture
     # makes filename to "username.FILE_TYPE"
-    return f"profile_pictures/{instance.username}{filename[filename.rfind('.'):]}"
+    filetype_index = filename.rfind(".")
+    file_end = filename[filetype_index:]
+    new_filename = instance.username + file_end
+    return os.path.join(AVATAR_LOCATION, new_filename)
 
 
 class Member(AbstractUser):
@@ -30,6 +39,13 @@ class Member(AbstractUser):
     national_id = models.CharField(
         blank=True, max_length=12, validators=[MinLengthValidator(12)]
     )
-    profile_picture = models.ImageField(
-        blank=True, default=PLACEHOLDER_IMAGE, upload_to=member_profile_picture_path
+    profile_picture = ProcessedImageField(
+        blank=True,
+        default=PLACEHOLDER_IMAGE_PATH,
+        upload_to=member_profile_picture_path,
+        processors=[
+            ResizeToFit(
+                height=400, width=400, upscale=True, mat_color=(150, 150, 150, 0)
+            )
+        ],
     )
