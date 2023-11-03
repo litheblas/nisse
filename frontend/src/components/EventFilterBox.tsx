@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
+import { Switch } from './Switch'
 import style from './styling/EventFilterBox.module.css'
 
 interface FilterSettings {
@@ -17,10 +18,9 @@ export const EventFilterBox = ({
 }) => {
   return (
     <div className={style.container}>
-      <input
-        type="checkbox"
+      <Switch
         checked={filterSettings.showConcerts}
-        onChange={() =>
+        onCheckedChange={() =>
           setFilterSettings({
             ...filterSettings,
             showConcerts: !filterSettings.showConcerts,
@@ -29,10 +29,10 @@ export const EventFilterBox = ({
         id="showConcerts"
       />
       <label htmlFor="showConcerts">Visa konserter</label>
-      <input
-        type="checkbox"
+
+      <Switch
         checked={filterSettings.showOfficial}
-        onChange={() =>
+        onCheckedChange={() =>
           setFilterSettings({
             ...filterSettings,
             showOfficial: !filterSettings.showOfficial,
@@ -41,10 +41,10 @@ export const EventFilterBox = ({
         id="showOfficial"
       />
       <label htmlFor="showOfficial">Visa officiella events</label>
-      <input
-        type="checkbox"
+
+      <Switch
         checked={filterSettings.showOther}
-        onChange={() =>
+        onCheckedChange={() =>
           setFilterSettings({
             ...filterSettings,
             showOther: !filterSettings.showOther,
@@ -54,10 +54,9 @@ export const EventFilterBox = ({
       />
       <label htmlFor="showOther">Visa övriga events</label>
 
-      <input
-        type="checkbox"
+      <Switch
         checked={filterSettings.showPastEvents}
-        onChange={() =>
+        onCheckedChange={() =>
           setFilterSettings({
             ...filterSettings,
             showPastEvents: !filterSettings.showPastEvents,
