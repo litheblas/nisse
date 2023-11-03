@@ -17,7 +17,7 @@ drf-spectacular = "0.26.5"
 black = "23.10.1"
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"
 
 [scripts]
 web = "daphne -b 0.0.0.0 -p 80 nisse_backend.asgi:application"
