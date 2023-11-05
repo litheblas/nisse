@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
@@ -22,6 +23,7 @@ def member_profile_picture_path(instance, filename):
 
 
 class Member(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
     liu_id = models.CharField(
