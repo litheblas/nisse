@@ -2,7 +2,6 @@ import os
 import uuid
 
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinLengthValidator
 from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
@@ -18,7 +17,7 @@ def member_profile_picture_path(instance, filename):
     # makes filename to "username.FILE_TYPE"
     filetype_index = filename.rfind(".")
     file_end = filename[filetype_index:]
-    new_filename = instance.username + file_end
+    new_filename = instance.id + file_end
     return os.path.join(AVATAR_LOCATION, new_filename)
 
 
@@ -26,9 +25,7 @@ class Member(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
-    liu_id = models.CharField(
-        blank=True, max_length=8, validators=[MinLengthValidator(8)]
-    )
+    liu_id = models.CharField(blank=True, max_length=8)
     pronouns = models.CharField(blank=True, max_length=20)
     street_address = models.CharField(blank=True, max_length=50)
     postal_code = models.CharField(blank=True, max_length=10)
@@ -38,9 +35,7 @@ class Member(AbstractUser):
     phone_number_2 = PhoneNumberField(blank=True)
     phone_number_3 = PhoneNumberField(blank=True)
     arbitrary_text = models.TextField(blank=True)
-    national_id = models.CharField(
-        blank=True, max_length=12, validators=[MinLengthValidator(12)]
-    )
+    national_id = models.CharField(blank=True, max_length=4)
     profile_picture = ProcessedImageField(
         blank=True,
         default=PLACEHOLDER_IMAGE_PATH,
