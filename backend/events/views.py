@@ -28,10 +28,10 @@ class EventFeed(ICalFeed):
                 return Event.objects.all().order_by("-start_time")
 
     def item_title(self, item):
-        return item.event_name
+        return item.name
 
     def item_description(self, item):
-        return item.event_descritption
+        return item.description
 
     def item_start_datetime(self, item):
         return item.start_time
@@ -47,7 +47,7 @@ class EventFeed(ICalFeed):
 
     def item_guid(self, item):
         """Unique ID for specific event"""
-        return item.event_id
+        return item.id
 
     def product_id(self, obj):
         """Unique ID for specific calendar"""

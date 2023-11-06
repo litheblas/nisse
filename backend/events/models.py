@@ -10,15 +10,15 @@ from .utils import EventTypes
 
 class Event(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
-    event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     location = models.CharField(max_length=100)
     end_time = models.DateTimeField()
-    event_name = models.CharField(max_length=280)
+    name = models.CharField(max_length=280)
     start_time = models.DateTimeField()
     event_type = models.IntegerField(
         choices=EventTypes.choices(), default=EventTypes.OTHER
     )
-    event_attendees = models.ManyToManyField(Member, related_name="+", blank=True)
-    event_descritption = models.TextField(blank=True)
+    attendees = models.ManyToManyField(Member, related_name="+", blank=True)
+    description = models.TextField(blank=True)
 
     objects = models.Manager()

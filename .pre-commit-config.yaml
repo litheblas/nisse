@@ -18,7 +18,7 @@ repos:
 
   # Python formatting
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.10.1
     hooks:
       - id: black
 
@@ -49,9 +49,17 @@ repos:
     hooks:
       - id: bandit
 
-  # # TODO: Enable
-  # # Frontend formatting
-  # - repo: https://github.com/pre-commit/mirrors-prettier
-  #   rev: v3.0.3
-  #   hooks:
-  #     - id: prettier
+  # Frontend formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+
+  # Frontend linting
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.52.0"
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$
+        types: [file]
+        args: [--fix]
