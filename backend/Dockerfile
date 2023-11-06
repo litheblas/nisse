@@ -1,4 +1,4 @@
-FROM alpine:3.17.5
+FROM alpine:3.18.4
 
 ENV APP_ROOT=/app
 WORKDIR ${APP_ROOT}
