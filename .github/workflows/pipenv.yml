@@ -1,0 +1,14 @@
+name: Pipenv build and test
+
+on: [push]
+
+jobs:
+  pipenv-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - run: pipenv install -d
+      - run: pipenv run python manage.py test
