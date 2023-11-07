@@ -20,6 +20,8 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 APP_DIR = Path(__file__).resolve().parent
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,6 +48,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "events.apps.EventsConfig",
+    "imagekit",
+    "members.apps.MembersConfig",
     "rest_framework",
     "drf_spectacular",
 ]
@@ -141,6 +145,10 @@ TIME_ZONE = "Europe/Stockholm"
 USE_I18N = True
 
 USE_TZ = True
+
+PHONENUMBER_DEFAULT_REGION = "SE"
+
+AUTH_USER_MODEL = "members.Member"
 
 
 # Static files (CSS, JavaScript, Images)
