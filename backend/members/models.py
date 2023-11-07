@@ -46,3 +46,40 @@ class Member(AbstractUser):
             )
         ],
     )
+
+
+class EngagementType(models.Model):
+    id = models.UUIDField(primary_key=True)
+    title = models.CharField(max_length=50)
+
+
+class Engagement(models.Model):
+    id = models.UUIDField(primary_key=True)
+    title = models.ForeignKey(EngagementType, null=True, on_delete=models.SET_NULL)
+    appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
+    start = models.DateTimeField()
+    end = models.DateTimeField(blank=True)
+
+
+class MembershipType(models.Model):
+    id = models.UUIDField(primary_key=True)
+    instrument = models.CharField(max_length=50)
+
+
+class Membership(models.Model):
+    id = models.UUIDField(primary_key=True)
+    instrument = models.ForeignKey(MembershipType, null=True, on_delete=models.SET_NULL)
+    appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
+    start = models.DateTimeField(blank=True)
+    end = models.DateTimeField(blank=True)
+    has_trial = models.BooleanField()
+    trial_start = models.DateTimeField(blank=True, null=True)
+
+    def clean(self) -> None:
+        from django.core.exceptions import ValidationError
+
+        # Either have trial and a start date Or no trial and no start date
+        if not (self.has_trial ^ (self.trial_start is None)):
+            raise ValidationError(
+                "Member cant have has_trial=false and trial_start/trial_end date"
+            )

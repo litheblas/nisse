@@ -1,5 +1,6 @@
 from django_ical.views import ICalFeed
-from events.serializers import EventSerializer, MemberSerializer
+from events.serializers import EventSerializer
+from members.serializers import MemberSerializer
 from rest_framework import viewsets
 
 from .models import Event, Member

@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 
 from . import models
 
+admin.site.unregister(models.Member)
+
 
 @admin.register(models.Member)
 class MemberAdmin(UserAdmin):
