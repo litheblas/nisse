@@ -12,6 +12,10 @@ Prerequisites:
   [nvm](https://github.com/nvm-sh/nvm).
 - [Remember to install pre-commit](../README.md#installing-pre-commit)
 
+Configure the environment variables needed with `cp .env.template .env` and
+change the values in the `.env` file (but for development the defaults are
+probably alright).
+
 Navigate to the frontend repository with `cd frontend` and install all
 dependencies with
 

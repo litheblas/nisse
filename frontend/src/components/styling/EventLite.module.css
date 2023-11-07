@@ -1,0 +1,67 @@
+.eventContainer {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  margin-bottom: 16px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.eventDateBox {
+  display: grid;
+  grid-template-rows: max-content max-content max-content;
+  justify-items: center;
+  padding: 16px 0px;
+  background-color: var(--blue);
+  color: var(--white);
+  width: 160px;
+  font-size: 30px;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+
+  .eventDateDay {
+    font-size: 60px;
+    line-height: 60px;
+  }
+}
+
+.eventInfo {
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  background-color: var(--yellow);
+  padding: 16px;
+
+  .topBar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: max-content max-content;
+      grid-auto-flow: row;
+      grid-gap: 8px;
+    }
+
+    & h2 {
+      margin: 0;
+    }
+  }
+
+  .bottomBar {
+    display: grid;
+    grid-template-columns: 1fr max-content max-content;
+    align-items: end;
+    gap: 16px;
+
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: max-content max-content;
+      grid-auto-flow: row;
+      grid-gap: 8px;
+    }
+  }
+}

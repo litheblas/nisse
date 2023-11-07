@@ -1,17 +1,11 @@
 import uuid
 
 from django.db import models
+from members.models import Member
 
 from .utils import EventTypes
 
 # Create your models here.
-
-
-class Member(models.Model):
-    "Member stub"
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    objects = models.Manager()
 
 
 class Event(models.Model):

@@ -59,7 +59,7 @@ sudo systemctl enable postgresql.service
 
 Prerequisites:
 
-- `Python 3.10` - If this is not the Python version that comes with your OS,
+- `Python 3.11` - If this is not the Python version that comes with your OS,
   **DON'T TRY TO UPGRADE IT. IT CAN BREAK YOUR SYSTEM**. Instead, use
   [pyenv](https://github.com/pyenv/pyenv) to install the correct version.
   Remember to install the [Python build
@@ -72,7 +72,7 @@ Steps:
 
 1. Navigate to the backend repository with `cd backend` and install all
    dependencies with `pipenv install --dev`
-1. Configure the environment variables needed by running `cp .env.dev .env` and
+1. Configure the environment variables needed with `cp .env.template .env` and
    change the values in the `.env` file (but for development the defaults are
    probably alright).
 1. Create a Django admin user by running

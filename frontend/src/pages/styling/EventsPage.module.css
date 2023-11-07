@@ -1,0 +1,21 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  grid-gap: 8px;
+  margin-bottom: 8px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content max-content;
+  }
+}
+
+.buttonAndFilters {
+  display: grid;
+
+  .newEventButton {
+    height: max-content;
+    margin-bottom: 8px;
+  }
+}
