@@ -49,12 +49,12 @@ class Member(AbstractUser):
 
 
 class EngagementType(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
 
 
 class Engagement(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.ForeignKey(EngagementType, null=True, on_delete=models.SET_NULL)
     appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
     start = models.DateTimeField()
@@ -62,12 +62,12 @@ class Engagement(models.Model):
 
 
 class MembershipType(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     instrument = models.CharField(max_length=50)
 
 
 class Membership(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     instrument = models.ForeignKey(MembershipType, null=True, on_delete=models.SET_NULL)
     appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
     start = models.DateTimeField(blank=True)
