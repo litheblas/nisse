@@ -73,7 +73,7 @@ class Membership(models.Model):
     start = models.DateField(blank=True)
     end = models.DateField(blank=True)
     has_trial = models.BooleanField()
-    trial_start = models.DateTimeField(blank=True, null=True)
+    trial_start = models.DateField(blank=True, null=True)
 
     def clean(self) -> None:
         from django.core.exceptions import ValidationError
