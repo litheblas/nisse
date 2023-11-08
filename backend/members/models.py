@@ -57,8 +57,8 @@ class Engagement(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.ForeignKey(EngagementType, null=True, on_delete=models.SET_NULL)
     appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start = models.DateTimeField()
-    end = models.DateTimeField(blank=True)
+    start = models.DateField()
+    end = models.DateField(blank=True)
 
 
 class MembershipType(models.Model):
@@ -70,8 +70,8 @@ class Membership(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     instrument = models.ForeignKey(MembershipType, null=True, on_delete=models.SET_NULL)
     appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start = models.DateTimeField(blank=True)
-    end = models.DateTimeField(blank=True)
+    start = models.DateField(blank=True)
+    end = models.DateField(blank=True)
     has_trial = models.BooleanField()
     trial_start = models.DateTimeField(blank=True, null=True)
 
