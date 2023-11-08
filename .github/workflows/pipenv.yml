@@ -14,5 +14,5 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install pipenv
-      - run: pipenv install --deploy
+      - run: pipenv install --deploy --dev
       - run: pipenv run python manage.py test
