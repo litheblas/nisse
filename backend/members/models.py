@@ -49,6 +49,9 @@ class Member(AbstractUser):
         ],
     )
 
+    def __str__(self):
+        return self.first_name + " " + self.nickname + " " + self.last_name
+
 
 class EngagementType(models.Model):
     """Titles such as Dictator, Skrivkunig or Luciageneral"""
@@ -56,15 +59,32 @@ class EngagementType(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.title
+
 
 class Engagement(models.Model):
     """A EngagementType-Member relation for joining those two together"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.ForeignKey(EngagementType, null=True, on_delete=models.SET_NULL)
+    engagementType = models.ForeignKey(
+        EngagementType, null=True, on_delete=models.SET_NULL
+    )
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     start = models.DateField()
-    end = models.DateField(blank=True)
+    end = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return (
+            str(self.member)
+            + ","
+            + str(self.engagementType)
+            + ",("
+            + str(self.start)
+            + ")-("
+            + str(self.end)
+            + ")"
+        )
 
 
 class MembershipType(models.Model):
@@ -72,6 +92,9 @@ class MembershipType(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     instrument = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.instrument
 
 
 class Membership(models.Model):
@@ -82,6 +105,18 @@ class Membership(models.Model):
         MembershipType, null=True, on_delete=models.SET_NULL
     )
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start = models.DateField(blank=True)
-    end = models.DateField(blank=True)
+    start = models.DateField()
+    end = models.DateField(blank=True, null=True)
     is_trial = models.BooleanField()
+
+    def __str__(self):
+        return (
+            str(self.member)
+            + ","
+            + str(self.membershipType)
+            + ",("
+            + str(self.start)
+            + ")-("
+            + str(self.end)
+            + ")"
+        )

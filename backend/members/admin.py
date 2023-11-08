@@ -6,10 +6,12 @@ from . import models
 
 class MemberEngagementInline(admin.TabularInline):
     model = models.Engagement
+    extra = 0
 
 
 class MemberMembershipInline(admin.TabularInline):
     model = models.Membership
+    extra = 0
 
 
 @admin.register(models.Member)
@@ -39,19 +41,19 @@ class MemberAdmin(UserAdmin):
 
 @admin.register(models.MembershipType)
 class MembershipTypeAdmin(admin.ModelAdmin):
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
         (
             None,
-            {"fields": ["id", "instrument"]},
+            {"fields": ["instrument"]},
         ),
     )
 
 
 @admin.register(models.EngagementType)
 class EngagementTypeAdmin(admin.ModelAdmin):
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
         (
             None,
-            {"fields": ["id", "title"]},
+            {"fields": ["title"]},
         ),
     )
