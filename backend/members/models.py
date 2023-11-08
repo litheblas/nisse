@@ -17,7 +17,7 @@ def member_profile_picture_path(instance, filename):
     # makes filename to "username.FILE_TYPE"
     filetype_index = filename.rfind(".")
     file_end = filename[filetype_index:]
-    new_filename = instance.id + file_end
+    new_filename = str(instance.id) + file_end
     return os.path.join(AVATAR_LOCATION, new_filename)
 
 

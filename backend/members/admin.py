@@ -11,6 +11,7 @@ class MemberAdmin(UserAdmin):
             None,
             {
                 "fields": [
+                    "profile_picture",
                     "nickname",
                     "birth_date",
                     "liu_id",

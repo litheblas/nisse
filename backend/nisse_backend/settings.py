@@ -161,6 +161,9 @@ AUTH_USER_MODEL = "members.Member"
 STATIC_URL = "static/"
 STATIC_ROOT = APP_DIR / "static"
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
