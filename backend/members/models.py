@@ -22,6 +22,8 @@ def member_profile_picture_path(instance, filename):
 
 
 class Member(AbstractUser):
+    """A LiTHe Blas internal sites member"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
@@ -49,37 +51,37 @@ class Member(AbstractUser):
 
 
 class EngagementType(models.Model):
+    """Titles such as Dictator, Skrivkunig or Luciageneral"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
 
 
 class Engagement(models.Model):
+    """A EngagementType-Member relation for joining those two together"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.ForeignKey(EngagementType, null=True, on_delete=models.SET_NULL)
-    appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     start = models.DateField()
     end = models.DateField(blank=True)
 
 
 class MembershipType(models.Model):
+    """Membershiptype such as Clarinett, Ballet or Saxophone"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     instrument = models.CharField(max_length=50)
 
 
 class Membership(models.Model):
+    """A MembershipType-Member relation for joining those two together"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    instrument = models.ForeignKey(MembershipType, null=True, on_delete=models.SET_NULL)
-    appointed = models.ForeignKey(Member, on_delete=models.CASCADE)
+    membershipType = models.ForeignKey(
+        MembershipType, null=True, on_delete=models.SET_NULL
+    )
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     start = models.DateField(blank=True)
     end = models.DateField(blank=True)
-    has_trial = models.BooleanField()
-    trial_start = models.DateField(blank=True, null=True)
-
-    def clean(self) -> None:
-        from django.core.exceptions import ValidationError
-
-        # Either have trial and a start date Or no trial and no start date
-        if not (self.has_trial ^ (self.trial_start is None)):
-            raise ValidationError(
-                "Member cant have has_trial=false and trial_start/trial_end date"
-            )
+    is_trial = models.BooleanField()
