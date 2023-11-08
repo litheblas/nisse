@@ -33,6 +33,8 @@ SECRET_KEY = os.getenv("NISSE_DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
 
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+
 ALLOWED_HOSTS = []
 
 
@@ -52,12 +54,14 @@ INSTALLED_APPS = [
     "members.apps.MembersConfig",
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
