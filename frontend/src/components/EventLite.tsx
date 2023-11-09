@@ -29,7 +29,7 @@ export const EventLite = ({ event }: { event: Event }) => {
   })
 
   return (
-    <div className={style.eventContainer}>
+    <div id={event.id} className={style.eventContainer}>
       <div className={style.eventDateBox}>
         <span className={style.eventDateDay}>{day}</span>
         <span>{month}</span>

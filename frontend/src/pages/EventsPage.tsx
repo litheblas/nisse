@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import { Event, EventTypeEnum, EventsService } from '../api'
 import { EventFilterBox } from '../components/EventFilterBox'
 import { EventsList } from '../components/EventsList'
+import { useScrollToLocation } from '../hooks/UseScrollToLocation.ts'
 import style from './styling/EventsPage.module.css'
 
 interface FilterSettings {
@@ -13,6 +14,8 @@ interface FilterSettings {
 }
 
 export const EventsPage = () => {
+  useScrollToLocation()
+
   const [filterSettings, setFilterSettings] = useState<FilterSettings>({
     showConcerts: true,
     showOfficial: true,
@@ -52,6 +55,7 @@ export const EventsPage = () => {
     { select: filterEvents }
   )
 
+  // TODO: Show start of page while loading
   if (isLoading || isIdle) {
     return <span>Loading...</span>
   }
