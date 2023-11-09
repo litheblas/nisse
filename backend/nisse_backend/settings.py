@@ -102,6 +102,9 @@ DATABASES = {
         "PASSWORD": os.getenv("NISSE_DB_PASSWORD"),
         "HOST": os.getenv("NISSE_DB_HOST"),
         "PORT": os.getenv("NISSE_DB_PORT"),
+        "TEST": {
+            "NAME": "nisse_test_db",
+        },
     }
 }
 
