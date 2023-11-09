@@ -42,8 +42,10 @@ class MemberAdmin(UserAdmin):
 @admin.register(models.MembershipType)
 class MembershipTypeAdmin(admin.ModelAdmin):
     list_display = ["instrument"]
+    inlines = [MemberMembershipInline]
 
 
 @admin.register(models.EngagementType)
 class EngagementTypeAdmin(admin.ModelAdmin):
     list_display = ["title"]
+    inlines = [MemberEngagementInline]
