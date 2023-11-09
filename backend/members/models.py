@@ -66,7 +66,7 @@ class Member(AbstractUser):
         )
 
     def __str__(self):
-        return self.first_name + " " + self.nickname + " " + self.last_name
+        return self.full_name
 
 
 class EngagementType(models.Model):
@@ -92,14 +92,9 @@ class Engagement(models.Model):
 
     def __str__(self):
         return (
-            str(self.member)
-            + ","
-            + str(self.engagementType)
-            + ",("
-            + str(self.start)
-            + ")-("
-            + str(self.end)
-            + ")"
+            f"{self.member.full_name}, {self.engagementType} ({self.start}–{self.end})"
+            if self.end
+            else f"{self.member.full_name}, {self.engagementType} ({self.start}–)"
         )
 
 
@@ -127,12 +122,7 @@ class Membership(models.Model):
 
     def __str__(self):
         return (
-            str(self.member)
-            + ","
-            + str(self.membershipType)
-            + ",("
-            + str(self.start)
-            + ")-("
-            + str(self.end)
-            + ")"
+            f"{self.member.full_name}, {self.membershipType} ({self.start}–{self.end})"
+            if self.end
+            else f"{self.member.full_name}, {self.membershipType} ({self.start}–)"
         )
