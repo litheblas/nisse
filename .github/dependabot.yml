@@ -3,12 +3,24 @@ updates:
   - package-ecosystem: "github-actions"
     directory: ".github/workflows/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    groups:
+      actions-dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: "pip"
     directory: "backend/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    groups:
+      pip-dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "frontend/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
