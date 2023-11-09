@@ -102,6 +102,9 @@ DATABASES = {
         "PASSWORD": os.getenv("NISSE_DB_PASSWORD"),
         "HOST": os.getenv("NISSE_DB_HOST"),
         "PORT": os.getenv("NISSE_DB_PORT"),
+        "TEST": {
+            "NAME": "nisse_test_db",
+        },
     }
 }
 
@@ -161,6 +164,9 @@ AUTH_USER_MODEL = "members.Member"
 STATIC_URL = "static/"
 STATIC_ROOT = APP_DIR / "static"
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },

@@ -21,12 +21,11 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from events.urls import member_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/events/", include("events.urls")),
-    path("api/members/", include(member_router.urls)),
+    path("api/members/", include("members.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger-ui/",

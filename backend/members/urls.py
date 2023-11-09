@@ -1,12 +1,11 @@
 from django.urls import include, path
-from events import views
 from rest_framework import routers
 
-from .views import EventFeed
+from . import views
 
 router = routers.DefaultRouter()
-router.register(r"", views.EventViewSet)
+router.register(r"", views.MemberViewSet)
+
 urlpatterns = [
     path("", include(router.urls)),
-    path("calendar/<int:calendar>/events.ics", EventFeed()),
 ]

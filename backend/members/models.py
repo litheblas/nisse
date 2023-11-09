@@ -17,11 +17,13 @@ def member_profile_picture_path(instance, filename):
     # makes filename to "username.FILE_TYPE"
     filetype_index = filename.rfind(".")
     file_end = filename[filetype_index:]
-    new_filename = instance.id + file_end
+    new_filename = str(instance.id) + file_end
     return os.path.join(AVATAR_LOCATION, new_filename)
 
 
 class Member(AbstractUser):
+    """A LiTHe Blas internal sites member"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
@@ -46,3 +48,81 @@ class Member(AbstractUser):
             )
         ],
     )
+
+    @property
+    def full_name(self):
+        return (
+            f'{self.first_name} "{self.nickname}" {self.last_name}'
+            if self.nickname
+            else f"{self.first_name} {self.last_name}"
+        )
+
+    @property
+    def short_name(self):
+        return (
+            f"{self.nickname}"
+            if self.nickname
+            else f"{self.first_name} {self.last_name}"
+        )
+
+    def __str__(self):
+        return self.full_name
+
+
+class EngagementType(models.Model):
+    """Titles such as Dictator, Skrivkunig or Luciageneral"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
+class Engagement(models.Model):
+    """A EngagementType-Member relation for joining those two together"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    engagementType = models.ForeignKey(
+        EngagementType, null=True, on_delete=models.SET_NULL
+    )
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    start = models.DateField()
+    end = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return (
+            f"{self.member.full_name}, {self.engagementType} ({self.start}–{self.end})"
+            if self.end
+            else f"{self.member.full_name}, {self.engagementType} ({self.start}–)"
+        )
+
+
+class MembershipType(models.Model):
+    """Membershiptype such as Clarinett, Ballet or Saxophone"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    instrument = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.instrument
+
+
+class Membership(models.Model):
+    """A MembershipType-Member relation for joining those two together"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    membershipType = models.ForeignKey(
+        MembershipType, null=True, on_delete=models.SET_NULL
+    )
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    start = models.DateField()
+    end = models.DateField(blank=True, null=True)
+    is_trial = models.BooleanField()
+
+    def __str__(self):
+        return (
+            f"{self.member.full_name}, {self.membershipType} ({self.start}–{self.end})"
+            if self.end
+            else f"{self.member.full_name}, {self.membershipType} ({self.start}–)"
+        )

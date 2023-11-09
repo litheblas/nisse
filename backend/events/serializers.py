@@ -1,4 +1,4 @@
-from events.models import Event, Member
+from events.models import Event
 from rest_framework import serializers
 
 
@@ -15,12 +15,4 @@ class EventSerializer(serializers.ModelSerializer):
             "name",
             "start_time",
             "event_type",
-        ]
-
-
-class MemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Member
-        fields = [
-            "id",
         ]
