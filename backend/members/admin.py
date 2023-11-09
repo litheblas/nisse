@@ -41,19 +41,9 @@ class MemberAdmin(UserAdmin):
 
 @admin.register(models.MembershipType)
 class MembershipTypeAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (
-            None,
-            {"fields": ["instrument"]},
-        ),
-    )
+    list_display = ["instrument"]
 
 
 @admin.register(models.EngagementType)
 class EngagementTypeAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (
-            None,
-            {"fields": ["title"]},
-        ),
-    )
+    list_display = ["title"]
