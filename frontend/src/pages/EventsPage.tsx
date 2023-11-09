@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
 import { Event, EventTypeEnum, EventsService } from '../api'
 import { EventFilterBox } from '../components/EventFilterBox'
 import { EventsList } from '../components/EventsList'
@@ -78,11 +79,13 @@ export const EventsPage = () => {
           </p>
         </div>
         <div className={style.buttonAndFilters}>
-          <button
-            className={`standardButton blueButton ${style.newEventButton}`}
-          >
-            Skapa nytt event
-          </button>
+          <Link to={`add`}>
+            <button
+              className={`standardButton blueButton ${style.newEventButton}`}
+            >
+              Skapa nytt event
+            </button>
+          </Link>
           <EventFilterBox
             filterSettings={filterSettings}
             setFilterSettings={setFilterSettings}
