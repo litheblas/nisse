@@ -49,6 +49,22 @@ class Member(AbstractUser):
         ],
     )
 
+    @property
+    def full_name(self):
+        return (
+            f'{self.first_name} "{self.nickname}" {self.last_name}'
+            if self.nickname
+            else f"{self.first_name} {self.last_name}"
+        )
+
+    @property
+    def short_name(self):
+        return (
+            f"{self.nickname}"
+            if self.nickname
+            else f"{self.first_name} {self.last_name}"
+        )
+
     def __str__(self):
         return self.first_name + " " + self.nickname + " " + self.last_name
 
