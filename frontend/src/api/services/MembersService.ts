@@ -39,7 +39,7 @@ export class MembersService {
     }
 
     /**
-     * @param id A UUID string identifying this member.
+     * @param id A UUID string identifying this user.
      * @returns Member
      * @throws ApiError
      */
@@ -56,7 +56,7 @@ export class MembersService {
     }
 
     /**
-     * @param id A UUID string identifying this member.
+     * @param id A UUID string identifying this user.
      * @param requestBody
      * @returns Member
      * @throws ApiError
@@ -77,7 +77,7 @@ export class MembersService {
     }
 
     /**
-     * @param id A UUID string identifying this member.
+     * @param id A UUID string identifying this user.
      * @param requestBody
      * @returns Member
      * @throws ApiError
@@ -98,7 +98,7 @@ export class MembersService {
     }
 
     /**
-     * @param id A UUID string identifying this member.
+     * @param id A UUID string identifying this user.
      * @returns void
      * @throws ApiError
      */
