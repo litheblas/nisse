@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Event, EventTypeEnum } from '../api'
 import { DurationPill } from './DurationPill'
 import style from './styling/EventLite.module.css'
@@ -57,7 +58,9 @@ export const EventLite = ({ event }: { event: Event }) => {
               </span>
             ) : null}
           </div>
-          <button className="standardButton blueButton">Redigera</button>
+          <Link to={`edit/${event.id}`}>
+            <button className="standardButton blueButton">Redigera</button>
+          </Link>
           <button className="standardButton blueButton">Visa deltagare</button>
         </div>
       </div>

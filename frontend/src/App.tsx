@@ -3,6 +3,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
 import { OpenAPI } from './api'
 import { AppShell } from './components/AppShell'
+import { AddEventPage } from './pages/AddEventPage'
+import { EditEventPage } from './pages/EditEventPage'
 import { EventsPage } from './pages/EventsPage'
 import { HomePage } from './pages/HomePage'
 import { MailinglistsPage } from './pages/MailinglistsPage'
@@ -43,8 +45,21 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: '/events',
-        element: <EventsPage />,
+        path: '/events/',
+        children: [
+          {
+            path: '',
+            element: <EventsPage />,
+          },
+          {
+            path: 'add',
+            element: <AddEventPage />,
+          },
+          {
+            path: 'edit/:eventId',
+            element: <EditEventPage />,
+          },
+        ],
       },
       {
         path: '/mailinglists',
