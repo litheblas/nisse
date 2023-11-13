@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { Footer } from './Footer'
 import { Header } from './Header'
 
+import { Menu } from './Menu'
 import style from './styling/AppShell.module.css'
 
 export const AppShell = () => {
@@ -11,7 +12,12 @@ export const AppShell = () => {
         <Header />
         <div className={style.pageContainer}>
           <div className={style.pageContent}>
-            <Outlet />
+            <div className={style.sidebarMenu}>
+              <Menu />
+            </div>
+            <div>
+              <Outlet />
+            </div>
           </div>
         </div>
         <Footer />

@@ -9,6 +9,11 @@
 
   --page-max-width: 1280px;
   --page-side-padding: 20px;
+
+  /* These variable is mostly not used, since css doesn't support variables in
+  media queries. They are used to document what the standard should be. */
+  --small-page-max-width: 800px;
+  --large-page-min-width: 801px;
 }
 
 html {

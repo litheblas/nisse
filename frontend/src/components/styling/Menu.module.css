@@ -1,0 +1,32 @@
+.container {
+  margin: 0px;
+  padding: 0px;
+}
+
+.menuHeading {
+  list-style-type: none;
+  background-color: var(--yellow);
+
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.menuItem {
+  list-style-type: none;
+  background-color: var(--light-yellow);
+  padding: 4px 16px;
+}
+
+.menuItemLink {
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.menuItemLink:hover {
+  text-decoration: none;
+  color: var(--brown);
+}
+
+.menuItemLinkActive {
+  font-weight: bold;
+}

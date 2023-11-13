@@ -14,4 +14,16 @@
   width: 100%;
   max-width: var(--page-max-width);
   margin: var(--page-side-padding);
+
+  @media (min-width: 801px) {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    column-gap: 16px;
+  }
+}
+
+.sidebarMenu {
+  @media (max-width: 800px) {
+    display: none;
+  }
 }
