@@ -17,7 +17,7 @@
 
   @media (min-width: 801px) {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: max-content 1fr;
     column-gap: 16px;
   }
 }
