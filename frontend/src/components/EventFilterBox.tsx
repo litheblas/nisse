@@ -1,6 +1,6 @@
+import CSS from 'csstype'
 import { Dispatch, SetStateAction } from 'react'
 import { Switch } from './Switch'
-import style from './styling/EventFilterBox.module.css'
 
 interface FilterSettings {
   showConcerts: boolean
@@ -17,7 +17,7 @@ export const EventFilterBox = ({
   setFilterSettings: Dispatch<SetStateAction<FilterSettings>>
 }) => {
   return (
-    <div className={style.container}>
+    <div style={style.container}>
       <Switch
         checked={filterSettings.showConcerts}
         onCheckedChange={() =>
@@ -67,4 +67,12 @@ export const EventFilterBox = ({
       <label htmlFor="showPastEvents">Visa passerade events</label>
     </div>
   )
+}
+
+const style: Record<string, CSS.Properties> = {
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'max-content max-content',
+    gridGap: '8px',
+  },
 }
