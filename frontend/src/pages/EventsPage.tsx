@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress'
 import { useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
@@ -56,18 +57,8 @@ export const EventsPage = () => {
     { select: filterEvents }
   )
 
-  // TODO: Show start of page while loading
-  if (isLoading || isIdle) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    if (error instanceof Error) return <span>Error: {error.message}</span>
-    else return <span>Unknown error!</span>
-  }
-
-  return (
-    <>
+  const renderInfoAndFilters = () => {
+    return (
       <div className={style.container}>
         <div>
           <h1 className="pageHeading">Events</h1>
@@ -92,7 +83,36 @@ export const EventsPage = () => {
           />
         </div>
       </div>
+    )
+  }
 
+  if (isLoading || isIdle) {
+    return (
+      <>
+        {renderInfoAndFilters()}
+        <div className={style.loadingSpinnerContainer}>
+          <CircularProgress color="inherit" />
+        </div>
+      </>
+    )
+  }
+
+  if (isError) {
+    return (
+      <>
+        {renderInfoAndFilters()}
+        {error instanceof Error ? (
+          <span>Error: {error.message}</span>
+        ) : (
+          <span>Unknown error!</span>
+        )}
+      </>
+    )
+  }
+
+  return (
+    <>
+      {renderInfoAndFilters()}
       <EventsList events={data} />
     </>
   )
