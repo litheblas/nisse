@@ -15,7 +15,7 @@
 .content {
   align-items: center;
   display: grid;
-  grid-template-columns: max-content 1fr max-content max-content;
+  grid-template-columns: max-content 1fr max-content;
   margin: 0 var(--page-side-padding);
   max-width: var(--page-max-width);
   width: 100%;
@@ -27,10 +27,10 @@
   color: blue;
 }
 
-.linkToExterna {
+.menu {
   grid-column: 3;
-}
 
-.logOutButton {
-  grid-column: 4;
+  @media (min-width: 801px) {
+    display: none;
+  }
 }
