@@ -18,7 +18,7 @@ export const MembersListPage = () => {
 
   return (
     <>
-      <h1>Blåsbasen</h1>
+      <h1 className="pageHeading">Blåsbasen</h1>
       <div>
         {data.map((member) => (
           <p key={member.id}>{member.id}</p>
