@@ -116,3 +116,14 @@ available at <http://localhost:8000/api/schema/redoc/>, or at
 
 To add a new app to the backend, run
 `pipenv run python manage.py startapp <app name>`
+
+### Visualizing the database schema
+
+To generate a visual representation of the database schema, run
+
+```bash
+pipenv run ./manage.py graph_models -a -o database_schema.png
+```
+
+This assumes the the dev dependencies and [Graphviz](https://graphviz.org/) is
+installed.
