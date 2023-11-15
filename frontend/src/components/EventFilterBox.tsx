@@ -18,6 +18,7 @@ export const EventFilterBox = ({
 }) => {
   return (
     <div style={style.container}>
+      <label htmlFor="showConcerts">Visa konserter</label>
       <Switch
         checked={filterSettings.showConcerts}
         onCheckedChange={() =>
@@ -28,8 +29,8 @@ export const EventFilterBox = ({
         }
         id="showConcerts"
       />
-      <label htmlFor="showConcerts">Visa konserter</label>
 
+      <label htmlFor="showOfficial">Visa officiella events</label>
       <Switch
         checked={filterSettings.showOfficial}
         onCheckedChange={() =>
@@ -40,8 +41,8 @@ export const EventFilterBox = ({
         }
         id="showOfficial"
       />
-      <label htmlFor="showOfficial">Visa officiella events</label>
 
+      <label htmlFor="showOther">Visa övriga events</label>
       <Switch
         checked={filterSettings.showOther}
         onCheckedChange={() =>
@@ -52,8 +53,8 @@ export const EventFilterBox = ({
         }
         id="showOther"
       />
-      <label htmlFor="showOther">Visa övriga events</label>
 
+      <label htmlFor="showPastEvents">Visa passerade events</label>
       <Switch
         checked={filterSettings.showPastEvents}
         onCheckedChange={() =>
@@ -64,7 +65,6 @@ export const EventFilterBox = ({
         }
         id="showPastEvents"
       />
-      <label htmlFor="showPastEvents">Visa passerade events</label>
     </div>
   )
 }
@@ -72,7 +72,9 @@ export const EventFilterBox = ({
 const style: Record<string, CSS.Properties> = {
   container: {
     display: 'grid',
-    gridTemplateColumns: 'max-content max-content',
+    gridTemplateColumns: '1fr max-content',
     gridGap: '8px',
+    alignItems: 'center',
+    width: '100%',
   },
 }
