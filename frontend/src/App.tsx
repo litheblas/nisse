@@ -17,57 +17,59 @@ import { RouteErrorPage } from './pages/RouteErrorPage'
 if (import.meta.env.PROD) {
   OpenAPI.BASE = import.meta.env.BASE_URL
 } else {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   OpenAPI.BASE = import.meta.env.VITE_NISSE_BACKEND_API_URL
 }
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <AppShell />,
-    errorElement: <RouteErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <HomePage />,
-      },
-      {
-        path: '/members/',
-        children: [
-          {
-            path: '',
-            element: <MembersListPage />,
-          },
-          {
-            path: ':memberId',
-            element: <MemberPage />,
-          },
-        ],
-      },
-      {
-        path: '/events/',
-        children: [
-          {
-            path: '',
-            element: <EventsPage />,
-          },
-          {
-            path: 'add',
-            element: <AddEventPage />,
-          },
-          {
-            path: 'edit/:eventId',
-            element: <EditEventPage />,
-          },
-        ],
-      },
-      {
-        path: '/mailinglists',
-        element: <MailinglistsPage />,
-      },
-    ],
-  },
-])
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <AppShell />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        {
+          path: '/',
+          element: <HomePage />,
+        },
+        {
+          path: '/members/',
+          children: [
+            {
+              path: '',
+              element: <MembersListPage />,
+            },
+            {
+              path: ':memberId',
+              element: <MemberPage />,
+            },
+          ],
+        },
+        {
+          path: '/events/',
+          children: [
+            {
+              path: '',
+              element: <EventsPage />,
+            },
+            {
+              path: 'add',
+              element: <AddEventPage />,
+            },
+            {
+              path: 'edit/:eventId',
+              element: <EditEventPage />,
+            },
+          ],
+        },
+        {
+          path: '/mailinglists',
+          element: <MailinglistsPage />,
+        },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL }
+)
 
 const queryClient = new QueryClient()
 
