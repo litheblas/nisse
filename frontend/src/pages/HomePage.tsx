@@ -1,25 +1,26 @@
+import { Link } from 'react-router-dom'
 import style from './styling/HomePage.module.css'
 
 interface BoxInfoProps {
   title: string
   description: string
   buttonText: string
-  hrefPath: string
+  linkPath: string
 }
 
 const BoxInfo = ({
   title,
   description,
   buttonText,
-  hrefPath,
+  linkPath,
 }: BoxInfoProps) => {
   return (
     <div className={style.box}>
       <h2>{title}</h2>
       <p>{description}</p>
-      <a href={hrefPath} className={style.btn}>
+      <Link to={linkPath} className={style.btn}>
         {buttonText}
-      </a>
+      </Link>
     </div>
   )
 }
@@ -35,25 +36,25 @@ export const HomePage = () => {
           title="Kalender"
           description="Se vart och när vi ska spela nästa gång. Prenumerera på kalender och håll dig alltid uppdaterad."
           buttonText="Kalender"
-          hrefPath="\events"
+          linkPath="/events"
         />
         <BoxInfo
           title="Informationskanaler"
           description="Blåset har flera informationskanaler och det är viktigt att du håller dig uppdaterad. Glöm inte att gå med i Blåsets Discord."
           buttonText="Informationskanaler"
-          hrefPath="\informationskanaler"
+          linkPath="/informationskanaler"
         />
         <BoxInfo
           title="Wiki"
           description="På Blåsets interna Wiki hittar du allt som har med LiTHe Blås att göra."
           buttonText="Wiki"
-          hrefPath="\wiki"
+          linkPath="/wiki"
         />
         <BoxInfo
           title="Blåsbasen"
           description="Hitta information om dig själv och andra Blåsare."
           buttonText="Blåsbasen"
-          hrefPath="\members"
+          linkPath="/members"
         />
       </main>
     </div>
