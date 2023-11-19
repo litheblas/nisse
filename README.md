@@ -53,3 +53,22 @@ This is the recommended development workflow for this project:
 A good article for how to write good commit messages [The seven rules of a
 great Git commit
 message](https://chris.beams.io/posts/git-commit/#seven-rules).
+
+## Deployment
+
+The frontend is deployed to [GitHub Pages](https://pages.github.com/) and is
+automated using [GitHub Actions](https://github.com/features/actions). When a
+new commit is pushed to specific branches, the frontend is automatically built
+and deployed to GitHub Pages. The branches that trigger a deployment are:
+
+- `dev`: The changes in this branch are deployed to the development site, where
+  they can be tested before being deployed to production. The development site
+  can be found at
+  <https://litheblas.github.io/nisse-frontend-deploy-development/>.
+- `main`: The production branch. This is what is actually used. The production
+  site can be found at <https://litheblas.github.io/nisse-frontend-production/>.
+
+The automatic deployment is dependant on a personal access token from Kisac (an
+organization cannot have its own token). The token is stored as a GitHub
+secret. The token has an 1 year lifetime (the maximum allowed) and will need to
+regenerated when it expires. The current token expires on 2024-11-19.
