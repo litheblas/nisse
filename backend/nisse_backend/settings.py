@@ -55,8 +55,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "corsheaders",
-    "django_extensions",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ["django_extensions"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
