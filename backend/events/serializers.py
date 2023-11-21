@@ -18,7 +18,7 @@ class EventSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        """Validation for serializer is made here. A temp instance of e is created
+        """Validation for serializer is made here. A temp instance of Event is created
         to run the Event.clean() method."""
         instance = Event(**data)
         instance.clean()
