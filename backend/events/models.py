@@ -22,3 +22,10 @@ class Event(models.Model):
     description = models.TextField(blank=True)
 
     objects = models.Manager()
+
+    def clean(self) -> None:
+        """This is used in Django.admin and serializer"""
+        from django.core.exceptions import ValidationError
+
+        if self.start_time > self.end_time:
+            raise ValidationError("Event can't start after it ends")
