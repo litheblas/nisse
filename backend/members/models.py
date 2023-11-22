@@ -50,7 +50,7 @@ class Member(AbstractUser):
     )
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return (
             f'{self.first_name} "{self.nickname}" {self.last_name}'
             if self.nickname
@@ -58,7 +58,7 @@ class Member(AbstractUser):
         )
 
     @property
-    def short_name(self):
+    def short_name(self) -> str:
         return (
             f"{self.nickname}"
             if self.nickname
