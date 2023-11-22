@@ -42,7 +42,7 @@ export const Menu = () => {
       <MenuItem to="/members" label="Blåsbasen" />
 
       <MenuHeading label="Information" />
-      <MenuItem to="/" label="Mailinglistor" />
+      <MenuItem to="/informationChannels" label="Informationskanaler" />
       <MenuItem to="/" label="Stadgar" />
       <MenuItem to="/" label="Wiki" />
 

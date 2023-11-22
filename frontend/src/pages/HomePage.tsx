@@ -42,7 +42,7 @@ export const HomePage = () => {
           title="Informationskanaler"
           description="Blåset har flera informationskanaler och det är viktigt att du håller dig uppdaterad. Glöm inte att gå med i Blåsets Discord."
           buttonText="Informationskanaler"
-          linkPath="/informationskanaler"
+          linkPath="/informationChannels"
         />
         <BoxInfo
           title="Wiki"
