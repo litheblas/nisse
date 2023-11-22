@@ -32,6 +32,11 @@ class MemberSerializer(DynamicFieldsModelSerializer):
         model = Member
         fields = [
             "id",
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "short_name",
             "nickname",
             "birth_date",
             "liu_id",
