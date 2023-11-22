@@ -9,6 +9,11 @@
  */
 export type PatchedMember = {
     readonly id?: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    readonly full_name?: string;
+    readonly short_name?: string;
     nickname?: string;
     birth_date?: string | null;
     liu_id?: string;
