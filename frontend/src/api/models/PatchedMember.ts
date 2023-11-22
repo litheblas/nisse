@@ -3,6 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+/**
+ * A ModelSerializer that takes an additional `fields` argument that
+ * controls which fields should be displayed.
+ */
 export type PatchedMember = {
     readonly id?: string;
     nickname?: string;

@@ -12,13 +12,19 @@ import { request as __request } from '../core/request';
 export class MembersService {
 
     /**
+     * @param fields
      * @returns Member
      * @throws ApiError
      */
-    public static membersList(): CancelablePromise<Array<Member>> {
+    public static membersList(
+        fields?: string,
+    ): CancelablePromise<Array<Member>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/members/',
+            query: {
+                'fields': fields,
+            },
         });
     }
 
@@ -40,17 +46,22 @@ export class MembersService {
 
     /**
      * @param id A UUID string identifying this user.
+     * @param fields
      * @returns Member
      * @throws ApiError
      */
     public static membersRetrieve(
         id: string,
+        fields?: string,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/members/{id}/',
             path: {
                 'id': id,
+            },
+            query: {
+                'fields': fields,
             },
         });
     }
