@@ -4,7 +4,7 @@ import { MembersService } from '../api'
 export const MembersListPage = () => {
   const { isLoading, isError, isIdle, data, error } = useQuery(
     'member_list',
-    MembersService.membersList.bind(window)
+    MembersService.membersList.bind(window, 'id,full_name')
   )
 
   if (isLoading || isIdle) {
@@ -21,7 +21,7 @@ export const MembersListPage = () => {
       <h1 className="pageHeading">Blåsbasen</h1>
       <div>
         {data.map((member) => (
-          <p key={member.id}>{member.id}</p>
+          <p key={member.id}>{member.full_name}</p>
         ))}
       </div>
     </>
