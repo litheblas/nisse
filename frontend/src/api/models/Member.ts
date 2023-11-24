@@ -19,4 +19,5 @@ export type Member = {
     arbitrary_text?: string;
     national_id?: string;
     profile_picture?: string;
+    readonly active_period: string;
 };
