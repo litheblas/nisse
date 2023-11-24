@@ -22,4 +22,5 @@ class MemberSerializer(serializers.ModelSerializer):
             "arbitrary_text",
             "national_id",
             "profile_picture",
+            "active_period",
         ]

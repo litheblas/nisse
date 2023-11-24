@@ -65,6 +65,17 @@ class Member(AbstractUser):
             else f"{self.first_name} {self.last_name}"
         )
 
+    @property
+    def active_period(self) -> str:
+        memberships = Membership.objects.filter(member=self).order_by("start")
+        if not memberships:
+            return ""
+        return (
+            f"{memberships.first().start.year}–{memberships.last().end.year}"
+            if memberships.last().end
+            else f"{memberships.first().start.year}–"
+        )
+
     def __str__(self):
         return self.full_name
 
