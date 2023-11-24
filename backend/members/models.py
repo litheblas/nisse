@@ -75,6 +75,7 @@ class Member(AbstractUser):
         # or if the Memberships are assigned incorrectly.
         # We can easily ensure correct Membership assignments with new members, but
         # there's lots of weird stuff going on in the old database...
+        # TODO: remove comments or replace implementation once we try on old data
 
         # start = memberships.first().start.year
         # memberships = memberships.order_by(models.F("end").asc(nulls_last=True))
