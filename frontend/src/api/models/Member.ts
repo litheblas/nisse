@@ -14,6 +14,7 @@ export type Member = {
     last_name?: string;
     readonly full_name: string;
     readonly short_name: string;
+    readonly real_name: string;
     nickname?: string;
     birth_date?: string | null;
     liu_id?: string;
