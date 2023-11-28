@@ -7,7 +7,7 @@ import { AddEventPage } from './pages/AddEventPage'
 import { EditEventPage } from './pages/EditEventPage'
 import { EventsPage } from './pages/EventsPage'
 import { HomePage } from './pages/HomePage'
-import { MailinglistsPage } from './pages/MailinglistsPage'
+import { InformationChannelsPage } from './pages/InformationChannelsPage'
 import { MemberPage } from './pages/MemberPage'
 import { MembersListPage } from './pages/MembersListPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
@@ -62,8 +62,8 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: '/mailinglists',
-          element: <MailinglistsPage />,
+          path: '/informationChannels',
+          element: <InformationChannelsPage />,
         },
       ],
     },
