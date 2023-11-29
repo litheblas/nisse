@@ -66,6 +66,10 @@ class Member(AbstractUser):
         )
 
     @property
+    def real_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
+    @property
     def active_period(self) -> str:
         memberships = Membership.objects.filter(member=self).order_by("start")
         if not memberships:

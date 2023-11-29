@@ -37,6 +37,7 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "last_name",
             "full_name",
             "short_name",
+            "real_name",
             "nickname",
             "birth_date",
             "liu_id",
