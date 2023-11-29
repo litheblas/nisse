@@ -18,7 +18,7 @@ pillow = "==10.1.0"
 django-imagekit = "==5.0.0"
 
 [dev-packages]
-black = "==23.10.1"
+black = "==23.11.0"
 django-extensions = "==3.2.3"
 pydotplus = "==2.0.2"
 
