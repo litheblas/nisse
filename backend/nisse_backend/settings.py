@@ -41,6 +41,18 @@ ALLOWED_HOSTS = (
     else []
 )
 
+CORS_ORIGIN_WHITELIST = (
+    os.getenv("NISSE_CORS_ORIGIN_WHITELIST").split(",")
+    if os.getenv("NISSE_CORS_ORIGIN_WHITELIST")
+    else []
+)
+
+SECURE_PROXY_SSL_HEADER = (
+    tuple(os.getenv("NISSE_SECURE_PROXY_SSL_HEADER").split("=", 1))
+    if os.getenv("NISSE_SECURE_PROXY_SSL_HEADER")
+    else None
+)
+
 # Application definition
 
 INSTALLED_APPS = [
