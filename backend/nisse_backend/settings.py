@@ -35,8 +35,11 @@ DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
-ALLOWED_HOSTS = os.getenv("NISSE_ALLOWED_HOSTS").split(",")
-
+ALLOWED_HOSTS = (
+    os.getenv("NISSE_ALLOWED_HOSTS").split(",")
+    if os.getenv("NISSE_ALLOWED_HOSTS")
+    else []
+)
 
 # Application definition
 
