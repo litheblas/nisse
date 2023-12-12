@@ -17,7 +17,7 @@ export const MembersListPage = () => {
     )
   )
 
-  const itemsPerPage = 15
+  const [itemsPerPage, setItemsPerPage] = useState(15)
   const [currentPage, setCurrentPage] = useState(1)
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -80,6 +80,14 @@ export const MembersListPage = () => {
     }
   }
 
+  const showAll = () => {
+    setItemsPerPage(Infinity)
+  }
+
+  const showLess = () => {
+    setItemsPerPage(15)
+  }
+
   return (
     <>
       <h1 className={style.header}>Blåsbasen</h1>
@@ -109,13 +117,21 @@ export const MembersListPage = () => {
           ))}
         </tbody>
       </table>
-      {membersToDisplay.length > itemsPerPage && (
+      {(membersToDisplay.length > itemsPerPage ||
+        itemsPerPage === Infinity) && (
         <div className={style.pagination}>
-          <button onClick={prevPage} disabled={currentPage === 1}>
-            Previous
-          </button>
-          <button onClick={nextPage} disabled={currentPage === totalPages}>
-            Next
+          {itemsPerPage !== Infinity && (
+            <>
+              <button onClick={prevPage} disabled={currentPage === 1}>
+                Previous
+              </button>
+              <button onClick={nextPage} disabled={currentPage === totalPages}>
+                Next
+              </button>
+            </>
+          )}
+          <button onClick={itemsPerPage === Infinity ? showLess : showAll}>
+            {itemsPerPage === Infinity ? 'Show Less' : 'Show All'}
           </button>
         </div>
       )}
