@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
@@ -13,7 +14,7 @@ export const MembersListPage = () => {
     'member_list',
     MembersService.membersList.bind(
       window,
-      'id,full_name,active_period,short_name,real_name'
+      'id,full_name,active_period,real_name'
     )
   )
 
@@ -23,31 +24,19 @@ export const MembersListPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredMembers, setFilteredMembers] = useState(data)
 
-  if (isLoading || isIdle) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    if (error instanceof Error) return <span>Error: {error.message}</span>
-    else return <span>Unknown error!</span>
-  }
-
-  if (!data) {
-    return <span>No data available</span>
-  }
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     setSearchQuery(query)
 
+    if (!data) {
+      return <span>No data available</span>
+    }
     // Filter the data based on the search query
     const filtered = data.filter((member) => {
-      const { full_name, active_period, short_name, real_name } = member
+      const { full_name, active_period, real_name } = member
 
       return (
         (full_name && full_name.toLowerCase().includes(query.toLowerCase())) ||
-        (short_name &&
-          short_name.toLowerCase().includes(query.toLowerCase())) ||
         (real_name && real_name.toLowerCase().includes(query.toLowerCase())) ||
         (active_period &&
           active_period.toString().replace(/–/g, '-').includes(query))
@@ -56,6 +45,46 @@ export const MembersListPage = () => {
 
     setFilteredMembers(filtered) // Update the filtered members state
     setCurrentPage(1) // Reset to the first page when performing a new search
+  }
+
+  const renderPageHeader = () => {
+    return (
+      <>
+        <h1 className={style.header}>Blåsbasen</h1>
+        <div className={style.inputContainer}>
+          <input
+            type="text"
+            placeholder="Sök på namn eller aktiv period"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
+      </>
+    )
+  }
+
+  if (isLoading || isIdle) {
+    return (
+      <>
+        {renderPageHeader()}
+        <div className={style.loadingSpinnerContainer}>
+          <CircularProgress color="inherit" />
+        </div>
+      </>
+    )
+  }
+
+  if (isError) {
+    return (
+      <>
+        {renderPageHeader()}
+        {error instanceof Error ? (
+          <span>Error: {error.message}</span>
+        ) : (
+          <span>Unknown error!</span>
+        )}
+      </>
+    )
   }
 
   // If no filter is active, show all members
@@ -82,15 +111,7 @@ export const MembersListPage = () => {
 
   return (
     <>
-      <h1 className={style.header}>Blåsbasen</h1>
-      <div className={style.inputContainer}>
-        <input
-          type="text"
-          placeholder="Sök på namn eller aktiv period"
-          value={searchQuery}
-          onChange={handleSearch}
-        />
-      </div>
+      {renderPageHeader()}
       <table>
         <thead>
           <tr>
