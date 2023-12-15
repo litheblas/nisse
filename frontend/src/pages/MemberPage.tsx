@@ -92,12 +92,12 @@ export const MemberPage = () => {
 
   // Explicitly define memberships and engagements as an array
   const typedMemberships: Membership[] = memberships as Membership[]
-  const typedEngagememts: Engagement[] = engagements as Engagement[]
+  const typedEngagements: Engagement[] = engagements as Engagement[]
 
   const activeMemberships = typedMemberships.filter(
     (memberships) => !memberships.end_date
   )
-  const activeEngagements = typedEngagememts.filter(
+  const activeEngagements = typedEngagements.filter(
     (engagements) => !engagements.end_date
   )
 
@@ -184,7 +184,7 @@ export const MemberPage = () => {
             </div>
             <table className={style.engagementsTable}>
               <tbody>
-                {typedEngagememts.map((engagement: Engagement) => (
+                {typedEngagements.map((engagement: Engagement) => (
                   <tr key={engagement.id}>
                     <td>
                       <img
