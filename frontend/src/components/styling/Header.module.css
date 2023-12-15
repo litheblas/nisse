@@ -7,11 +7,6 @@
   align-items: center;
 }
 
-.container a {
-  text-decoration: none;
-  color: var(--blue);
-}
-
 .content {
   align-items: center;
   display: grid;
@@ -24,7 +19,10 @@
 .logo {
   grid-column: 1;
   height: 40px;
-  color: blue;
+
+  & > img {
+    height: 100%;
+  }
 }
 
 .menu {
