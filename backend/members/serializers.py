@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from rest_framework import serializers
 
 from .models import Member
@@ -28,6 +30,9 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class MemberSerializer(DynamicFieldsModelSerializer):
+    memberships = serializers.SerializerMethodField()
+    engagements = serializers.SerializerMethodField()
+
     class Meta:
         model = Member
         fields = [
@@ -54,6 +59,9 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "national_id",
             "profile_picture",
             "active_period",
+            "memberships",
+            "engagements",
+            "complete_adress",
         ]
 
         def validate(self, data):
@@ -62,3 +70,9 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             instance = Member(**data)
             instance.clean()
             return data
+
+    def get_memberships(self, obj) -> List[Dict]:
+        return obj.memberships
+
+    def get_engagements(self, obj) -> List[Dict]:
+        return obj.engagements

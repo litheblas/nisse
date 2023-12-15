@@ -1,0 +1,87 @@
+.loadingSpinnerContainer {
+  display: flex;
+  justify-content: center;
+  color: var(--blue);
+}
+
+.container {
+  display: flex;
+}
+
+.tableContainer {
+  width: 35%;
+  margin-bottom: 30px;
+  margin-right: 10%;
+  overflow: hidden;
+}
+
+.tableHeader {
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 10px;
+  text-align: left;
+  border-top-left-radius: 8px; /* Rounded edges for top corners */
+  border-top-right-radius: 8px;
+  text-align: left;
+}
+
+.engagementsTable,
+.membershipsTable {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #dddddd;
+}
+
+.engagementsTable th,
+.engagementsTable td,
+.membershipsTable th,
+.membershipsTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+.engagementsTable td:first-child,
+.membershipsTable td:first-child {
+  text-align: center;
+  width: 20%;
+}
+
+.engagementTypeFont,
+.membershipTypeFont {
+  font-size: 130%;
+}
+
+.dataRangeFont {
+  font-size: 90%;
+}
+
+.activeMembershipEngagements h3 {
+  color: var(--blue);
+}
+
+.personalInfoTableContainer {
+  width: 50%;
+  margin-bottom: 30px;
+}
+
+.personalInfoAttribute {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  height: fit-content;
+}
+
+.personalInfoAttribute h4 {
+  grid-column-start: 2;
+  text-align: left;
+  margin: 0px;
+}
+
+.personalInfoAttribute img {
+  width: 30px;
+  height: 30px;
+  grid-column-start: 1;
+  vertical-align: middle;
+  margin: 2px;
+}

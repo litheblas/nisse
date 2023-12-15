@@ -30,4 +30,7 @@ export type Member = {
     national_id?: string;
     profile_picture?: string;
     readonly active_period: string;
+    readonly memberships: Array<Record<string, any>>;
+    readonly engagements: Array<Record<string, any>>;
+    readonly complete_adress: string;
 };
