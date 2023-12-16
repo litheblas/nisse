@@ -39,6 +39,7 @@
   display: grid;
   grid-template-columns: 50px auto; /* Two columns: 50px wide for the image, and auto for the text */
   width: fit-content;
+  margin-bottom: 30px;
 }
 
 .gridContainerHeader {
@@ -91,4 +92,31 @@
 
 .dataRangeFont {
   font-size: 90%;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns: equal width */
+  grid-gap: 0px;
+  width: fit-content;
+}
+
+.leftColumn {
+  grid-column: 1 / 2; /* Span first column */
+}
+
+.rightColumn {
+  grid-column: 2 / 3; /* Span second column */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr; /* Two columns: equal width */
+  }
+
+  .leftColumn,
+  .rightColumn {
+    grid-column: 1 / 2; /* Span full width on smaller screens */
+  }
 }

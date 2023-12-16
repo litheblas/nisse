@@ -144,52 +144,82 @@ export const MemberPage = () => {
         ))}
       </div>
 
-      {/* Memberships table */}
-      <div className={style.gridContainer}>
-        <div className={style.gridContainerHeader}>
-          <h2>Medlemskap</h2>
-        </div>
-        {typedMemberships.map((membership: Membership) => (
-          <div className={style.gridItem} key={membership.id}>
-            <img
-              src={membershipTypeImages[membership.membership_type]}
-              alt="No icon found"
-              style={{ width: '50px', height: '50px' }}
-            />
-            <div>
-              <p className={style.membershipTypeFont}>
-                Antagen {membership.membership_type}
-              </p>
-              <p className={style.dataRangeFont}>
-                {membership.start_date} - {membership.end_date || ''}
-              </p>
+      <div className={style.container}>
+        <div className={style.leftColumn}>
+          {/* Memberships table */}
+          <div className={style.gridContainer}>
+            <div className={style.gridContainerHeader}>
+              <h2>Medlemskap</h2>
             </div>
+            {typedMemberships.map((membership: Membership) => (
+              <div className={style.gridItem} key={membership.id}>
+                <img
+                  src={membershipTypeImages[membership.membership_type]}
+                  alt="No icon found"
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <div>
+                  <p className={style.membershipTypeFont}>
+                    Antagen {membership.membership_type}
+                  </p>
+                  <p className={style.dataRangeFont}>
+                    {membership.start_date} - {membership.end_date || ''}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* Engagements table */}
-      <div className={style.gridContainer}>
-        <div className={style.gridContainerHeader}>
-          <h2>Engagemang</h2>
-        </div>
-        {typedEngagements.map((engagement: Engagement) => (
-          <div className={style.gridItem} key={engagement.id}>
-            <img
-              src={engagementTypeImages[engagement.engagement_type]}
-              alt="No icon found"
-              style={{ width: '50px', height: '50px' }}
-            />
-            <div>
-              <p className={style.membershipTypeFont}>
-                Antagen {engagement.engagement_type}
-              </p>
-              <p className={style.dataRangeFont}>
-                {engagement.start_date} - {engagement.end_date || ''}
-              </p>
+          {/* Barstatistics table */}
+          <div className={style.gridContainer}>
+            <div className={style.gridContainerHeader}>
+              <h2>Barstatistik</h2>
             </div>
+            {typedMemberships.map((membership: Membership) => (
+              <div className={style.gridItem} key={membership.id}>
+                <img
+                  src={membershipTypeImages[membership.membership_type]}
+                  alt="No icon found"
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <div>
+                  <p className={style.membershipTypeFont}>
+                    Antagen {membership.membership_type}
+                  </p>
+                  <p className={style.dataRangeFont}>
+                    {membership.start_date} - {membership.end_date || ''}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className={style.rightColumn}>
+          {/* Engagements table */}
+          <div className={style.gridContainer}>
+            <div className={style.gridContainerHeader}>
+              <h2>Engagemang</h2>
+            </div>
+            {typedEngagements.map((engagement: Engagement) => (
+              <div className={style.gridItem} key={engagement.id}>
+                <img
+                  src={engagementTypeImages[engagement.engagement_type]}
+                  alt="No icon found"
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <div>
+                  <p className={style.membershipTypeFont}>
+                    Antagen {engagement.engagement_type}
+                  </p>
+                  <p className={style.dataRangeFont}>
+                    {engagement.start_date} - {engagement.end_date || ''}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   )
