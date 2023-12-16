@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["blottartuban", "Kisac", "nisse", "pipenv", "pyenv"],
+  "cSpell.words": [
+    "blottartuban",
+    "keycloak",
+    "Kisac",
+    "litheblas",
+    "nisse",
+    "pipenv",
+    "pyenv"
+  ],
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
     "source.sortImports": true
