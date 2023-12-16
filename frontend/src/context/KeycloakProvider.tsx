@@ -1,6 +1,8 @@
+import CircularProgress from '@mui/material/CircularProgress'
 import Keycloak from 'keycloak-js'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { KeycloakContext } from './KeycloakContext'
+import style from './KeycloakProvider.module.css'
 
 async function initKeycloak() {
   const keycloak = new Keycloak({
@@ -48,7 +50,12 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   }, [keycloakInstance])
 
   if (!keycloakInstance) {
-    return <div>Loading...</div>
+    return (
+      <div className={style.loadingSpinnerContainer}>
+        <CircularProgress color="inherit" />
+        <h1>Loggar in</h1>
+      </div>
+    )
   }
 
   const logout = () => {
