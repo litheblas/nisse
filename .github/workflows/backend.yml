@@ -1,6 +1,6 @@
-name: Pipenv build and test
+name: Build and test the backend
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   pipenv-test:

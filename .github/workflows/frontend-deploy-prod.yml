@@ -1,0 +1,42 @@
+name: Deploy the frontend to prod
+
+on:
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  npm-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend/
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - run: npm ci
+      - name: Build prod-build
+        run: npm run build -- --base=/nisse-frontend-deploy-production/
+        env:
+          # VITE_NISSE_BACKEND_API_URL:
+          VITE_NISSE_KEYCLOAK_URL: https://auth.litheblas.org
+          VITE_NISSE_KEYCLOAK_REALM: litheblas
+          VITE_NISSE_KEYCLOAK_CLIENT_ID: nisse
+          VITE_NISSE_LOGOUT_REDIRECT_URL: https://litheblas.org
+
+      # Copies the index.html to 404.html to make Github Pages work with SPA.
+      # https://stackoverflow.com/questions/63462828/404-error-on-refresh-with-spa-react-router-app-in-github-pages
+      - name: Make Github pages work with SPA
+        run: cp dist/index.html dist/404.html
+
+      - name: Deploy prod-build to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: frontend/dist
+          clean: true
+          repository-name: litheblas/nisse-frontend-deploy-production
+          token: ${{ secrets.NISSE_FRONTEND_DEPLOY_PAT }}
