@@ -6,6 +6,7 @@ import style from './styling/MemberPage.module.css'
 
 // Import membership icons
 import OtherIcon from '../assets/blottartuban-top-half.svg'
+import BalettIcon from '../assets/membershipIcons/balett.png'
 import BanjoIcon from '../assets/membershipIcons/banjo.png'
 import KlarinettIcon from '../assets/membershipIcons/clarinet.png'
 import BasIcon from '../assets/membershipIcons/electric_guitar.png'
@@ -59,7 +60,7 @@ const membershipTypeImages: Record<string, string> = {
   Tuba: TubaIcon,
   Trombon: TrombonIcon,
   Trumpet: TrumpetIcon,
-  Annat: OtherIcon,
+  Balett: BalettIcon,
 }
 
 const medalIcons = [
@@ -179,7 +180,10 @@ export const MemberPage = () => {
             {typedMemberships.map((membership: Membership) => (
               <div className={style.gridItem} key={membership.id}>
                 <img
-                  src={membershipTypeImages[membership.membership_type]}
+                  src={
+                    membershipTypeImages[membership.membership_type] ||
+                    OtherIcon
+                  }
                   alt="No icon found"
                   style={{ width: '50px', height: '50px' }}
                 />
