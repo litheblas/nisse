@@ -9,8 +9,13 @@
 }
 
 .personalInfoTableContainer {
-  width: 50%;
   margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* Initially, display as a single column */
+  justify-content: space-between;
 }
 
 .personalInfoAttribute {
@@ -22,6 +27,7 @@
 }
 
 .personalInfoAttribute h4 {
+  width: fit-content;
   grid-column-start: 2;
   text-align: left;
   margin: 0px;
@@ -35,10 +41,18 @@
   margin: 2px;
 }
 
+/* Media query for switching to a two-column layout when needed */
+@media screen and (max-width: 600px) {
+  .personalInfoTableContainer {
+    grid-template-columns: 1fr; /* Switch to two columns */
+  }
+}
+
 .gridContainer {
   display: grid;
-  grid-template-columns: 50px auto; /* Two columns: 50px wide for the image, and auto for the text */
-  width: fit-content;
+  grid-template-columns: auto auto; /* Two columns: 50px wide for the image, and auto for the text */
+  width: auto;
+  padding-right: 5%;
   margin-bottom: 30px;
 }
 
@@ -56,24 +70,23 @@
 
 .gridItem {
   display: grid;
-  grid-template-columns: 50px auto; /* Same as the container for consistency */
+  grid-template-columns: auto auto; /* Same as the container for consistency */
   align-items: center; /* Center items vertically */
   border: 1px solid #dddddd;
-  grid-row: auto;
   grid-column: span 2;
+  justify-content: space-around;
 }
 
 .gridItem img {
-  width: 50px; /* Width of the image */
-  height: 50px; /* Height of the image */
   grid-column-start: 1;
-  margin: 10px;
+  margin: 5px;
 }
 
 .gridItem p {
-  padding-left: 30px;
+  margin-left: 10px;
   padding-right: 30px;
   grid-column-start: 2;
+  width: 175px;
 }
 
 .gridItem:nth-child(even) {
@@ -88,17 +101,19 @@
 .engagementTypeFont,
 .membershipTypeFont {
   font-size: 130%;
+  text-align: left;
 }
 
 .dataRangeFont {
   font-size: 90%;
+  text-align: left;
 }
 
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns: equal width */
   grid-gap: 0px;
-  width: fit-content;
+  justify-content: space-between;
 }
 
 .leftColumn {
