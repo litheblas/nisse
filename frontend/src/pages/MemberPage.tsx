@@ -9,8 +9,8 @@ import OtherIcon from '../assets/blottartuban-top-half.svg'
 import BanjoIcon from '../assets/membershipIcons/banjo.png'
 import KlarinettIcon from '../assets/membershipIcons/clarinet.png'
 import BasIcon from '../assets/membershipIcons/electric_guitar.png'
+import FlöjtIcon from '../assets/membershipIcons/fluteIcon.png'
 import HornIcon from '../assets/membershipIcons/french_horn.png'
-import FlöjtIcon from '../assets/membershipIcons/recorder.png'
 import SaxofonIcon from '../assets/membershipIcons/saxophone.png'
 import TrummorIcon from '../assets/membershipIcons/snare_drum.png'
 import TrombonIcon from '../assets/membershipIcons/trombone.png'
@@ -21,6 +21,18 @@ import TubaIcon from '../assets/membershipIcons/tuba.png'
 import addressIcon from '../assets/memberPageIcons/addressIcon.svg'
 import mailIcon from '../assets/memberPageIcons/mailIcon.svg'
 import phoneIcon from '../assets/memberPageIcons/phoneIcon.svg'
+
+// Import medal icons
+import medal1 from '../assets/medalIcons/medal1.png'
+import medal10 from '../assets/medalIcons/medal10.png'
+import medal2 from '../assets/medalIcons/medal2.png'
+import medal3 from '../assets/medalIcons/medal3.png'
+import medal4 from '../assets/medalIcons/medal4.png'
+import medal5 from '../assets/medalIcons/medal5.png'
+import medal6 from '../assets/medalIcons/medal6.png'
+import medal7 from '../assets/medalIcons/medal7.png'
+import medal8 from '../assets/medalIcons/medal8.png'
+import medal9 from '../assets/medalIcons/medal9.png'
 
 interface Membership {
   id: number
@@ -50,13 +62,18 @@ const membershipTypeImages: Record<string, string> = {
   Annat: OtherIcon,
 }
 
-const engagementTypeImages: Record<string, string> = {
-  Kronharpa: BanjoIcon,
-  Jubelgeneral: BasIcon,
-  Dictator: HornIcon,
-  Intendent: FlöjtIcon,
-  Luciageneral: OtherIcon,
-}
+const medalIcons = [
+  medal1,
+  medal2,
+  medal3,
+  medal4,
+  medal5,
+  medal6,
+  medal7,
+  medal8,
+  medal9,
+  medal10,
+]
 
 export const MemberPage = () => {
   const { memberId } = useParams<{ memberId: string }>()
@@ -116,6 +133,14 @@ export const MemberPage = () => {
   const personalInfoToShow = personalInfo.filter(
     (attr) => attr[0] !== null && attr[0] !== undefined && attr[0] !== ''
   )
+
+  let newMedalIndex = 0
+  function getMedalIcon() {
+    const medalIcon = medalIcons[newMedalIndex]
+    newMedalIndex = (newMedalIndex + 1) % 10
+
+    return medalIcon
+  }
 
   return (
     <>
@@ -204,13 +229,13 @@ export const MemberPage = () => {
             {typedEngagements.map((engagement: Engagement) => (
               <div className={style.gridItem} key={engagement.id}>
                 <img
-                  src={engagementTypeImages[engagement.engagement_type]}
+                  src={getMedalIcon()}
                   alt="No icon found"
                   style={{ width: '50px', height: '50px' }}
                 />
                 <div>
                   <p className={style.membershipTypeFont}>
-                    Antagen {engagement.engagement_type}
+                    {engagement.engagement_type}
                   </p>
                   <p className={style.dataRangeFont}>
                     {engagement.start_date} - {engagement.end_date || ''}
