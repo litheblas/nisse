@@ -119,96 +119,77 @@ export const MemberPage = () => {
 
   return (
     <>
-      <div>
-        <img src={profile_picture} alt="Profile Picture" />
-        <h2>{full_name}</h2>
+      <img src={profile_picture} alt="Profile Picture" />
+      <h2>{full_name}</h2>
 
-        <div className={style.activeMembershipEngagements}>
-          {/* Display active memberships */}
-          {activeMemberships.map((membership: Membership) => (
-            <h3 key={membership.id}>{membership.membership_type}</h3>
-          ))}
+      <div className={style.activeMembershipEngagements}>
+        {/* Display active memberships */}
+        {activeMemberships.map((membership: Membership) => (
+          <h3 key={membership.id}>{membership.membership_type}</h3>
+        ))}
 
-          {/* Display active engagements */}
-          {activeEngagements.map((engagement: Engagement) => (
-            <h3 key={engagement.id}>{engagement.engagement_type}</h3>
-          ))}
-        </div>
+        {/* Display active engagements */}
+        {activeEngagements.map((engagement: Engagement) => (
+          <h3 key={engagement.id}>{engagement.engagement_type}</h3>
+        ))}
+      </div>
 
-        {/* Display personal info */}
-        <div className={style.personalInfoTableContainer}>
-          {personalInfoToShow.map((attr, infoIndex) => (
-            <div key={infoIndex} className={style.personalInfoAttribute}>
-              <img src={attr[1] ? attr[1] : mailIcon} alt="no Icon" />
-              <h4>{attr[0]}</h4>
-            </div>
-          ))}
-        </div>
-
-        {/* Memberships table */}
-        <div className={style.container}>
-          <div className={style.tableContainer}>
-            <div className={style.tableHeader}>
-              <h2>{'Medlemskap'}</h2>
-            </div>
-            <table className={style.membershipsTable}>
-              <tbody>
-                {typedMemberships.map((membership: Membership) => (
-                  <tr key={membership.id}>
-                    <td>
-                      <img
-                        src={membershipTypeImages[membership.membership_type]}
-                        alt="No icon found"
-                        style={{ width: '50px', height: '50px' }}
-                      />
-                    </td>
-                    <td>
-                      <div>
-                        <p className={style.membershipTypeFont}>
-                          Antagen {membership.membership_type}
-                        </p>
-                        <p className={style.dataRangeFont}>
-                          {membership.start_date} - {membership.end_date || ''}
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Display personal info */}
+      <div className={style.personalInfoTableContainer}>
+        {personalInfoToShow.map((attr, infoIndex) => (
+          <div key={infoIndex} className={style.personalInfoAttribute}>
+            <img src={attr[1] ? attr[1] : mailIcon} alt="no Icon" />
+            <h4>{attr[0]}</h4>
           </div>
-          {/* Engagements table */}
-          <div className={style.tableContainer}>
-            <div className={style.tableHeader}>
-              <h2>{'Engagemang'}</h2>
-            </div>
-            <table className={style.engagementsTable}>
-              <tbody>
-                {typedEngagements.map((engagement: Engagement) => (
-                  <tr key={engagement.id}>
-                    <td>
-                      <img
-                        src={engagementTypeImages[engagement.engagement_type]}
-                        alt="No icon found"
-                        style={{ width: '50px', height: '50px' }}
-                      />
-                    </td>
-                    <td>
-                      <div>
-                        <p className={style.engagementTypeFont}>
-                          {engagement.engagement_type}
-                        </p>
-                        <p className={style.dataRangeFont}>
-                          {engagement.start_date} - {engagement.end_date || ''}
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        ))}
+      </div>
+
+      {/* Memberships table */}
+      <div className={style.gridContainer}>
+        <div className={style.gridContainerHeader}>
+          <h2>Medlemskap</h2>
         </div>
+        {typedMemberships.map((membership: Membership) => (
+          <div className={style.gridItem} key={membership.id}>
+            <img
+              src={membershipTypeImages[membership.membership_type]}
+              alt="No icon found"
+              style={{ width: '50px', height: '50px' }}
+            />
+            <div>
+              <p className={style.membershipTypeFont}>
+                Antagen {membership.membership_type}
+              </p>
+              <p className={style.dataRangeFont}>
+                {membership.start_date} - {membership.end_date || ''}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Engagements table */}
+      <div className={style.gridContainer}>
+        <div className={style.gridContainerHeader}>
+          <h2>Engagemang</h2>
+        </div>
+        {typedEngagements.map((engagement: Engagement) => (
+          <div className={style.gridItem} key={engagement.id}>
+            <img
+              src={engagementTypeImages[engagement.engagement_type]}
+              alt="No icon found"
+              style={{ width: '50px', height: '50px' }}
+            />
+            <div>
+              <p className={style.membershipTypeFont}>
+                Antagen {engagement.engagement_type}
+              </p>
+              <p className={style.dataRangeFont}>
+                {engagement.start_date} - {engagement.end_date || ''}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   )

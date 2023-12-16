@@ -4,57 +4,6 @@
   color: var(--blue);
 }
 
-.container {
-  display: flex;
-}
-
-.tableContainer {
-  width: 35%;
-  margin-bottom: 30px;
-  margin-right: 10%;
-  overflow: hidden;
-}
-
-.tableHeader {
-  background-color: var(--blue);
-  color: var(--white);
-  padding: 10px;
-  text-align: left;
-  border-top-left-radius: 8px; /* Rounded edges for top corners */
-  border-top-right-radius: 8px;
-  text-align: left;
-}
-
-.engagementsTable,
-.membershipsTable {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #dddddd;
-}
-
-.engagementsTable th,
-.engagementsTable td,
-.membershipsTable th,
-.membershipsTable td {
-  text-align: left;
-  padding: 8px;
-}
-
-.engagementsTable td:first-child,
-.membershipsTable td:first-child {
-  text-align: center;
-  width: 20%;
-}
-
-.engagementTypeFont,
-.membershipTypeFont {
-  font-size: 130%;
-}
-
-.dataRangeFont {
-  font-size: 90%;
-}
-
 .activeMembershipEngagements h3 {
   color: var(--blue);
 }
@@ -84,4 +33,62 @@
   grid-column-start: 1;
   vertical-align: middle;
   margin: 2px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 50px auto; /* Two columns: 50px wide for the image, and auto for the text */
+  width: fit-content;
+}
+
+.gridContainerHeader {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column for the header */
+  grid-column: 1 / -1;
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 10px;
+  text-align: left;
+  border-top-left-radius: 8px; /* Rounded edges for top corners */
+  border-top-right-radius: 8px;
+}
+
+.gridItem {
+  display: grid;
+  grid-template-columns: 50px auto; /* Same as the container for consistency */
+  align-items: center; /* Center items vertically */
+  border: 1px solid #dddddd;
+  grid-row: auto;
+  grid-column: span 2;
+}
+
+.gridItem img {
+  width: 50px; /* Width of the image */
+  height: 50px; /* Height of the image */
+  grid-column-start: 1;
+  margin: 10px;
+}
+
+.gridItem p {
+  padding-left: 30px;
+  padding-right: 30px;
+  grid-column-start: 2;
+}
+
+.gridItem:nth-child(even) {
+  background-color: #f5f5f5; /* Set your desired grayish background color */
+}
+
+.gridItem:last-child {
+  border-bottom-left-radius: 8px; /* Adjust border radius as needed */
+  border-bottom-right-radius: 8px; /* Adjust border radius as needed */
+}
+
+.engagementTypeFont,
+.membershipTypeFont {
+  font-size: 130%;
+}
+
+.dataRangeFont {
+  font-size: 90%;
 }
