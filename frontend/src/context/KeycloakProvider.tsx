@@ -1,6 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import Keycloak from 'keycloak-js'
 import { ReactNode, useEffect, useRef, useState } from 'react'
+import { OpenAPI } from '../api'
 import { KeycloakContext } from './KeycloakContext'
 import style from './KeycloakProvider.module.css'
 
@@ -65,6 +66,13 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
       })
       .catch(console.error)
   }
+
+  const getToken = async () => {
+    await keycloakInstance.updateToken(5)
+    return keycloakInstance.token!
+  }
+
+  OpenAPI.TOKEN = getToken
 
   return (
     <KeycloakContext.Provider value={{ keycloakInstance, logout }}>
