@@ -2,32 +2,31 @@
   width: 200px;
   margin: 0px;
   padding: 0px;
+  display: grid;
 }
 
 .menuHeading {
-  list-style-type: none;
   background-color: var(--yellow);
-
   padding: 8px 16px;
   font-size: 16px;
 }
 
 .menuItem {
-  list-style-type: none;
   background-color: var(--light-yellow);
   padding: 4px 16px;
-}
-
-.menuItemLink {
-  text-decoration: none;
   color: var(--blue);
 }
 
-.menuItemLink:hover {
-  text-decoration: none;
+.menuItem:hover {
   color: var(--brown);
 }
 
-.menuItemLinkActive {
+.menuItemActive {
   font-weight: bold;
+}
+
+.hideInDesktopMode {
+  @media (min-width: 801px) {
+    display: none;
+  }
 }

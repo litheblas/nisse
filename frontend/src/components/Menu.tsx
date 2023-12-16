@@ -1,65 +1,75 @@
 import { NavLink } from 'react-router-dom'
+import { useKeycloak } from '../context/KeycloakContext'
 import style from './styling/Menu.module.css'
 
-interface MenuItemProps {
-  to: string
-  label: string
-}
-
-const MenuItem = ({ to, label }: MenuItemProps) => {
-  return (
-    <li className={style.menuItem}>
-      <NavLink
-        // Applies style.menuItemLink, and style.menuItemLinkActive if the link
-        // is active
-        className={({ isActive }) =>
-          [style.menuItemLink, isActive ? style.menuItemLinkActive : ''].join(
-            ' '
-          )
-        }
-        to={to}
-      >
-        {label}
-      </NavLink>
-    </li>
-  )
-}
-
-interface MenuHeadingProps {
-  label: string
-}
-
-const MenuHeading = ({ label }: MenuHeadingProps) => {
-  return <li className={style.menuHeading}>{label}</li>
+const linkStyle = ({ isActive }: { isActive: boolean }) => {
+  return [style.menuItem, isActive ? style.menuItemActive : ''].join(' ')
 }
 
 export const Menu = () => {
+  const { logout } = useKeycloak()
+
   return (
     <menu className={style.container}>
-      <MenuHeading label="Sidor" />
-      <MenuItem to="/" label="Info" />
-      <MenuItem to="/events" label="Kalender" />
-      <MenuItem to="/members" label="Blåsbasen" />
+      <div className={style.menuHeading}>Sidor</div>
+      <NavLink className={linkStyle} to="/">
+        Info
+      </NavLink>
+      <NavLink className={linkStyle} to="/events">
+        Kalender
+      </NavLink>
+      <NavLink className={linkStyle} to="/members">
+        Blåsbasen
+      </NavLink>
 
-      <MenuHeading label="Information" />
-      <MenuItem to="/informationChannels" label="Informationskanaler" />
-      <MenuItem to="/" label="Stadgar" />
-      <MenuItem to="/" label="Wiki" />
+      <div className={style.menuHeading}>Information</div>
+      <NavLink className={linkStyle} to="/informationChannels">
+        Informationskanaler
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Stadgar
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Wiki
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Integritetspolicy
+      </NavLink>
 
-      <MenuHeading label="Musik" />
-      <MenuItem to="/" label="Notarkiv" />
-      <MenuItem to="/" label="Sing-a-long" />
-      <MenuItem to="/" label="Inspelningar" />
+      <div className={style.menuHeading}>Musik</div>
+      <NavLink className={linkStyle} to="/">
+        Notarkiv
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Sing-a-long
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Inspelningar
+      </NavLink>
 
-      <MenuHeading label="Dans" />
-      <MenuItem to="/" label="Aktiva danser" />
-      <MenuItem to="/" label="Gamla danser" />
+      <div className={style.menuHeading}>Dans</div>
+      <NavLink className={linkStyle} to="/">
+        Aktiva danser
+      </NavLink>
+      <NavLink className={linkStyle} to="/">
+        Gamla danser
+      </NavLink>
 
-      <MenuHeading label="Bilder" />
-      <MenuItem to="/" label="Galleriet" />
+      <div className={style.menuHeading}>Bilder</div>
+      <NavLink className={linkStyle} to="/">
+        Galleriet
+      </NavLink>
 
-      <MenuHeading label="Övrigt" />
-      <MenuItem to="/" label="Integritetspolicy" />
+      <div className={`${style.menuHeading} ${style.hideInDesktopMode}`}>
+        Övrigt
+      </div>
+      <NavLink
+        className={`${style.menuItem} ${style.hideInDesktopMode}`}
+        to="/"
+        onClick={logout}
+      >
+        Logga ut
+      </NavLink>
     </menu>
   )
 }
