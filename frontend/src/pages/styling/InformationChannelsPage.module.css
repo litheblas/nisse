@@ -1,37 +1,31 @@
-/* HomePage.module.css */
-
-/* Reset some default browser styles */
-body,
-h1,
-h2,
-h3,
-p,
-ul,
-li {
-  margin: 0;
-  padding: 0;
-}
+/* InformationChannelsPage.module.css */
 
 /* Style the overall homepage container */
 .container {
   font-family: 'Source Sans Pro', Arial, sans-serif;
   max-width: var(--page-max-width);
-  margin: 0 auto;
+  margin: auto;
   padding: 0px;
 }
 
 /* Style the header section */
 .header {
   text-align: center;
-  margin-bottom: 20px;
-  background: var(--yellow);
+  margin-bottom: 10px;
+  background-color: var(--yellow);
   color: var(--blue);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
+  border-radius: 4px;
+
+  /* Fit box around title */
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
 }
 
 .header h1 {
   font-size: 2.5em;
+  text-align: center;
 }
 
 /* Style the main content section */

@@ -18,10 +18,20 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
+      ######################################################################
       # Build and deploy a dev-build to GitHub Pages if the branch is `dev`.
+      ######################################################################
+
       - name: Build dev-build
         run: npm run build -- --base=/nisse-frontend-deploy-development/
         if: github.ref == 'refs/heads/dev'
+
+      # Copies the index.html to 404.html to make GitHub Pages work with SPA.
+      # https://stackoverflow.com/questions/63462828/404-error-on-refresh-with-spa-react-router-app-in-github-pages
+      - name: Make Github pages work with SPA
+        run: cp dist/index.html dist/404.html
+        if: github.ref == 'refs/heads/dev'
+
       - name: Deploy dev-build to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/dev'
@@ -31,10 +41,20 @@ jobs:
           repository-name: litheblas/nisse-frontend-deploy-development
           token: ${{ secrets.NISSE_FRONTEND_DEPLOY_PAT }}
 
+      ########################################################################
       # Build and deploy a prod-build to GitHub Pages if the branch is `main`.
+      ########################################################################
+
       - name: Build prod-build
         run: npm run build -- --base=/nisse-frontend-deploy-production/
         if: github.ref == 'refs/heads/main'
+
+      # Copies the index.html to 404.html to make Github Pages work with SPA.
+      # https://stackoverflow.com/questions/63462828/404-error-on-refresh-with-spa-react-router-app-in-github-pages
+      - name: Make Github pages work with SPA
+        run: cp dist/index.html dist/404.html
+        if: github.ref == 'refs/heads/main'
+
       - name: Deploy prod-build to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/main'

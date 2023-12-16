@@ -10,7 +10,7 @@ whitenoise = "==6.6.0"
 python-dotenv = "==1.0.0"
 psycopg = {extras = ["binary"], version = "==3.1.13"}
 django-ical = "==1.9.2"
-django-cors-headers = "==4.3.0"
+django-cors-headers = "==4.3.1"
 djangorestframework = "==3.14.0"
 drf-spectacular = "==0.26.5"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "==7.2.0"}
@@ -18,7 +18,7 @@ pillow = "==10.1.0"
 django-imagekit = "==5.0.0"
 
 [dev-packages]
-black = "==23.10.1"
+black = "==23.11.0"
 django-extensions = "==3.2.3"
 pydotplus = "==2.0.2"
 

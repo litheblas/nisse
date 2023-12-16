@@ -35,8 +35,23 @@ DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = (
+    os.getenv("NISSE_ALLOWED_HOSTS").split(",")
+    if os.getenv("NISSE_ALLOWED_HOSTS")
+    else []
+)
 
+CORS_ORIGIN_WHITELIST = (
+    os.getenv("NISSE_CORS_ORIGIN_WHITELIST").split(",")
+    if os.getenv("NISSE_CORS_ORIGIN_WHITELIST")
+    else []
+)
+
+SECURE_PROXY_SSL_HEADER = (
+    tuple(os.getenv("NISSE_SECURE_PROXY_SSL_HEADER").split("=", 1))
+    if os.getenv("NISSE_SECURE_PROXY_SSL_HEADER")
+    else None
+)
 
 # Application definition
 
