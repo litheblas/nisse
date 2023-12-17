@@ -71,7 +71,11 @@ class Member(AbstractUser):
 
     @property
     def complete_adress(self) -> str:
-        return f"{self.street_address}, {self.postal_code} {self.postal_town}, {self.postal_country}"
+        return (
+            f"{self.street_address}, {self.postal_code} {self.postal_town}, {self.postal_country}"
+            if self.street_address
+            else ""
+        )
 
     @property
     def active_period(self) -> str:
