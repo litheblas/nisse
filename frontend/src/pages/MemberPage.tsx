@@ -1,6 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { MembersService } from '../api'
 import style from './styling/MemberPage.module.css'
 
@@ -35,6 +35,7 @@ import medal7 from '../assets/medalIcons/medal7.png'
 import medal8 from '../assets/medalIcons/medal8.png'
 import medal9 from '../assets/medalIcons/medal9.png'
 
+import tempProfilePic from '../assets/templateProfilePic.jpg'
 interface Membership {
   id: number
   membership_type: string
@@ -84,7 +85,7 @@ export const MemberPage = () => {
     MembersService.membersRetrieve.bind(
       window,
       memberId!,
-      'id,email,full_name,profile_picture,memberships,engagements,birth_date,liu_id,complete_adress,phone_number_1,phone_number_2,phone_number_3'
+      'id,email,full_name,profile_picture,memberships,engagements,birth_date,liu_id,complete_adress,phone_number_1,phone_number_2,phone_number_3,arbitrary_text'
     )
   )
 
@@ -106,7 +107,7 @@ export const MemberPage = () => {
     return <span>No data available</span>
   }
 
-  const { full_name, profile_picture, memberships, engagements } = data
+  const { full_name, memberships, engagements, arbitrary_text } = data
 
   // Explicitly define memberships and engagements as an array
   const typedMemberships: Membership[] = memberships as Membership[]
@@ -145,19 +146,38 @@ export const MemberPage = () => {
 
   return (
     <>
-      <img src={profile_picture} alt="Profile Picture" />
-      <h2>{full_name}</h2>
+      <div className={style.container}>
+        <div className={style.leftColumn}>
+          <div className={style.profileImageContainer}>
+            <img src={tempProfilePic} alt="Your Image" />
+          </div>
+        </div>
 
-      <div className={style.activeMembershipEngagements}>
-        {/* Display active memberships */}
-        {activeMemberships.map((membership: Membership) => (
-          <h3 key={membership.id}>{membership.membership_type}</h3>
-        ))}
+        <div className={style.rightColumn}>
+          <div className={style.buttons}>
+            <Link to={`../`}>
+              <button
+                className={`standardButton blueButton ${style.newButton}`}
+              >
+                Ändra information
+              </button>
+            </Link>
+          </div>
 
-        {/* Display active engagements */}
-        {activeEngagements.map((engagement: Engagement) => (
-          <h3 key={engagement.id}>{engagement.engagement_type}</h3>
-        ))}
+          <h2>{full_name}</h2>
+          <div className={style.activeMembershipEngagements}>
+            {/* Display active memberships */}
+            {activeMemberships.map((membership: Membership) => (
+              <h3 key={membership.id}>{membership.membership_type}</h3>
+            ))}
+
+            {/* Display active engagements */}
+            {activeEngagements.map((engagement: Engagement) => (
+              <h3 key={engagement.id}>{engagement.engagement_type}</h3>
+            ))}
+          </div>
+          <h4>{arbitrary_text}</h4>
+        </div>
       </div>
 
       {/* Display personal info */}
@@ -207,7 +227,10 @@ export const MemberPage = () => {
             {typedMemberships.map((membership: Membership) => (
               <div className={style.gridItem} key={membership.id}>
                 <img
-                  src={membershipTypeImages[membership.membership_type]}
+                  src={
+                    membershipTypeImages[membership.membership_type] ||
+                    OtherIcon
+                  }
                   alt="No icon found"
                   style={{ width: '50px', height: '50px' }}
                 />

@@ -11,10 +11,7 @@
 .personalInfoTableContainer {
   margin-bottom: 30px;
   display: grid;
-  grid-template-columns: repeat(
-    2,
-    1fr
-  ); /* Initially, display as a single column */
+  grid-template-columns: repeat(2, 1fr);
   justify-content: space-between;
 }
 
@@ -41,16 +38,15 @@
   margin: 2px;
 }
 
-/* Media query for switching to a two-column layout when needed */
 @media screen and (max-width: 600px) {
   .personalInfoTableContainer {
-    grid-template-columns: 1fr; /* Switch to two columns */
+    grid-template-columns: 1fr;
   }
 }
 
 .gridContainer {
   display: grid;
-  grid-template-columns: auto auto; /* Two columns: 50px wide for the image, and auto for the text */
+  grid-template-columns: auto auto;
   width: auto;
   padding-right: 5%;
   margin-bottom: 30px;
@@ -71,7 +67,7 @@
 .gridItem {
   display: grid;
   grid-template-columns: auto auto; /* Same as the container for consistency */
-  align-items: center; /* Center items vertically */
+  align-items: center;
   border: 1px solid #dddddd;
   grid-column: span 2;
   justify-content: space-around;
@@ -90,12 +86,12 @@
 }
 
 .gridItem:nth-child(even) {
-  background-color: #f5f5f5; /* Set your desired grayish background color */
+  background-color: #f5f5f5;
 }
 
 .gridItem:last-child {
-  border-bottom-left-radius: 8px; /* Adjust border radius as needed */
-  border-bottom-right-radius: 8px; /* Adjust border radius as needed */
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .engagementTypeFont,
@@ -124,14 +120,41 @@
   grid-column: 2 / 3; /* Span second column */
 }
 
-/* Media query for smaller screens */
 @media (max-width: 600px) {
   .container {
-    grid-template-columns: 1fr; /* Two columns: equal width */
+    grid-template-columns: 1fr;
   }
 
   .leftColumn,
   .rightColumn {
-    grid-column: 1 / 2; /* Span full width on smaller screens */
+    grid-column: 1 / 2;
+  }
+}
+
+.profileImageContainer {
+  width: 250px;
+  height: 250px;
+  overflow: hidden; /* Hide overflowing content */
+  border-radius: 50%; /* Make the container round */
+  border: 2px solid #fff;
+}
+
+.profileImageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.buttons {
+  display: grid;
+  justify-items: end;
+  padding-right: 5%;
+
+  .newButton {
+    width: 100%;
+    height: max-content;
+    margin-bottom: 8px;
   }
 }
