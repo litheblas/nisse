@@ -85,7 +85,7 @@ export const MemberPage = () => {
     MembersService.membersRetrieve.bind(
       window,
       memberId!,
-      'id,email,full_name,profile_picture,memberships,engagements,birth_date,liu_id,complete_adress,phone_number_1,phone_number_2,phone_number_3,arbitrary_text'
+      'id,email,full_name,profile_picture,memberships,engagements,birth_date,liu_id,complete_adress,phone_number_1,phone_number_2,phone_number_3,pronouns,arbitrary_text'
     )
   )
 
@@ -124,6 +124,7 @@ export const MemberPage = () => {
   const personalInfo = [
     [data.email, mailIcon],
     [data.birth_date],
+    [data.pronouns],
     [data.liu_id],
     [data.complete_adress, addressIcon],
     [data.phone_number_1, phoneIcon],
@@ -139,7 +140,7 @@ export const MemberPage = () => {
   let newMedalIndex = 0
   function getMedalIcon() {
     const medalIcon = medalIcons[newMedalIndex]
-    newMedalIndex = (newMedalIndex + 1) % 10
+    newMedalIndex = (newMedalIndex + 1) % medalIcons.length
 
     return medalIcon
   }
@@ -147,7 +148,7 @@ export const MemberPage = () => {
   return (
     <>
       <div className={style.container}>
-        <div className={style.leftColumn}>
+        <div className={style.leftColumnCentered}>
           <div className={style.profileImageContainer}>
             <img src={tempProfilePic} alt="Your Image" />
           </div>
@@ -159,12 +160,19 @@ export const MemberPage = () => {
               <button
                 className={`standardButton blueButton ${style.newButton}`}
               >
+                Tillbaka till Blåsbasen
+              </button>
+            </Link>
+            <Link to={`../`}>
+              <button
+                className={`standardButton blueButton ${style.newButton}`}
+              >
                 Ändra information
               </button>
             </Link>
           </div>
 
-          <h2>{full_name}</h2>
+          <h1>{full_name}</h1>
           <div className={style.activeMembershipEngagements}>
             {/* Display active memberships */}
             {activeMemberships.map((membership: Membership) => (
