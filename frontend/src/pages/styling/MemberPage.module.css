@@ -27,6 +27,7 @@
 
 .personalInfoAttribute {
   display: grid;
+  position: relative;
   grid-template-columns: auto 1fr;
   gap: 10px;
   align-items: center;
@@ -40,12 +41,26 @@
   margin: 0px;
 }
 
-.personalInfoAttribute img {
+.personalInfoIcon {
   width: 30px;
   height: 30px;
   grid-column-start: 1;
   vertical-align: middle;
   margin: 2px;
+}
+
+.iconText {
+  display: none; /* Initially hide the text */
+  position: absolute;
+  top: -32px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.personalInfoIcon:hover .iconText {
+  display: block; /* Show text on hover */
 }
 
 @media screen and (max-width: 600px) {

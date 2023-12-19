@@ -122,14 +122,14 @@ export const MemberPage = () => {
 
   // list of attributes to show on personalInfo and icons.
   const personalInfo = [
-    [data.email, mailIcon],
-    [data.birth_date],
-    [data.pronouns],
-    [data.liu_id],
-    [data.complete_adress, addressIcon],
-    [data.phone_number_1, phoneIcon],
-    [data.phone_number_2, phoneIcon],
-    [data.phone_number_3, phoneIcon],
+    [data.email, mailIcon, 'Mailadress'],
+    [data.birth_date, '', 'Födelsedatum'],
+    [data.pronouns, '', 'Pronomen'],
+    [data.liu_id, '', 'Liu ID'],
+    [data.complete_adress, addressIcon, 'Adress'],
+    [data.phone_number_1, phoneIcon, 'Telefonnummer 1'],
+    [data.phone_number_2, phoneIcon, 'Telefonnummer 2'],
+    [data.phone_number_3, phoneIcon, 'Telefonnummer 3'],
   ]
 
   // Filter out null attributes from personalInfo
@@ -192,7 +192,10 @@ export const MemberPage = () => {
       <div className={style.personalInfoTableContainer}>
         {personalInfoToShow.map((attr, infoIndex) => (
           <div key={infoIndex} className={style.personalInfoAttribute}>
-            <img src={attr[1] ? attr[1] : mailIcon} alt="no Icon" />
+            <div className={style.personalInfoIcon}>
+              <span className={style.iconText}>{attr[2]}</span>
+              <img src={attr[1] ? attr[1] : mailIcon} alt="no Icon" />
+            </div>
             <h4>{attr[0]}</h4>
           </div>
         ))}
