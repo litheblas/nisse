@@ -20,8 +20,11 @@ import TubaIcon from '../assets/membershipIcons/tuba.png'
 
 // Import memberPage icons
 import addressIcon from '../assets/memberPageIcons/addressIcon.svg'
+import birthdateIcon from '../assets/memberPageIcons/birthdateIcon.svg'
+import liuIDIcon from '../assets/memberPageIcons/liuIDIcon.svg'
 import mailIcon from '../assets/memberPageIcons/mailIcon.svg'
 import phoneIcon from '../assets/memberPageIcons/phoneIcon.svg'
+import pronounIcon from '../assets/memberPageIcons/pronounIcon.svg'
 
 // Import medal icons
 import medal1 from '../assets/medalIcons/medal1.png'
@@ -123,9 +126,9 @@ export const MemberPage = () => {
   // list of attributes to show on personalInfo and icons.
   const personalInfo = [
     [data.email, mailIcon, 'Mailadress'],
-    [data.birth_date, '', 'Födelsedatum'],
-    [data.pronouns, '', 'Pronomen'],
-    [data.liu_id, '', 'Liu ID'],
+    [data.birth_date, birthdateIcon, 'Födelsedatum'],
+    [data.pronouns, pronounIcon, 'Pronomen'],
+    [data.liu_id, liuIDIcon, 'Liu ID'],
     [data.complete_adress, addressIcon, 'Adress'],
     [data.phone_number_1, phoneIcon, 'Telefonnummer 1'],
     [data.phone_number_2, phoneIcon, 'Telefonnummer 2'],

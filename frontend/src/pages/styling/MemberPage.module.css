@@ -85,8 +85,8 @@
   color: var(--white);
   padding: 10px;
   text-align: left;
-  border-top-left-radius: 8px; /* Rounded edges for top corners */
-  border-top-right-radius: 8px;
+  border-top-left-radius: 5px; /* Rounded edges for top corners */
+  border-top-right-radius: 5px;
 }
 
 .gridItem {
@@ -115,8 +115,8 @@
 }
 
 .gridItem:last-child {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .engagementTypeFont,
@@ -189,7 +189,7 @@
   .newButton {
     width: 100%;
     height: max-content;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-size: small;
   }
 }
