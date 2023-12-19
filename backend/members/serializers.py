@@ -37,6 +37,7 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "last_name",
             "full_name",
             "short_name",
+            "username",
             "real_name",
             "nickname",
             "birth_date",
@@ -54,3 +55,10 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "profile_picture",
             "active_period",
         ]
+
+        def validate(self, data):
+            """Validation for serializer is made here. A temp instance of Event is created
+            to run the Event.clean() method."""
+            instance = Member(**data)
+            instance.clean()
+            return data

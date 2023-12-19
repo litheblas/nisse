@@ -91,6 +91,14 @@ class Member(AbstractUser):
             else f"{memberships.first().start.year}–"
         )
 
+    def clean(self) -> None:
+        """This is used in Django.admin and serializer"""
+        super.clean()
+        from django.core.exceptions import ValidationError
+
+        if self.username == "":
+            raise ValidationError("username cannot be empty")
+
     def __str__(self):
         return self.full_name
 
