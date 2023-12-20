@@ -74,6 +74,9 @@ class Member(AbstractUser):
         return (
             f"{self.street_address}, {self.postal_code} {self.postal_town}, {self.postal_country}"
             if self.street_address
+            and self.postal_code
+            and self.postal_town
+            and self.postal_country
             else ""
         )
 
