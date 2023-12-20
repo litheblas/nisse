@@ -5,7 +5,7 @@ import { MembersService } from '../api'
 import style from './styling/MemberPage.module.css'
 
 // Import membership icons
-import OtherIcon from '../assets/blottartuban-top-half.svg'
+import OtherIcon from '../assets/blottartuban.svg'
 import BalettIcon from '../assets/membershipIcons/balett.png'
 import BanjoIcon from '../assets/membershipIcons/banjo.png'
 import KlarinettIcon from '../assets/membershipIcons/clarinet.png'
@@ -110,7 +110,7 @@ export const MemberPage = () => {
     return <span>No data available</span>
   }
 
-  const { full_name, memberships, engagements, arbitrary_text } = data
+  const { memberships, engagements } = data
 
   // Explicitly define memberships and engagements as an array
   const typedMemberships: Membership[] = memberships as Membership[]
@@ -166,6 +166,7 @@ export const MemberPage = () => {
                 Tillbaka till Blåsbasen
               </button>
             </Link>
+            {/* TODO: Link to changeInfoPage. Only for same user or admins */}
             <Link to={`../`}>
               <button
                 className={`standardButton blueButton ${style.newButton}`}
@@ -175,7 +176,7 @@ export const MemberPage = () => {
             </Link>
           </div>
 
-          <h1>{full_name}</h1>
+          <h1>{data.full_name}</h1>
           <div className={style.activeMembershipEngagements}>
             {/* Display active memberships */}
             {activeMemberships.map((membership: Membership) => (
@@ -187,7 +188,7 @@ export const MemberPage = () => {
               <h3 key={engagement.id}>{engagement.engagement_type}</h3>
             ))}
           </div>
-          <h4>{arbitrary_text}</h4>
+          <h4>{data.arbitrary_text}</h4>
         </div>
       </div>
 
@@ -207,84 +208,94 @@ export const MemberPage = () => {
       <div className={style.container}>
         <div className={style.leftColumn}>
           {/* Memberships table */}
-          <div className={style.gridContainer}>
-            <div className={style.gridContainerHeader}>
-              <h2>Medlemskap</h2>
-            </div>
-            {typedMemberships.map((membership: Membership) => (
-              <div className={style.gridItem} key={membership.id}>
-                <img
-                  src={
-                    membershipTypeImages[membership.membership_type] ||
-                    OtherIcon
-                  }
-                  alt="No icon found"
-                  style={{ width: '50px', height: '50px' }}
-                />
-                <div>
-                  <p className={style.membershipTypeFont}>
-                    Antagen {membership.membership_type}
-                  </p>
-                  <p className={style.dataRangeFont}>
-                    {membership.start_date} - {membership.end_date || ''}
-                  </p>
-                </div>
+          {typedMemberships.length > 0 && (
+            <div className={style.gridContainer}>
+              <div className={style.gridContainerHeader}>
+                <h2>Medlemskap</h2>
               </div>
-            ))}
-          </div>
+              {typedMemberships.map((membership: Membership) => (
+                <div className={style.gridItem} key={membership.id}>
+                  <img
+                    src={
+                      membershipTypeImages[membership.membership_type] ||
+                      OtherIcon
+                    }
+                    alt="No icon found"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                  <div>
+                    <p className={style.membershipTypeFont}>
+                      Antagen {membership.membership_type}
+                    </p>
+                    <p className={style.dataRangeFont}>
+                      {membership.start_date} - {membership.end_date || ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-          {/* Barstatistics table */}
-          <div className={style.gridContainer}>
-            <div className={style.gridContainerHeader}>
-              <h2>Barstatistik</h2>
-            </div>
-            {typedMemberships.map((membership: Membership) => (
-              <div className={style.gridItem} key={membership.id}>
-                <img
-                  src={
-                    membershipTypeImages[membership.membership_type] ||
-                    OtherIcon
-                  }
-                  alt="No icon found"
-                  style={{ width: '50px', height: '50px' }}
-                />
-                <div>
-                  <p className={style.membershipTypeFont}>
-                    Antagen {membership.membership_type}
-                  </p>
-                  <p className={style.dataRangeFont}>
-                    {membership.start_date} - {membership.end_date || ''}
-                  </p>
-                </div>
+          {/* Barstatistics table
+          OBS Barstatistics not implemented yet
+          TODO: Implement Barstatistics
+          Make first condition true like the other tables to visualize
+          */}
+          {false && (
+            <div className={style.gridContainer}>
+              <div className={style.gridContainerHeader}>
+                <h2>Barstatistik</h2>
               </div>
-            ))}
-          </div>
+              {typedMemberships.map((membership: Membership) => (
+                <div className={style.gridItem} key={membership.id}>
+                  <img
+                    src={
+                      membershipTypeImages[membership.membership_type] ||
+                      OtherIcon
+                    }
+                    alt="No icon found"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                  <div>
+                    <p className={style.membershipTypeFont}>
+                      Antagen {membership.membership_type}
+                    </p>
+                    <p className={style.dataRangeFont}>
+                      {membership.start_date} - {membership.end_date || ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className={style.rightColumn}>
           {/* Engagements table */}
-          <div className={style.gridContainer}>
-            <div className={style.gridContainerHeader}>
-              <h2>Engagemang</h2>
-            </div>
-            {typedEngagements.map((engagement: Engagement) => (
-              <div className={style.gridItem} key={engagement.id}>
-                <img
-                  src={getMedalIcon()}
-                  alt="No icon found"
-                  style={{ width: '50px', height: '50px' }}
-                />
-                <div>
-                  <p className={style.membershipTypeFont}>
-                    {engagement.engagement_type}
-                  </p>
-                  <p className={style.dataRangeFont}>
-                    {engagement.start_date} - {engagement.end_date || ''}
-                  </p>
-                </div>
+          {typedEngagements.length > 0 && (
+            <div className={style.gridContainer}>
+              <div className={style.gridContainerHeader}>
+                <h2>Engagemang</h2>
               </div>
-            ))}
-          </div>
+              {typedEngagements.map((engagement: Engagement) => (
+                <div className={style.gridItem} key={engagement.id}>
+                  <img
+                    src={getMedalIcon()}
+                    alt="No icon found"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                  <div>
+                    <p className={style.membershipTypeFont}>
+                      {engagement.engagement_type}
+                    </p>
+                    <p className={style.dataRangeFont}>
+                      {engagement.start_date} - {engagement.end_date || ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>
