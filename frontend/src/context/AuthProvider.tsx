@@ -15,11 +15,12 @@ async function initKeycloak() {
   try {
     const authenticated = await keycloak.init({ onLoad: 'login-required' })
 
-    await keycloak.loadUserProfile()
-
     console.log(
       `User is ${authenticated ? 'authenticated' : 'not authenticated'}`
     )
+    if (authenticated) {
+      await keycloak.loadUserProfile()
+    }
   } catch (error) {
     console.error('Failed to initialize adapter:', error)
   }
@@ -67,6 +68,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       .catch(console.error)
   }
 
+  const getUserInfo = () => {
+    return keycloakInstance.profile!
+  }
+
+  const isAdmin = () => {
+    return keycloakInstance.hasRealmRole('admin')
+  }
+
   const getToken = async () => {
     await keycloakInstance.updateToken(5)
     return keycloakInstance.token!
@@ -75,7 +84,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   OpenAPI.TOKEN = getToken
 
   return (
-    <AuthContext.Provider value={{ keycloakInstance, logout }}>
+    <AuthContext.Provider value={{ getUserInfo, isAdmin, logout }}>
       {children}
     </AuthContext.Provider>
   )
