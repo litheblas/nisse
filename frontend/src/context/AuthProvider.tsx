@@ -37,6 +37,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const didInit = useRef(false)
 
   useEffect(() => {
+    // Bypass login for development
+    if (import.meta.env.VITE_NISSE_BYPASS_LOGIN === 'true') {
+      return
+    }
+
     // Needed to prevent infinite loop
     // https://github.com/keycloak/keycloak/issues/19452
     if (didInit.current) {
@@ -51,6 +56,31 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
     initialize().catch(console.error)
   }, [keycloakInstance])
+
+  // Bypass login for development
+  if (import.meta.env.VITE_NISSE_BYPASS_LOGIN === 'true') {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    OpenAPI.TOKEN = async () => ''
+    return (
+      <AuthContext.Provider
+        value={{
+          getUserInfo: () => ({
+            id: '00000000-0000-0000-0000-000000000000',
+            username: 'test-user',
+            email: 'test@example.com',
+            firstName: 'Test',
+            lastName: 'User',
+          }),
+          isAdmin: () =>
+            import.meta.env.VITE_NISSE_BYPASS_LOGIN_IS_ADMIN === 'true',
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          logout: () => {},
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    )
+  }
 
   if (!keycloakInstance) {
     return (
