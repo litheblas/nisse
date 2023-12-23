@@ -2,6 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Keycloak from 'keycloak-js'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { OpenAPI } from '../api'
+import { KEYCLOAK_ADMIN_ROLE_NAME } from '../constants/Constants'
 import { AuthContext } from './AuthContext'
 import style from './AuthProvider.module.css'
 
@@ -73,7 +74,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const isAdmin = () => {
-    return keycloakInstance.hasRealmRole('admin')
+    return keycloakInstance.hasRealmRole(KEYCLOAK_ADMIN_ROLE_NAME)
   }
 
   const getToken = async () => {
