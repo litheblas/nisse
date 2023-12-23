@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import logo from 'src/assets/logo-blue.svg'
-import { useKeycloak } from '../context/KeycloakContext'
+import { useAuth } from '../context/AuthContext'
 import { PopoverMenu } from './PopoverMenu'
 import style from './styling/Header.module.css'
 
 export const Header = () => {
-  const { logout } = useKeycloak()
+  const { logout } = useAuth()
 
   return (
     <header className={style.container}>

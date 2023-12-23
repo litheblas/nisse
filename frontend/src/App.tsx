@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
 import { OpenAPI } from './api'
 import { AppShell } from './components/AppShell'
-import KeycloakProvider from './context/KeycloakProvider'
+import AuthProvider from './context/AuthProvider'
 import { AddEventPage } from './pages/AddEventPage'
 import { EditEventPage } from './pages/EditEventPage'
 import { EventsPage } from './pages/EventsPage'
@@ -70,11 +70,11 @@ const queryClient = new QueryClient()
 
 function App() {
   return (
-    <KeycloakProvider>
+    <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </KeycloakProvider>
+    </AuthProvider>
   )
 }
 

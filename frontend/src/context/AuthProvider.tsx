@@ -2,8 +2,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Keycloak from 'keycloak-js'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { OpenAPI } from '../api'
-import { KeycloakContext } from './KeycloakContext'
-import style from './KeycloakProvider.module.css'
+import { AuthContext } from './AuthContext'
+import style from './AuthProvider.module.css'
 
 async function initKeycloak() {
   const keycloak = new Keycloak({
@@ -26,11 +26,11 @@ async function initKeycloak() {
   return keycloak
 }
 
-interface KeycloakProviderProps {
+interface AuthProviderProps {
   children: ReactNode
 }
 
-const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
+const AuthProvider = ({ children }: AuthProviderProps) => {
   const [keycloakInstance, setKeycloakInstance] = useState<Keycloak>()
   const didInit = useRef(false)
 
@@ -75,10 +75,10 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   OpenAPI.TOKEN = getToken
 
   return (
-    <KeycloakContext.Provider value={{ keycloakInstance, logout }}>
+    <AuthContext.Provider value={{ keycloakInstance, logout }}>
       {children}
-    </KeycloakContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
-export default KeycloakProvider
+export default AuthProvider
