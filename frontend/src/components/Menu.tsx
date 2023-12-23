@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { useKeycloak } from '../context/KeycloakContext'
+import { useAuth } from '../context/AuthContext'
 import style from './styling/Menu.module.css'
 
 const linkStyle = ({ isActive }: { isActive: boolean }) => {
@@ -7,7 +7,7 @@ const linkStyle = ({ isActive }: { isActive: boolean }) => {
 }
 
 export const Menu = () => {
-  const { logout } = useKeycloak()
+  const { logout } = useAuth()
 
   return (
     <menu className={style.container}>
