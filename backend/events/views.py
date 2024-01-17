@@ -1,6 +1,10 @@
+from django.shortcuts import get_object_or_404
 from django_ical.views import ICalFeed
 from events.serializers import EventSerializer
 from rest_framework import viewsets
+from rest_framework.decorators import APIView
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 
 from .models import Event
 from .utils import CalendarTypes, EventTypes
@@ -58,3 +62,46 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        queryset = Event.objects.all()
+        serializer = EventSerializer(
+            queryset, many=True, fields=request.query_params.get("fields")
+        )
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Event.objects.all()
+        event = get_object_or_404(queryset, pk=pk)
+        serializer = EventSerializer(event, fields=request.query_params.get("fields"))
+        return Response(serializer.data)
+
+
+"""
+*   body = {
+*       event: id,
+*       members: [id1,id2,id3]
+*       }
+"""
+
+
+class Register(APIView):
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+        data = request.data
+        event = Event.objects.get(pk=data["event"])
+        for member_id in data["members"]:
+            event.attendees.add(member_id)
+        return Response("")
+
+
+class UnRegister(APIView):
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+        data = request.data
+        event = Event.objects.get(pk=data["event"])
+        for member_id in data["members"]:
+            event.attendees.remove(member_id)
+        return Response("")
