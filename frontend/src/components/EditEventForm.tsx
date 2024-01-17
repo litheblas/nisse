@@ -102,6 +102,15 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
           <Form.Message className={style.FormMessage} match="valueMissing">
             Eventet måste ha en sluttid
           </Form.Message>
+          <Form.Message
+            className={style.FormMessage}
+            match={(value: string, formData) =>
+              new Date(value) <=
+              new Date(formData.get('start_time') as unknown as string)
+            }
+          >
+            Eventet kan inte sluta innan det har börjat
+          </Form.Message>
         </div>
         <Form.Control asChild>
           <input
