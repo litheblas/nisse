@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Event, EventTypeEnum } from '../api'
 import { DurationPill } from './DurationPill'
@@ -28,6 +29,11 @@ export const EventLite = ({ event }: { event: Event }) => {
     hour: '2-digit',
     minute: '2-digit',
   })
+
+  const [showAttendees, setShowAttendees] = useState(0)
+  const changeAttendeesVisibility = () => {
+    showAttendees === 1 ? setShowAttendees(0) : setShowAttendees(1)
+  }
 
   return (
     <div id={event.id} className={style.eventContainer}>
@@ -61,9 +67,15 @@ export const EventLite = ({ event }: { event: Event }) => {
           <Link to={`edit/${event.id}`}>
             <button className="standardButton blueButton">Redigera</button>
           </Link>
-          <button className="standardButton blueButton">Visa deltagare</button>
+          <button
+            onClick={changeAttendeesVisibility}
+            className="standardButton blueButton"
+          >
+            {showAttendees === 0 ? 'Visa deltagare' : 'Göm deltagare'}
+          </button>
         </div>
       </div>
+      {showAttendees === 0 || <h1>Hello!</h1>}
     </div>
   )
 }
