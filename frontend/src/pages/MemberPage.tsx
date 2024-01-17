@@ -167,7 +167,7 @@ export const MemberPage = () => {
               </button>
             </Link>
             {/* TODO: Link to changeInfoPage. Only for same user or admins */}
-            <Link to={`../`}>
+            <Link to={`../edit/${memberId}`}>
               <button
                 className={`standardButton blueButton ${style.newButton}`}
               >
