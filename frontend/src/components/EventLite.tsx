@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import CircularProgress from '@mui/material/CircularProgress'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
