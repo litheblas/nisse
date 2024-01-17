@@ -104,7 +104,7 @@ class Member(AbstractUser):
 
     def clean(self) -> None:
         """This is used in Django.admin and serializer"""
-        super.clean()
+        super().clean()
         from django.core.exceptions import ValidationError
 
         if self.username == "":

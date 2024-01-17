@@ -107,3 +107,9 @@ a {
 a:hover {
   color: var(--light-blue); /* Change link color on hover */
 }
+
+.loadingSpinnerContainer {
+  display: flex;
+  justify-content: center;
+  color: var(--blue);
+}
