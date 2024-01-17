@@ -1,6 +1,10 @@
+/* eslint-disable react/prop-types */
+
+import CircularProgress from '@mui/material/CircularProgress'
 import { useState } from 'react'
+import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { Event, EventTypeEnum } from '../api'
+import { Event, EventTypeEnum, EventsService } from '../api'
 import { DurationPill } from './DurationPill'
 import style from './styling/EventLite.module.css'
 
@@ -13,6 +17,27 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
     case EventTypeEnum._3:
       return 'Övrigt event'
   }
+}
+
+interface EventAttendeesListProps {
+  attendees: string[]
+}
+
+const EventAttendeesList: React.FC<EventAttendeesListProps> = ({
+  attendees,
+}) => {
+  return (
+    <div className={style.gridContainer}>
+      <div className={style.attendeesContainer}>
+        <h3>Attendees:</h3>
+        <ul>
+          {attendees.map((attendee, index) => (
+            <li key={index}>{attendee}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
 }
 
 export const EventLite = ({ event }: { event: Event }) => {
@@ -30,9 +55,37 @@ export const EventLite = ({ event }: { event: Event }) => {
     minute: '2-digit',
   })
 
-  const [showAttendees, setShowAttendees] = useState(0)
+  const [showAttendees, setShowAttendees] = useState(false)
   const changeAttendeesVisibility = () => {
-    showAttendees === 1 ? setShowAttendees(0) : setShowAttendees(1)
+    setShowAttendees((prev) => !prev)
+  }
+
+  const { isLoading, isError, isIdle, data, error } = useQuery({
+    queryKey: 'events/' + event.id,
+    queryFn: EventsService.eventsRetrieve.bind(window, event.id),
+    enabled: showAttendees,
+  })
+
+  if (showAttendees && (isLoading || isIdle)) {
+    return (
+      <>
+        <div className={style.loadingSpinnerContainer}>
+          <CircularProgress color="inherit" />
+        </div>
+      </>
+    )
+  }
+
+  if (showAttendees && isError) {
+    return (
+      <>
+        {error instanceof Error ? (
+          <span>Error: {error.message}</span>
+        ) : (
+          <span>Unknown error!</span>
+        )}
+      </>
+    )
   }
 
   return (
@@ -71,11 +124,19 @@ export const EventLite = ({ event }: { event: Event }) => {
             onClick={changeAttendeesVisibility}
             className="standardButton blueButton"
           >
-            {showAttendees === 0 ? 'Visa deltagare' : 'Göm deltagare'}
+            {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
           </button>
         </div>
       </div>
-      {showAttendees === 0 || <h1>Hello!</h1>}
+      <div className={style.emptyColumn}></div>
+      {showAttendees === false || (
+        <div>
+          {/* Other components or information */}
+          {data && data.attendees ? (
+            <EventAttendeesList attendees={data.attendees} />
+          ) : null}
+        </div>
+      )}
     </div>
   )
 }

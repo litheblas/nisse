@@ -66,7 +66,26 @@
   }
 }
 
-.attendeesContainer {
+.gridContainer {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: auto auto; /* Adjust column widths as needed */
+  gap: 16px; /* Adjust gap between columns */
+}
+
+.emptyColumn {
+  /* Styles for the empty column, adjust as needed */
+}
+
+.attendeesContainer {
+  /* Styles for the attendees container, adjust as needed */
+}
+
+/* Additional styles for list items, if needed */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 8px;
 }

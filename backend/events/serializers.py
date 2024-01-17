@@ -1,8 +1,15 @@
 from events.models import Event
 from members.serializers import DynamicFieldsModelSerializer
+from rest_framework import serializers
 
 
 class EventSerializer(DynamicFieldsModelSerializer):
+    attendees = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="full_name",  # TODO: Change this to another field containing both profile_picture and full_name
+    )
+
     class Meta:
         model = Event
         fields = [
