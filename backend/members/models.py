@@ -70,6 +70,17 @@ class Member(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
     @property
+    def complete_adress(self) -> str:
+        return (
+            f"{self.street_address}, {self.postal_code} {self.postal_town}, {self.postal_country}"
+            if self.street_address
+            and self.postal_code
+            and self.postal_town
+            and self.postal_country
+            else ""
+        )
+
+    @property
     def active_period(self) -> str:
         memberships = Membership.objects.filter(member=self).order_by("start")
         if not memberships:
@@ -98,6 +109,40 @@ class Member(AbstractUser):
 
         if self.username == "":
             raise ValidationError("username cannot be empty")
+
+    @property
+    def memberships(self):
+        memberships = Membership.objects.filter(member=self).order_by("start")
+        formatted_memberships = []
+
+        for membership in memberships:
+            formatted_membership = {
+                "id": membership.id,
+                "member_name": membership.member.full_name,
+                "membership_type": str(membership.membershipType),
+                "start_date": membership.start,
+                "end_date": membership.end if membership.end else None,
+            }
+            formatted_memberships.append(formatted_membership)
+
+        return formatted_memberships
+
+    @property
+    def engagements(self):
+        engagements = Engagement.objects.filter(member=self).order_by("start")
+        formatted_engagements = []
+
+        for engagement in engagements:
+            formatted_engagement = {
+                "id": engagement.id,
+                "member_name": engagement.member.full_name,
+                "engagement_type": str(engagement.engagementType),
+                "start_date": engagement.start,
+                "end_date": engagement.end if engagement.end else None,
+            }
+            formatted_engagements.append(formatted_engagement)
+
+        return formatted_engagements
 
     def __str__(self):
         return self.full_name
