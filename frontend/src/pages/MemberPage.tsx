@@ -84,7 +84,7 @@ export const MemberPage = () => {
   const { memberId } = useParams<{ memberId: string }>()
 
   const { isLoading, isError, isIdle, data, error } = useQuery(
-    'member_page',
+    'member_page' + memberId,
     MembersService.membersRetrieve.bind(
       window,
       memberId!,
