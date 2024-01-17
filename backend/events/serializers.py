@@ -1,8 +1,8 @@
 from events.models import Event
-from rest_framework import serializers
+from members.serializers import DynamicFieldsModelSerializer
 
 
-class EventSerializer(serializers.ModelSerializer):
+class EventSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Event
         fields = [

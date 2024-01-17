@@ -1,6 +1,9 @@
 from django_ical.views import ICalFeed
 from events.serializers import EventSerializer
 from rest_framework import viewsets
+from rest_framework.decorators import APIView
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 
 from .models import Event
 from .utils import CalendarTypes, EventTypes
@@ -58,3 +61,33 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+
+"""
+*   body = {
+*       event: id,
+*       members: [id1,id2,id3]
+*       }
+"""
+
+
+class Register(APIView):
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+        data = request.data
+        event = Event.objects.get(pk=data["event"])
+        for member_id in data["members"]:
+            event.attendees.add(member_id)
+        return Response("")
+
+
+class UnRegister(APIView):
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+        data = request.data
+        event = Event.objects.get(pk=data["event"])
+        for member_id in data["members"]:
+            event.attendees.remove(member_id)
+        return Response("")
