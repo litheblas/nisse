@@ -3,16 +3,24 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Attendee } from './Attendee';
 import type { EventTypeEnum } from './EventTypeEnum';
 
-export type Event = {
-    attendees?: Array<string>;
-    creator?: string | null;
-    description?: string;
-    end_time: string;
-    readonly id: string;
-    location: string;
-    name: string;
-    start_time: string;
-    event_type?: EventTypeEnum;
-};
+/**
+ * attendees = serializers.SlugRelatedField(
+     * many=True,
+     * read_only=True,
+     * slug_field="full_name",  # TODO: Change this to another field containing both profile_picture and full_name
+     * )
+     */
+    export type Event = {
+        readonly attendees: Array<Attendee>;
+        creator?: string | null;
+        description?: string;
+        end_time: string;
+        readonly id: string;
+        location: string;
+        name: string;
+        start_time: string;
+        event_type?: EventTypeEnum;
+    };

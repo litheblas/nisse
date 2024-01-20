@@ -66,26 +66,58 @@
   }
 }
 
-.gridContainer {
-  display: grid;
-  grid-template-columns: auto auto; /* Adjust column widths as needed */
-  gap: 16px; /* Adjust gap between columns */
+.emptyColumn {
 }
 
-.emptyColumn {
-  /* Styles for the empty column, adjust as needed */
+.attendeesTable {
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
 }
 
 .attendeesContainer {
-  /* Styles for the attendees container, adjust as needed */
+  display: grid;
 }
 
-/* Additional styles for list items, if needed */
-ul {
-  list-style-type: none;
-  padding: 0;
+.headerRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-li {
-  margin-bottom: 8px;
+.dataRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 10fr;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.headerRow {
+  background-color: #f2f2f2;
+}
+
+.attendeeCounter {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.attendeeInfo {
+  display: grid;
+  justify-content: left;
+  align-content: center;
+  margin-left: 10px;
+}
+
+.profilePicture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Make it circular */
+  object-fit: cover;
+}
+
+.pictureColumn {
+  display: grid;
+  justify-content: center;
 }

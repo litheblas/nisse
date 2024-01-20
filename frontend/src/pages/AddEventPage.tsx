@@ -10,6 +10,7 @@ const defaultEvent: Event = {
   start_time: new Date().toISOString(),
   end_time: new Date().toISOString(),
   description: '',
+  attendees: [],
 }
 
 export const AddEventPage = () => {

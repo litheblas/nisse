@@ -7,6 +7,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { Attendee } from './models/Attendee';
 export type { Event } from './models/Event';
 export { EventTypeEnum } from './models/EventTypeEnum';
 export type { Member } from './models/Member';

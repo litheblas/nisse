@@ -2,7 +2,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { Event, EventTypeEnum, EventsService } from '../api'
+import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
+import OtherIcon from '../assets/blottartuban.svg'
 import { DurationPill } from './DurationPill'
 import style from './styling/EventLite.module.css'
 
@@ -18,21 +19,35 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
 }
 
 interface EventAttendeesListProps {
-  attendees: string[]
+  attendees: Attendee[]
 }
 
 const EventAttendeesList: React.FC<EventAttendeesListProps> = ({
   attendees,
 }) => {
   return (
-    <div className={style.gridContainer}>
-      <div className={style.attendeesContainer}>
-        <h3>Attendees:</h3>
-        <ul>
-          {attendees.map((attendee, index) => (
-            <li key={index}>{attendee}</li>
-          ))}
-        </ul>
+    <div className={style.attendeesContainer}>
+      <div className={style.attendeesTable}>
+        <div className={style.headerRow}>
+          <h3>Deltagare: {attendees.length} st</h3>
+        </div>
+        {attendees.map((attendee, index) => (
+          <div key={index} className={style.dataRow}>
+            <div className={style.attendeeCounter}>
+              <div>{index + 1}</div>
+            </div>
+            <div className={style.pictureColumn}>
+              <img
+                src={OtherIcon} // TODO: Change to attendee.profile_picture
+                alt={'No Icon found'}
+                className={style.profilePicture}
+              />
+            </div>
+            <div className={style.attendeeInfo}>
+              <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

@@ -88,6 +88,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
 class Register(APIView):
+    serializer_class = EventSerializer
     parser_classes = [JSONParser]
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
@@ -100,6 +101,7 @@ class Register(APIView):
 
 
 class UnRegister(APIView):
+    serializer_class = EventSerializer
     parser_classes = [JSONParser]
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 

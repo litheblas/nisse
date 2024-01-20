@@ -114,4 +114,36 @@ export class EventsService {
         });
     }
 
+    /**
+     * @param requestBody
+     * @returns Event
+     * @throws ApiError
+     */
+    public static eventsRegisterCreate(
+        requestBody: Event,
+    ): CancelablePromise<Event> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/events/register',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns Event
+     * @throws ApiError
+     */
+    public static eventsUnregisterCreate(
+        requestBody: Event,
+    ): CancelablePromise<Event> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/events/unregister',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
 }

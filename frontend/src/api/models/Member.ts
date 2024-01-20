@@ -14,6 +14,10 @@ export type Member = {
     last_name?: string;
     readonly full_name: string;
     readonly short_name: string;
+    /**
+     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     */
+    username: string;
     readonly real_name: string;
     nickname?: string;
     birth_date?: string | null;
