@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django_ical.views import ICalFeed
 from events.serializers import EventSerializer
+from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
 from rest_framework import viewsets
 from rest_framework.decorators import APIView
 from rest_framework.parsers import JSONParser
@@ -62,6 +63,7 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
     def list(self, request):
         queryset = Event.objects.all()
