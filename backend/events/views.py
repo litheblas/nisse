@@ -89,6 +89,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
 class Register(APIView):
     parser_classes = [JSONParser]
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
     def post(self, request):
         data = request.data
@@ -100,6 +101,7 @@ class Register(APIView):
 
 class UnRegister(APIView):
     parser_classes = [JSONParser]
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
     def post(self, request):
         data = request.data
