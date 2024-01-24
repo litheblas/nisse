@@ -85,8 +85,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "nisse_backend.auth.NisseKeycloakMiddleware",
 ]
+
+AUTH_BYPASS = (
+    os.getenv("NISSE_AUTH_BYPASS") == "true" or os.getenv("NISSE_AUTH_BYPASS") == "True"
+)
+if not AUTH_BYPASS:
+    MIDDLEWARE += ["nisse_backend.auth.NisseKeycloakMiddleware"]
 
 KEYCLOAK_EXEMPT_URIS = []
 
