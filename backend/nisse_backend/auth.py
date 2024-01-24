@@ -5,7 +5,6 @@ from nisse_backend.settings import KEYCLOAK_CONFIG
 
 class NisseKeycloakConnect(KeycloakConnect):
     def decode(self, token, audience=None, options=None, raise_exception=True):
-        # TODO: update audience to "nisse" (or to whatever we set in Keycloak)
         return super().decode(
             token=token,
             audience=KEYCLOAK_CONFIG.get("KEYCLOAK_AUDIENCE", audience),
