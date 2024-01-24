@@ -85,7 +85,28 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "nisse_backend.auth.NisseKeycloakMiddleware",
 ]
+
+KEYCLOAK_EXEMPT_URIS = []
+
+KEYCLOAK_CONFIG = {
+    "KEYCLOAK_SERVER_URL": os.getenv("NISSE_KEYCLOAK_SERVER_URL"),
+    "KEYCLOAK_REALM": os.getenv("NISSE_KEYCLOAK_REALM"),
+    "KEYCLOAK_CLIENT_ID": os.getenv("NISSE_KEYCLOAK_CLIENT_ID"),
+    "KEYCLOAK_CLIENT_SECRET_KEY": os.getenv("NISSE_KEYCLOAK_CLIENT_SECRET_KEY", ""),
+    "KEYCLOAK_CACHE_TTL": 60,
+    "LOCAL_DECODE": True,
+    "KEYCLOAK_AUDIENCE": os.getenv("NISSE_KEYCLOAK_AUDIENCE"),
+}
+
+KEYCLOAK_NISSE_DEFAULT_ROLES = {
+    "GET": ["user", "staff"],
+    "POST": ["user", "staff"],
+    "UPDATE": ["user", "staff"],
+    "DELETE": ["user", "staff"],
+    "PATCH": ["user", "staff"],
+}
 
 ROOT_URLCONF = "nisse_backend.urls"
 
