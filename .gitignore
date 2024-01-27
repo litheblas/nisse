@@ -323,3 +323,5 @@ pnpm-debug.log*
 lerna-debug.log*
 nisse-backend-api-schema.yml
 database_schema.png
+backend/nisse_backend/static/
+backend/nisse_backend/media/
