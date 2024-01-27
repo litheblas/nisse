@@ -1,10 +1,16 @@
 from django.shortcuts import get_object_or_404
 from django_ical.views import ICalFeed
+from drf_spectacular.utils import extend_schema
 from events.serializers import EventSerializer
+<<<<<<< HEAD
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
 from rest_framework import viewsets
 from rest_framework.decorators import APIView
 from rest_framework.parsers import JSONParser
+=======
+from rest_framework import serializers, status, viewsets
+from rest_framework.decorators import action
+>>>>>>> feat: fix register/unregister functionality in backend
 from rest_framework.response import Response
 
 from .models import Event
@@ -59,6 +65,10 @@ class EventFeed(ICalFeed):
         return "-//litheblas.org//EventFeed//" + str(obj)
 
 
+class StringListSerializer(serializers.Serializer):
+    members = serializers.ListField(child=serializers.CharField())
+
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -78,36 +88,41 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = EventSerializer(event, fields=request.query_params.get("fields"))
         return Response(serializer.data)
 
+    @extend_schema(
+        request=StringListSerializer,
+        description="Register attendees for the event.",
+    )
+    @action(detail=True, methods=["post"])
+    def register_attendees(self, request, pk=None):
+        event = self.get_object()
+        members_to_register = request.data.get("members", [])
 
-"""
-*   body = {
-*       event: id,
-*       members: [id1,id2,id3]
-*       }
-"""
+        for member_id in members_to_register:
+            try:
+                event.attendees.add(member_id)
+            except Exception as e:
+                return Response({"error": f"Member with id {member_id} not found: {e}"})
 
+        return Response(
+            {"message": "Attendees registered successfully"}, status=status.HTTP_200_OK
+        )
 
-class Register(APIView):
-    serializer_class = EventSerializer
-    parser_classes = [JSONParser]
-    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+    @extend_schema(
+        request=StringListSerializer,
+        description="Unregister attendees for the event.",
+    )
+    @action(detail=True, methods=["post"])
+    def unregister_attendees(self, request, pk=None):
+        event = self.get_object()
+        members_to_unregister = request.data.get("members", [])
 
-    def post(self, request):
-        data = request.data
-        event = Event.objects.get(pk=data["event"])
-        for member_id in data["members"]:
-            event.attendees.add(member_id)
-        return Response("")
+        for member_id in members_to_unregister:
+            try:
+                event.attendees.remove(member_id)
+            except Exception as e:
+                return Response({"error": f"Member with id {member_id} not found: {e}"})
 
-
-class UnRegister(APIView):
-    serializer_class = EventSerializer
-    parser_classes = [JSONParser]
-    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
-
-    def post(self, request):
-        data = request.data
-        event = Event.objects.get(pk=data["event"])
-        for member_id in data["members"]:
-            event.attendees.remove(member_id)
-        return Response("")
+        return Response(
+            {"message": "Attendees unregistered successfully"},
+            status=status.HTTP_200_OK,
+        )

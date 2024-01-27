@@ -13,6 +13,7 @@ export { EventTypeEnum } from './models/EventTypeEnum';
 export type { Member } from './models/Member';
 export type { PatchedEvent } from './models/PatchedEvent';
 export type { PatchedMember } from './models/PatchedMember';
+export type { StringList } from './models/StringList';
 
 export { EventsService } from './services/EventsService';
 export { MembersService } from './services/MembersService';

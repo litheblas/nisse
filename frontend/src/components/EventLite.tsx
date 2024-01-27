@@ -101,6 +101,39 @@ export const EventLite = ({ event }: { event: Event }) => {
     )
   }
 
+  // Register a member for an event
+  // Register a member for an event
+  function registerMember(eventId: string, memberId: string) {
+    const requestBody = {
+      members: [memberId],
+    }
+
+    EventsService.eventsRegisterAttendeesCreate(eventId, requestBody)
+      .then((response) => {
+        console.log('Registration successful:', response)
+      })
+      .catch((error) => {
+        console.error('Error registering member:', error)
+      })
+  }
+
+  // Unregister a member from an event
+  function unregisterMember(eventId: string, memberId: string) {
+    const requestBody = {
+      members: [memberId],
+    }
+
+    EventsService.eventsUnregisterAttendeesCreate(eventId, requestBody)
+      .then((response) => {
+        console.log('Unregistration successful:', response)
+      })
+      .catch((error) => {
+        console.error('Error unregistering member:', error)
+      })
+  }
+
+  const memberId = 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' // Replace with the actual member ID
+
   return (
     <div id={event.id} className={style.eventContainer}>
       <div className={style.eventDateBox}>
@@ -138,6 +171,18 @@ export const EventLite = ({ event }: { event: Event }) => {
             className="standardButton blueButton"
           >
             {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
+          </button>
+          <button
+            onClick={() => registerMember(event.id, memberId)}
+            className="standardButton blueButton"
+          >
+            Register
+          </button>
+          <button
+            onClick={() => unregisterMember(event.id, memberId)}
+            className="standardButton blueButton"
+          >
+            Unregister
           </button>
         </div>
       </div>
