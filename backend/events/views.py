@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django_ical.views import ICalFeed
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from events.serializers import EventSerializer
 <<<<<<< HEAD
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
@@ -69,6 +70,10 @@ class StringListSerializer(serializers.Serializer):
     members = serializers.ListField(child=serializers.CharField())
 
 
+class testSerializer(serializers.Serializer):
+    is_attending = {"is_attending": bool}
+
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -126,3 +131,24 @@ class EventViewSet(viewsets.ModelViewSet):
             {"message": "Attendees unregistered successfully"},
             status=status.HTTP_200_OK,
         )
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("member_id", OpenApiTypes.STR, OpenApiParameter.QUERY),
+        ],
+        responses=OpenApiTypes.BOOL,
+    )
+    @action(detail=True, methods=["get"])
+    def is_attending(self, request, pk=None):
+        event = self.get_object()
+        member_id_to_check = request.query_params.get("member_id", None)
+
+        if not member_id_to_check:
+            return Response(
+                {"error": "Member ID is required in the query parameters."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        is_attending = event.attendees.filter(id=member_id_to_check).exists()
+        print(is_attending)
+        return Response(is_attending, status=status.HTTP_200_OK)

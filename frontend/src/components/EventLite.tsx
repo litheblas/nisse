@@ -1,5 +1,4 @@
-import CircularProgress from '@mui/material/CircularProgress'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
@@ -53,6 +52,61 @@ const EventAttendeesList: React.FC<EventAttendeesListProps> = ({
   )
 }
 
+interface RegistrationButtonProps {
+  eventId: string
+  memberId: string
+  refetchQuery: () => Promise<EventAttendeesListProps>
+}
+
+const RegistrationButton: React.FC<RegistrationButtonProps> = ({
+  eventId,
+  memberId,
+  refetchQuery,
+}) => {
+  const [isAttending, setIsAttending] = useState(false)
+
+  useEffect(() => {
+    EventsService.eventsIsAttendingRetrieve(eventId, memberId)
+      .then((response) => {
+        setIsAttending(response)
+      })
+      .catch((error) => {
+        console.error('Error checking attendance:', error)
+      })
+  }, [eventId, memberId])
+
+  const handleButtonClick = () => {
+    let updatePromise
+
+    if (isAttending) {
+      updatePromise = EventsService.eventsUnregisterAttendeesCreate(eventId, {
+        members: [memberId],
+      })
+    } else {
+      updatePromise = EventsService.eventsRegisterAttendeesCreate(eventId, {
+        members: [memberId],
+      })
+    }
+
+    updatePromise
+      .then(() => {
+        setIsAttending(!isAttending)
+
+        // Manually trigger a refetch of the query to update attendees list
+        return refetchQuery()
+      })
+      .catch((error) => {
+        console.error('Error updating attendance:', error)
+      })
+  }
+
+  return (
+    <button onClick={handleButtonClick} className={`standardButton blueButton`}>
+      {isAttending ? 'Avanmäla' : 'Anmäla'}
+    </button>
+  )
+}
+
 export const EventLite = ({ event }: { event: Event }) => {
   const start_time = new Date(event.start_time)
   const end_time = new Date(event.end_time)
@@ -73,7 +127,7 @@ export const EventLite = ({ event }: { event: Event }) => {
     setShowAttendees((prev) => !prev)
   }
 
-  const { isLoading, isError, isIdle, data, error } = useQuery({
+  const { refetch, isLoading, isError, isIdle, data, error } = useQuery({
     queryKey: 'events/' + event.id,
     queryFn: EventsService.eventsRetrieve.bind(window, event.id),
     enabled: showAttendees,
@@ -82,9 +136,7 @@ export const EventLite = ({ event }: { event: Event }) => {
   if (showAttendees && (isLoading || isIdle)) {
     return (
       <>
-        <div className={style.loadingSpinnerContainer}>
-          <CircularProgress color="inherit" />
-        </div>
+        <span>Loading!</span>
       </>
     )
   }
@@ -101,38 +153,7 @@ export const EventLite = ({ event }: { event: Event }) => {
     )
   }
 
-  // Register a member for an event
-  // Register a member for an event
-  function registerMember(eventId: string, memberId: string) {
-    const requestBody = {
-      members: [memberId],
-    }
-
-    EventsService.eventsRegisterAttendeesCreate(eventId, requestBody)
-      .then((response) => {
-        console.log('Registration successful:', response)
-      })
-      .catch((error) => {
-        console.error('Error registering member:', error)
-      })
-  }
-
-  // Unregister a member from an event
-  function unregisterMember(eventId: string, memberId: string) {
-    const requestBody = {
-      members: [memberId],
-    }
-
-    EventsService.eventsUnregisterAttendeesCreate(eventId, requestBody)
-      .then((response) => {
-        console.log('Unregistration successful:', response)
-      })
-      .catch((error) => {
-        console.error('Error unregistering member:', error)
-      })
-  }
-
-  const memberId = 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' // Replace with the actual member ID
+  const memberId = 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' // Replace with the actual member IDm from keycloak
 
   return (
     <div id={event.id} className={style.eventContainer}>
@@ -156,11 +177,10 @@ export const EventLite = ({ event }: { event: Event }) => {
             <span>Plats: {event.location}</span>
             {/* Shows the event creator, if one exists */}
             {event.creator ? (
-              <span>
+              <>
                 <br />
-                {/* TODO: Show the creator name instead */}
                 Skapare: {event.creator}
-              </span>
+              </>
             ) : null}
           </div>
           <Link to={`edit/${event.id}`}>
@@ -172,24 +192,16 @@ export const EventLite = ({ event }: { event: Event }) => {
           >
             {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
           </button>
-          <button
-            onClick={() => registerMember(event.id, memberId)}
-            className="standardButton blueButton"
-          >
-            Register
-          </button>
-          <button
-            onClick={() => unregisterMember(event.id, memberId)}
-            className="standardButton blueButton"
-          >
-            Unregister
-          </button>
+          <RegistrationButton
+            eventId={event.id}
+            memberId={memberId}
+            refetchQuery={refetch}
+          />
         </div>
       </div>
       <div className={style.emptyColumn}></div>
       {showAttendees === false || (
         <div>
-          {/* Other components or information */}
           {data && data.attendees ? (
             <EventAttendeesList attendees={data.attendees} />
           ) : null}

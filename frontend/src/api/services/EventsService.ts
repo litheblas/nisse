@@ -116,6 +116,28 @@ export class EventsService {
     }
 
     /**
+     * @param id A UUID string identifying this event.
+     * @param memberId
+     * @returns boolean
+     * @throws ApiError
+     */
+    public static eventsIsAttendingRetrieve(
+        id: string,
+        memberId?: string,
+    ): CancelablePromise<boolean> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/events/{id}/is_attending/',
+            path: {
+                'id': id,
+            },
+            query: {
+                'member_id': memberId,
+            },
+        });
+    }
+
+    /**
      * Register attendees for the event.
      * @param id A UUID string identifying this event.
      * @param requestBody
