@@ -3,15 +3,9 @@ from django_ical.views import ICalFeed
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from events.serializers import EventSerializer
-<<<<<<< HEAD
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
-from rest_framework import viewsets
-from rest_framework.decorators import APIView
-from rest_framework.parsers import JSONParser
-=======
 from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
->>>>>>> feat: fix register/unregister functionality in backend
 from rest_framework.response import Response
 
 from .models import Event
@@ -68,10 +62,6 @@ class EventFeed(ICalFeed):
 
 class StringListSerializer(serializers.Serializer):
     members = serializers.ListField(child=serializers.CharField())
-
-
-class testSerializer(serializers.Serializer):
-    is_attending = {"is_attending": bool}
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -150,5 +140,4 @@ class EventViewSet(viewsets.ModelViewSet):
             )
 
         is_attending = event.attendees.filter(id=member_id_to_check).exists()
-        print(is_attending)
         return Response(is_attending, status=status.HTTP_200_OK)
