@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
@@ -50,6 +51,11 @@ const EventAttendeesList: React.FC<EventAttendeesListProps> = ({
       </div>
     </div>
   )
+}
+
+// Add prop types
+EventAttendeesList.propTypes = {
+  attendees: PropTypes.array.isRequired,
 }
 
 interface RegistrationButtonProps {
@@ -105,6 +111,13 @@ const RegistrationButton: React.FC<RegistrationButtonProps> = ({
       {isAttending ? 'Avanmäla' : 'Anmäla'}
     </button>
   )
+}
+
+// Add prop types
+RegistrationButton.propTypes = {
+  eventId: PropTypes.string.isRequired,
+  memberId: PropTypes.string.isRequired,
+  refetchQuery: PropTypes.func.isRequired,
 }
 
 export const EventLite = ({ event }: { event: Event }) => {
