@@ -22,7 +22,7 @@ jobs:
       - name: Build dev-build
         run: npm run build -- --base=/nisse-frontend-deploy-development/
         env:
-          # VITE_NISSE_BACKEND_API_URL:
+          VITE_NISSE_BACKEND_API_URL: https://nisse-dev.litheblas.org
           VITE_NISSE_KEYCLOAK_URL: https://auth.litheblas.org
           VITE_NISSE_KEYCLOAK_REALM: litheblas
           VITE_NISSE_KEYCLOAK_CLIENT_ID: nisse
