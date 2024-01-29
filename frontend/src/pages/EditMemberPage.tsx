@@ -23,7 +23,7 @@ export const EditMemberPage = () => {
       await queryClient.invalidateQueries({
         queryKey: ['member_list', 'member_edit'],
       })
-      navigate('/members#' + created_member.id)
+      navigate('/members/' + created_member.id)
     },
   })
 

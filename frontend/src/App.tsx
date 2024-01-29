@@ -12,6 +12,7 @@ import { InformationChannelsPage } from './pages/InformationChannelsPage'
 import { MemberPage } from './pages/MemberPage'
 import { MembersListPage } from './pages/MembersListPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
+import { EditMemberPage } from './pages/EditMemberPage'
 
 OpenAPI.BASE = import.meta.env.VITE_NISSE_BACKEND_API_URL
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter(
             {
               path: '',
               element: <MembersListPage />,
+            },
+            {
+              path: 'edit/:memberId',
+              element: <EditMemberPage />,
             },
             {
               path: ':memberId',
