@@ -19,7 +19,7 @@ django-imagekit = "==5.0.0"
 django-keycloak-auth = "==0.9.9"
 
 [dev-packages]
-black = "==24.1.0"
+black = "==24.1.1"
 django-extensions = "==3.2.3"
 pydotplus = "==2.0.2"
 
