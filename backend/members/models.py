@@ -49,6 +49,21 @@ class Member(AbstractUser):
         ],
     )
 
+    def set_active_period(self):
+        memberships = Membership.objects.filter(member=self).order_by("start")
+        if not memberships:
+            self.active_period = ""
+            self.save()
+            return
+
+        start = memberships.first().start.year
+        memberships = memberships.order_by(models.F("end").asc(nulls_last=True))
+        end = memberships.last().end.year if memberships.last().end else None
+        self.active_period = f"{start}–{end}" if end else f"{start}–"
+        self.save()
+
+    active_period = models.CharField(blank=True, max_length=9, editable=False)
+
     @property
     def full_name(self) -> str:
         return (
@@ -78,28 +93,6 @@ class Member(AbstractUser):
             and self.postal_town
             and self.postal_country
             else ""
-        )
-
-    @property
-    def active_period(self) -> str:
-        memberships = Membership.objects.filter(member=self).order_by("start")
-        if not memberships:
-            return ""
-        # Below is an implementation which will guarantee the correct start/end year
-        # in edge cases where someone is accepted on several instruments at the same time,
-        # or if the Memberships are assigned incorrectly.
-        # We can easily ensure correct Membership assignments with new members, but
-        # there's lots of weird stuff going on in the old database...
-        # TODO: remove comments or replace implementation once we try on old data
-
-        # start = memberships.first().start.year
-        # memberships = memberships.order_by(models.F("end").asc(nulls_last=True))
-        # end = memberships.last().end.year if memberships.last().end else None
-        # return f"{start}–{end}" if end else f"{start}–"
-        return (
-            f"{memberships.first().start.year}–{memberships.last().end.year}"
-            if memberships.last().end
-            else f"{memberships.first().start.year}–"
         )
 
     def clean(self) -> None:
