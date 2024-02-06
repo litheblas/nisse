@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { QueryObserverResult, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
 import OtherIcon from '../assets/blottartuban.svg'
+import { AuthContext } from '../context/AuthContext'
 import { DurationPill } from './DurationPill'
 import style from './styling/EventLite.module.css'
 
@@ -120,6 +121,14 @@ RegistrationButton.propTypes = {
 }
 
 export const EventLite = ({ event }: { event: Event }) => {
+  // Access the AuthContext, keycloak
+  const { getUserInfo } = useContext(AuthContext)
+  // Get userId from keycloak. Keycloak id synced with memberId
+  const userInfo = getUserInfo()
+  // Replace with backend member ID like: 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' to test.
+  // Should work when keycloak id synced with backend member id.
+  const memberId = userInfo.id ? userInfo.id : ''
+
   const start_time = new Date(event.start_time)
   const end_time = new Date(event.end_time)
 
@@ -164,8 +173,6 @@ export const EventLite = ({ event }: { event: Event }) => {
       </>
     )
   }
-
-  const memberId = 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' // Replace with the actual member IDm from keycloak
 
   return (
     <div id={event.id} className={style.eventContainer}>
