@@ -11,6 +11,7 @@ const defaultEvent: Event = {
   end_time: new Date().toISOString(),
   description: '',
   attendees: [],
+  creator: '',
 }
 
 export const AddEventPage = () => {

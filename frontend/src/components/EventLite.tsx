@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import { QueryObserverResult, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
 import OtherIcon from '../assets/blottartuban.svg'
@@ -53,7 +53,7 @@ const EventAttendeesList: React.FC<EventAttendeesListProps> = ({
   )
 }
 
-// Add prop types
+// Add prop types [eslint]
 EventAttendeesList.propTypes = {
   attendees: PropTypes.array.isRequired,
 }
@@ -61,9 +61,8 @@ EventAttendeesList.propTypes = {
 interface RegistrationButtonProps {
   eventId: string
   memberId: string
-  refetchQuery: () => Promise<EventAttendeesListProps>
+  refetchQuery: () => Promise<QueryObserverResult<Event, unknown>>
 }
-
 const RegistrationButton: React.FC<RegistrationButtonProps> = ({
   eventId,
   memberId,
