@@ -26,6 +26,12 @@
   padding: 8px 0px;
 }
 
+.searchBarContainer {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 16px;
+}
+
 input[type='text'] {
   width: 100%;
   padding: 8px;
@@ -112,4 +118,19 @@ a:hover {
   display: flex;
   justify-content: center;
   color: var(--blue);
+}
+
+.advancedSearchContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.advancedButton {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
 }

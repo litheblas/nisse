@@ -47,18 +47,39 @@ export const MembersListPage = () => {
     setCurrentPage(1) // Reset to the first page when performing a new search
   }
 
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
+
+  const toggleAdvancedSearch = () => {
+    setShowAdvancedSearch((prevState) => !prevState)
+  }
+
   const renderPageHeader = () => {
     return (
       <>
         <h1 className={style.header}>Blåsbasen</h1>
         <div className={style.inputContainer}>
-          <input
-            type="text"
-            placeholder="Sök på namn eller aktiv period"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
+          <div className={style.searchBarContainer}>
+            <input
+              type="text"
+              placeholder="Sök på namn eller aktiv period"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <button
+              className={style.advancedButton}
+              onClick={toggleAdvancedSearch}
+            >
+              {showAdvancedSearch
+                ? 'Hide Advanced Search'
+                : 'Show Advanced Search'}
+            </button>
+          </div>
         </div>
+        {showAdvancedSearch && (
+          <div className={style.advancedSearchContainer}>
+            {/* Place your advanced search inputs/components here */}
+          </div>
+        )}
       </>
     )
   }
