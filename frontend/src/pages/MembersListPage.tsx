@@ -14,7 +14,7 @@ export const MembersListPage = () => {
     'member_list',
     MembersService.membersList.bind(
       window,
-      'id,full_name,active_period,real_name'
+      'id,full_name,active_period,real_name,email,liu_id,phone_number_1'
     )
   )
 
@@ -33,11 +33,22 @@ export const MembersListPage = () => {
     }
     // Filter the data based on the search query
     const filtered = data.filter((member) => {
-      const { full_name, active_period, real_name } = member
+      const {
+        full_name,
+        active_period,
+        real_name,
+        email,
+        liu_id,
+        phone_number_1,
+      } = member
 
       return (
         (full_name && full_name.toLowerCase().includes(query.toLowerCase())) ||
         (real_name && real_name.toLowerCase().includes(query.toLowerCase())) ||
+        (email && email.toLowerCase().includes(query.toLowerCase())) ||
+        (liu_id && liu_id.toLowerCase().includes(query.toLowerCase())) ||
+        (phone_number_1 &&
+          phone_number_1.toLowerCase().includes(query.toLowerCase())) ||
         (active_period &&
           active_period.toString().replace(/–/g, '-').includes(query))
       )
