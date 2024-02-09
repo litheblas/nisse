@@ -9,13 +9,15 @@ import style from './styling/MembersListPage.module.css'
 // TODO: Add sort_by functionality for full_name, last_name, short_name, active_period...
 // Make it possible to change between high->low or low->high
 
+// Define your initial queryFields
+const initialQueryFields = 'id,full_name,active_period,real_name'
+
 export const MembersListPage = () => {
-  const { isLoading, isError, isIdle, data, error } = useQuery(
-    'member_list',
-    MembersService.membersList.bind(
-      window,
-      'id,full_name,active_period,real_name'
-    )
+  const [queryFields, setQueryFields] = useState(initialQueryFields)
+
+  const { isLoading, isError, isIdle, data, error, refetch } = useQuery(
+    ['member_list', queryFields],
+    MembersService.membersList.bind(window, queryFields)
   )
 
   const [itemsPerPage, setItemsPerPage] = useState(15)
@@ -31,16 +33,34 @@ export const MembersListPage = () => {
     if (!data) {
       return <span>No data available</span>
     }
+
     // Filter the data based on the search query
     const filtered = data.filter((member) => {
-      const { full_name, active_period, real_name } = member
+      const queryLowerCase = query.toLowerCase()
+      const includesQuery = (str: string | undefined) =>
+        str && str.toLowerCase().includes(queryLowerCase)
 
-      return (
-        (full_name && full_name.toLowerCase().includes(query.toLowerCase())) ||
-        (real_name && real_name.toLowerCase().includes(query.toLowerCase())) ||
-        (active_period &&
-          active_period.toString().replace(/–/g, '-').includes(query))
-      )
+      // Apply basic filtering logic for normal search
+      let basicFilter: boolean
+
+      basicFilter =
+        includesQuery(member.full_name) ||
+        includesQuery(member.real_name) ||
+        !!(
+          member.active_period &&
+          member.active_period
+            .toString()
+            .replace(/–/g, '-')
+            .toLowerCase()
+            .includes(query.toLowerCase())
+        )
+
+      // Check if email should be included in filtering
+      if (showAdvancedSearch) {
+        basicFilter = basicFilter || !!includesQuery(member.email) // Add email to filter
+      }
+
+      return basicFilter
     })
 
     setFilteredMembers(filtered) // Update the filtered members state
@@ -51,6 +71,13 @@ export const MembersListPage = () => {
 
   const toggleAdvancedSearch = () => {
     setShowAdvancedSearch((prevState) => !prevState)
+    handleQueryFieldsChange('id,full_name,active_period,real_name,email')
+  }
+
+  // Function to handle changes in queryFields
+  const handleQueryFieldsChange = (newQueryFields: string) => {
+    setQueryFields(newQueryFields)
+    void refetch() // Refetch the data when queryFields changes
   }
 
   const renderPageHeader = () => {
@@ -155,6 +182,7 @@ export const MembersListPage = () => {
                 <Link to={member.id}>{member.full_name}</Link>
               </td>
               <td>{member.active_period}</td>
+              <td>{member.email}</td>
             </tr>
           ))}
         </tbody>
