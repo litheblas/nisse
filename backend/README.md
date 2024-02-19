@@ -76,7 +76,7 @@ Steps:
    change the values in the `.env` file (but for development the defaults are
    probably alright).
 1. Create a Django admin user by running
-   `pipenv run python manage.py createsuperuser`
+   `pipenv run ./manage.py createsuperuser`
    and following the prompts.
 
 ## Applying database migrations
@@ -85,26 +85,25 @@ When the Django models have been changed, new migrations has to be made with
 the command
 
 ```bash
-pipenv run python manage.py makemigrations
+pipenv run ./manage.py makemigrations
 ```
 
 After creating new migrations, or before starting the backend for the first
 time, the migrations have to be applied to the database.
 
 ```bash
-pipenv run python manage.py migrate
+pipenv run ./manage.py migrate
 ```
 
-## Running the backend
+The migration files should be committed to the repository. In fact, the CI
+pipeline will fail if the migration files are not committed.
 
-All commands for the backend need to be run in the virtual environment created
-by pipenv. All commands need to be run with `pipenv run <command>`, or by first
-activating the virtual environment with `pipenv shell`.
+## Running the backend
 
 To start the development server, run
 
 ```bash
-pipenv run python manage.py runserver
+pipenv run ./manage.py runserver
 ```
 
 and the backend will be hosted at <http://localhost:8000>. The admin interface
@@ -112,18 +111,24 @@ is available at <http://localhost:8000/admin> and the API documentation is
 available at <http://localhost:8000/api/schema/redoc/>, or at
 <http://localhost:8000/api/schema/swagger-ui/> depending on which you prefer.
 
-### Extending the backend
+### Useful commands
 
-To add a new app to the backend, run
-`pipenv run python manage.py startapp <app name>`
+- `pipenv run ./manage.py shell`: Start a Django shell, to avoid having to write `pipenv run` all the time.
+- `pipenv run ./manage.py test`: Run the tests for the backend.
+- `pipenv run ./manage.py startapp <app name>`: Create a new app in the
+  backend.
+- `pipenv run ./manage.py graph_models -a -o database_schema.png`: Generate a
+  visual representation of the database schema (needs
+  [Graphviz](https://graphviz.org/)
 
-### Visualizing the database schema
+## Deployment
 
-To generate a visual representation of the database schema, run
+The backend is automatically built into a Docker image when a new commit is
+pushed to the `main` (with the name `main`) or `dev` (with the name
+`nisse-dev`) branches, with a new version tag for each commit. The Docker image
+is pushed to the GitHub Container Registry. To deploy the backend, update the
+tag of the image used in the docker compose files in [the infra
+repository](https://github.com/litheblas/infra/tree/master/salt/pillar/docker/stacks).
 
-```bash
-pipenv run ./manage.py graph_models -a -o database_schema.png
-```
-
-This assumes the the dev dependencies and [Graphviz](https://graphviz.org/) is
-installed.
+When the docker container starts, it will automatically run the migrations on
+the database.
