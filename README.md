@@ -36,9 +36,7 @@ This is the recommended development workflow for this project:
   [Conventional Commits](https://www.conventionalcommits.org/), i.e, the commit
   message should begin with one of the following:
   - `build:` - Changes that affect the build system or external dependencies
-    (example scopes: gulp, broccoli, npm)
-  - `ci:` - Changes to our CI configuration files and scripts (example
-    scopes: Travis, Circle, BrowserStack, SauceLabs)
+  - `ci:` - Changes to our CI configuration files and scripts
   - `docs:` - Documentation only changes
   - `feat:` - A new feature
   - `fix:` - A bug fix
@@ -46,29 +44,8 @@ This is the recommended development workflow for this project:
   - `refactor:` - A code change that neither fixes a bug nor adds a feature
   - `style:` - Changes that do not affect the meaning of the code (white
     space, formatting, missing semi-colons, etc)
-  - `test:` - Adding missing tests or correcting existing tests
-- Releases should be incremented according to [semantic
-  versioning](https://semver.org/).
+  - `test:` - Adding or correcting tests
 
 A good article for how to write good commit messages [The seven rules of a
 great Git commit
 message](https://chris.beams.io/posts/git-commit/#seven-rules).
-
-## Deployment
-
-The frontend is deployed to [GitHub Pages](https://pages.github.com/) and is
-automated using [GitHub Actions](https://github.com/features/actions). When a
-new commit is pushed to specific branches, the frontend is automatically built
-and deployed to GitHub Pages. The branches that trigger a deployment are:
-
-- `dev`: The changes in this branch are deployed to the development site, where
-  they can be tested before being deployed to production. The development site
-  can be found at
-  <https://litheblas.github.io/nisse-frontend-deploy-development/>.
-- `main`: The production branch. This is what is actually used. The production
-  site can be found at <https://litheblas.github.io/nisse-frontend-production/>.
-
-The automatic deployment is dependant on a personal access token from Kisac (an
-organization cannot have its own token). The token is stored as a GitHub
-secret. The token has an 1 year lifetime (the maximum allowed) and will need to
-regenerated when it expires. The current token expires on 2024-11-19.
