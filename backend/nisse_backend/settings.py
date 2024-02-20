@@ -44,6 +44,12 @@ CORS_ORIGIN_WHITELIST = (
     else []
 )
 
+CSRF_TRUSTED_ORIGINS = (
+    os.getenv("NISSE_CSRF_TRUSTED_ORIGINS").split(",")
+    if os.getenv("NISSE_CSRF_TRUSTED_ORIGINS")
+    else []
+)
+
 SECURE_PROXY_SSL_HEADER = (
     tuple(os.getenv("NISSE_SECURE_PROXY_SSL_HEADER").split("=", 1))
     if os.getenv("NISSE_SECURE_PROXY_SSL_HEADER")
