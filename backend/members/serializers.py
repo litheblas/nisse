@@ -76,3 +76,9 @@ class MemberSerializer(DynamicFieldsModelSerializer):
 
     def get_engagements(self, obj) -> List[Dict]:
         return obj.engagements
+
+
+class AttendeeSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Member
+        fields = ["id", "full_name", "profile_picture"]

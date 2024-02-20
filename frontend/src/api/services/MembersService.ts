@@ -34,7 +34,7 @@ export class MembersService {
      * @throws ApiError
      */
     public static membersCreate(
-        requestBody?: Member,
+        requestBody: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -74,7 +74,7 @@ export class MembersService {
      */
     public static membersUpdate(
         id: string,
-        requestBody?: Member,
+        requestBody: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'PUT',
