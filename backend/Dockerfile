@@ -19,6 +19,7 @@ RUN pipenv install --deploy
 COPY . ${APP_ROOT}/
 
 COPY ./proxy/proxy_params /etc/nginx/
+COPY ./proxy/auth_params /etc/nginx/
 COPY ./proxy/nginx.conf.tpl /etc/nginx/
 
 COPY scripts/entrypoint.sh entrypoint.sh
