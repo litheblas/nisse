@@ -1,9 +1,8 @@
 import os
 
 from django.http import HttpResponse
-from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES, MEDIA_ROOT
+from nisse_backend.settings import MEDIA_ROOT
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 def serve_media(_request, file_name):
@@ -27,10 +26,3 @@ def serve_media(_request, file_name):
             return HttpResponse(file.read(), content_type="image/png")
     except FileNotFoundError:
         return Response({"error": "File not found"}, status=404)
-
-
-class Verify(APIView):
-    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
-
-    def get(self, request, format=None):
-        return Response(status=200)

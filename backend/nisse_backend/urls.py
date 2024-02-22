@@ -22,13 +22,14 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from nisse_backend import settings
-from nisse_backend.views import Verify, serve_media
+from nisse_backend.auth import Authorize
+from nisse_backend.views import serve_media
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/events/", include("events.urls")),
     path("api/members/", include("members.urls")),
-    path("verify/", Verify.as_view()),
+    path("authorize/", Authorize.as_view()),
 ]
 
 if settings.DEBUG:

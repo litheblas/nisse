@@ -1,6 +1,8 @@
 from django_keycloak_auth.keycloak import KeycloakConnect
 from django_keycloak_auth.middleware import KeycloakMiddleware
-from nisse_backend.settings import KEYCLOAK_CONFIG
+from nisse_backend.settings import KEYCLOAK_CONFIG, KEYCLOAK_NISSE_DEFAULT_ROLES
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class NisseKeycloakConnect(KeycloakConnect):
@@ -23,3 +25,10 @@ class NisseKeycloakMiddleware(KeycloakMiddleware):
             local_decode=self.keycloak_config.local_decode,
             client_secret_key=self.keycloak_config.client_secret_key,
         )
+
+
+class Authorize(APIView):
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+
+    def get(self, request, format=None):
+        return Response(status=200)
