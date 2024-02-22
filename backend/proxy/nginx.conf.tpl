@@ -8,7 +8,8 @@ http {
             include         /etc/nginx/auth_params;
         }
 
-        location = /authorize {
+        location = /authorize/ {
+            internal;
             proxy_pass http://${APP_HOST}:${APP_PORT}/authorize/;
             proxy_pass_request_body off;
             proxy_set_header Content-Length "";
