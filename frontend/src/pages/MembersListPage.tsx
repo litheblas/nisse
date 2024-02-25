@@ -1,5 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { MembersService } from '../api'
@@ -24,28 +24,28 @@ export const MembersListPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const [searchQuery, setSearchQuery] = useState('')
+  const [staticFilteredMembers, setStaticFilteredMembers] = useState(data)
   const [filteredMembers, setFilteredMembers] = useState(data)
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     setSearchQuery(query)
 
-    if (!data) {
+    if (!staticFilteredMembers) {
       return <span>No data available</span>
     }
 
     // Filter the data based on the search query
-    const filtered = data.filter((member) => {
+    const filtered = staticFilteredMembers.filter((member) => {
       const queryLowerCase = query.toLowerCase()
       const includesQuery = (str: string | undefined) =>
         str && str.toLowerCase().includes(queryLowerCase)
 
       // Apply basic filtering logic for normal search
-      let basicFilter: boolean
-
-      basicFilter =
+      const basicFilter: boolean =
         includesQuery(member.full_name) ||
         includesQuery(member.real_name) ||
+        includesQuery(member.email) ||
         !!(
           member.active_period &&
           member.active_period
@@ -55,11 +55,6 @@ export const MembersListPage = () => {
             .includes(query.toLowerCase())
         )
 
-      // Check if email should be included in filtering
-      if (showAdvancedSearch) {
-        basicFilter = basicFilter || !!includesQuery(member.email) // Add email to filter
-      }
-
       return basicFilter
     })
 
@@ -67,18 +62,57 @@ export const MembersListPage = () => {
     setCurrentPage(1) // Reset to the first page when performing a new search
   }
 
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
-
-  const toggleAdvancedSearch = () => {
-    setShowAdvancedSearch((prevState) => !prevState)
-    handleQueryFieldsChange('id,full_name,active_period,real_name,email')
-  }
-
-  // Function to handle changes in queryFields
+  // Function to handle changes in queryFields, refetch the data
   const handleQueryFieldsChange = (newQueryFields: string) => {
     setQueryFields(newQueryFields)
     void refetch() // Refetch the data when queryFields changes
   }
+
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
+
+  const toggleAdvancedSearch = () => {
+    setShowAdvancedSearch((prevState) => !prevState)
+    // refetch with inital query fields
+    if (showAdvancedSearch) {
+      handleQueryFieldsChange(initialQueryFields)
+    }
+  }
+
+  const [memberShipStatus, setMemberShipStatus] = useState(false)
+
+  // Baed on checkboxes marked, update query field to load extra information.
+  const searchAdvanced = () => {
+    let searchQuery: string = initialQueryFields
+    if (memberShipStatus) {
+      searchQuery += ',email'
+    }
+    handleQueryFieldsChange(searchQuery)
+  }
+
+  // useEffect to update staticFilteredMembers after refetch() completes or showAdvancedSearch is pressed
+  useEffect(() => {
+    const filterAdvanced = () => {
+      if (!data) {
+        return <span>No data available</span>
+      }
+
+      const staticFiltered = data.filter((member) => {
+        let staticFilter = false
+        if (member.real_name === 'Hugo Asplund') {
+          staticFilter = true
+        }
+        return staticFilter
+      })
+
+      setStaticFilteredMembers(staticFiltered)
+    }
+
+    if (showAdvancedSearch) {
+      filterAdvanced()
+    } else {
+      setStaticFilteredMembers(data)
+    }
+  }, [data, showAdvancedSearch])
 
   const renderPageHeader = () => {
     return (
@@ -104,7 +138,19 @@ export const MembersListPage = () => {
         </div>
         {showAdvancedSearch && (
           <div className={style.advancedSearchContainer}>
-            {/* Place your advanced search inputs/components here */}
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={memberShipStatus}
+                  onChange={() => setMemberShipStatus(!memberShipStatus)}
+                />
+                memberShipStatus
+              </label>
+            </div>
+            <button className={style.advancedButton} onClick={searchAdvanced}>
+              Sök advancerat
+            </button>
           </div>
         )}
       </>
@@ -135,8 +181,12 @@ export const MembersListPage = () => {
     )
   }
 
-  // If no filter is active, show all members
-  const membersToDisplay = searchQuery ? filteredMembers || [] : data
+  // If no filter (text in search box) is active, show staticFilteredMembers members
+  const membersToDisplay = searchQuery
+    ? filteredMembers || []
+    : staticFilteredMembers
+    ? staticFilteredMembers
+    : data
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage
