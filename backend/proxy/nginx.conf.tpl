@@ -7,14 +7,12 @@ http {
 
         location /media {
             alias ${APP_ROOT}/nisse_backend/media;
-            include         /etc/nginx/auth_params;
+            auth_request    /authorize/;
         }
 
         location = /authorize/ {
-            internal;
             proxy_pass http://${APP_HOST}:${APP_PORT}/authorize/;
-            proxy_pass_request_body off;
-            proxy_set_header Content-Length "";
+            include         /etc/nginx/auth_params;
         }
 
         location / {
