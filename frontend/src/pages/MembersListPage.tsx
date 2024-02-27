@@ -138,6 +138,7 @@ export const MembersListPage = () => {
     } else {
       setStaticFilteredMembers(data)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showAdvancedSearch, triggerFilterUpdate])
 
   const renderPageHeader = () => {
