@@ -9,6 +9,22 @@ import style from './styling/MembersListPage.module.css'
 // TODO: Add sort_by functionality for full_name, last_name, short_name, active_period...
 // Make it possible to change between high->low or low->high
 
+/*
+const membershipGroups: Record<string, string> = {
+  Banjo: 'Kompet',
+  Klarinett: 'Klarinett',
+  Bas: 'Kompet',
+  Horn: 'Hornbasun',
+  Flöjt: 'Flöjt',
+  Saxofon: 'Saxofon',
+  Trummor: 'Kompet',
+  Tuba: 'Kompet',
+  Trombon: 'Hornbasun',
+  Trumpet: 'Trumpet',
+  Balett: 'Balett',
+}
+*/
+
 // Define your initial queryFields
 const initialQueryFields = 'id,full_name,active_period,real_name'
 
@@ -78,15 +94,22 @@ export const MembersListPage = () => {
     }
   }
 
-  const [memberShipStatus, setMemberShipStatus] = useState(false)
+  const [triggerFilterUpdate, setTriggerFilterUpdate] = useState(false)
+  const [sortActive, setSortActive] = useState(true)
+  const [sortGamling, setSortGamling] = useState(true)
 
   // Baed on checkboxes marked, update query field to load extra information.
   const searchAdvanced = () => {
     let searchQuery: string = initialQueryFields
-    if (memberShipStatus) {
+    const example = false
+    if (example) {
+      // make true if you want to refetch data with new search query
+      //  This is an example
       searchQuery += ',email'
+      handleQueryFieldsChange(searchQuery)
+    } else {
+      setTriggerFilterUpdate(!triggerFilterUpdate)
     }
-    handleQueryFieldsChange(searchQuery)
   }
 
   // useEffect to update staticFilteredMembers after refetch() completes or showAdvancedSearch is pressed
@@ -98,7 +121,10 @@ export const MembersListPage = () => {
 
       const staticFiltered = data.filter((member) => {
         let staticFilter = false
-        if (member.real_name === 'Hugo Asplund') {
+        if (sortActive && member.active_period.length == 5) {
+          staticFilter = true
+        }
+        if (sortGamling && member.active_period.length == 9) {
           staticFilter = true
         }
         return staticFilter
@@ -112,7 +138,7 @@ export const MembersListPage = () => {
     } else {
       setStaticFilteredMembers(data)
     }
-  }, [data, showAdvancedSearch])
+  }, [data, showAdvancedSearch, triggerFilterUpdate])
 
   const renderPageHeader = () => {
     return (
@@ -142,10 +168,18 @@ export const MembersListPage = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={memberShipStatus}
-                  onChange={() => setMemberShipStatus(!memberShipStatus)}
+                  checked={sortActive}
+                  onChange={() => setSortActive(!sortActive)}
                 />
-                memberShipStatus
+                aktiva
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={sortGamling}
+                  onChange={() => setSortGamling(!sortGamling)}
+                />
+                gamling
               </label>
             </div>
             <button className={style.advancedButton} onClick={searchAdvanced}>
