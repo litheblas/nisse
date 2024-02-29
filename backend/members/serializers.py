@@ -53,4 +53,5 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "national_id",
             "profile_picture",
             "active_period",
+            "member_of_lithe_gras",
         ]

@@ -34,10 +34,12 @@ class Member(AbstractUser):
     postal_town = models.CharField(blank=True, max_length=50)
     postal_country = models.CharField(blank=True, max_length=50)
     phone_number_1 = PhoneNumberField(blank=True)
-    phone_number_2 = PhoneNumberField(blank=True)
-    phone_number_3 = PhoneNumberField(blank=True)
     arbitrary_text = models.TextField(blank=True)
     national_id = models.CharField(blank=True, max_length=4)
+    member_of_lithe_gras = models.BooleanField(
+        blank=True, default=False, verbose_name="Organdonator till LiTHe Grås"
+    )
+    # member_of_lithe_gras = models.DateField(blank=True, null=True, verbose_name = "Organdonator till LiTHe Grås")
     profile_picture = ProcessedImageField(
         blank=True,
         default=PLACEHOLDER_IMAGE_PATH,
@@ -48,6 +50,10 @@ class Member(AbstractUser):
             )
         ],
     )
+
+    # Legacy fields for backwards compability
+    phone_number_2 = PhoneNumberField(blank=True)
+    phone_number_3 = PhoneNumberField(blank=True)
 
     @property
     def full_name(self) -> str:
