@@ -34,12 +34,14 @@ class Member(AbstractUser):
     postal_town = models.CharField(blank=True, max_length=50)
     postal_country = models.CharField(blank=True, max_length=50)
     phone_number_1 = PhoneNumberField(blank=True)
+    # These needs to be here for backwards komp-ability (-öjj!)
+    phone_number_2 = PhoneNumberField(blank=True)
+    phone_number_3 = PhoneNumberField(blank=True)
+    ############################################
     arbitrary_text = models.TextField(blank=True)
     national_id = models.CharField(blank=True, max_length=4)
-    member_of_lithe_gras = models.BooleanField(
-        blank=True, default=False, verbose_name="Organdonator till LiTHe Grås"
-    )
-    # member_of_lithe_gras = models.DateField(blank=True, null=True, verbose_name = "Organdonator till LiTHe Grås")
+    # The django model only stores the path to the profile picture, not the file it self
+    # The image is served by something else such as nginx
     profile_picture = ProcessedImageField(
         blank=True,
         default=PLACEHOLDER_IMAGE_PATH,
@@ -50,10 +52,6 @@ class Member(AbstractUser):
             )
         ],
     )
-
-    # Legacy fields for backwards compability
-    phone_number_2 = PhoneNumberField(blank=True)
-    phone_number_3 = PhoneNumberField(blank=True)
 
     @property
     def full_name(self) -> str:
@@ -99,6 +97,34 @@ class Member(AbstractUser):
 
     def __str__(self):
         return self.full_name
+
+
+class GrasMembership(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    member = models.OneToOneField(Member, null=False, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(status__exact="", status_date__isnull=False)
+                | (~models.Q(status__exact="") & models.Q(status_date__isnull=True)),
+                name="grasstatus",
+            )
+        ]
+
+    class StatusChoices(models.TextChoices):
+        LIFETIME = "L"
+        UNSURE = "U"
+        NEW = "N"
+
+    status = models.CharField(
+        max_length=1,
+        blank=True,
+        choices=StatusChoices,
+        default="",
+    )
+
+    status_date = models.DateField(null=True, blank=True)
 
 
 class EngagementType(models.Model):
