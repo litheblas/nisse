@@ -15,6 +15,7 @@ PLACEHOLDER_IMAGE_PATH = os.path.join(AVATAR_LOCATION, PLACEHOLDER_IMAGE)
 def member_profile_picture_path(instance, filename):
     # Produces a path for the image file for profile picture
     # makes filename to "username.FILE_TYPE"
+    # Maybe save old image as something else somwhere else?
     filetype_index = filename.rfind(".")
     file_end = filename[filetype_index:]
     new_filename = str(instance.id) + file_end
