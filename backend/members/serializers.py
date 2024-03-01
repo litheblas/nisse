@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Member
+from .models import GrasMembership, Member
 
 
 # Copied from https://www.django-rest-framework.org/api-guide/serializers/#dynamically-modifying-fields
@@ -55,3 +55,9 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "active_period",
             "member_of_lithe_gras",
         ]
+
+
+class GrasSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = GrasMembership
+        fields = ["id", "member", "status", "status_date"]
