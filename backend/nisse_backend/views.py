@@ -1,8 +1,14 @@
 import os
 
+import requests
 from django.http import HttpResponse
-from nisse_backend.settings import MEDIA_ROOT
+from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES, MEDIA_ROOT
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
+username = os.environ("ladan_name")
+key = os.environ("ladan_key")
+ip = os.environ("ladan_ip")
 
 
 def serve_media(_request, file_name):
@@ -26,3 +32,17 @@ def serve_media(_request, file_name):
             return HttpResponse(file.read(), content_type="image/png")
     except FileNotFoundError:
         return Response({"error": "File not found"}, status=404)
+
+
+class OpenDoor(APIView):
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+
+    def post(self, request, format=None):
+        """
+        Sends a HTTP-request through a reverse ssh-tunnel to lådan lådan in Blåsrummet to open the door
+        """
+        resp = requests.post(url="localhost:5000", auth=(username, key), timeout=180)
+        if resp == 200:
+            return Response(status=200)
+        else:
+            return Response({"error": "could not open door"}, status=500)
