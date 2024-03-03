@@ -28,7 +28,7 @@
 
 .searchBarContainer {
   display: grid;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 1fr max-content max-content;
   gap: 16px;
 }
 

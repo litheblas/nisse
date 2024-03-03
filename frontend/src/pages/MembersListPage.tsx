@@ -26,7 +26,8 @@ const membershipGroups: Record<string, string> = {
 */
 
 // Define your initial queryFields
-const initialQueryFields = 'id,full_name,active_period,real_name'
+const initialQueryFields =
+  'id,full_name,active_period,real_name,email,short_name'
 
 export const MembersListPage = () => {
   const [queryFields, setQueryFields] = useState(initialQueryFields)
@@ -42,6 +43,23 @@ export const MembersListPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [staticFilteredMembers, setStaticFilteredMembers] = useState(data)
   const [filteredMembers, setFilteredMembers] = useState(data)
+
+  const [sortBy, setSortBy] = useState('short_name (desc)')
+  // Function to handle sorting option change
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(event.target.value)
+  }
+
+  // Array of sorting options
+  const sortingOptions = [
+    { value: 'full_name (desc)', label: 'Full Name: (A-Ö)' },
+    { value: 'full_name (asc)', label: 'Full Name: (Ö-A)' },
+    { value: 'active_period (asc)', label: 'Active Period: Stigande' },
+    { value: 'active_period (desc)', label: 'Active Period: Minskande' },
+    { value: 'short_name (desc)', label: 'Smeknamn: (A-Ö)' },
+    { value: 'short_name (asc)', label: 'Smeknamn: (Ö-A)' },
+    // Add more sorting options as needed
+  ]
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -153,6 +171,17 @@ export const MembersListPage = () => {
               value={searchQuery}
               onChange={handleSearch}
             />
+            <select
+              className={style.advancedButton}
+              value={sortBy}
+              onChange={handleSortChange}
+            >
+              {sortingOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
             <button
               className={style.advancedButton}
               onClick={toggleAdvancedSearch}
@@ -223,12 +252,31 @@ export const MembersListPage = () => {
     ? staticFilteredMembers
     : data
 
+  // Sort membersToDisplay array based on the selected option
+  const sortedMembers = [...membersToDisplay].sort((a, b) => {
+    if (sortBy === 'full_name (desc)') {
+      return a.full_name.localeCompare(b.full_name)
+    } else if (sortBy === 'full_name (asc)') {
+      return a.full_name.localeCompare(b.full_name) * -1
+    } else if (sortBy === 'active_period (asc)') {
+      return a.active_period.localeCompare(b.active_period)
+    } else if (sortBy === 'active_period (desc)') {
+      return a.active_period.localeCompare(b.active_period) * -1
+    } else if (sortBy === 'short_name (desc)') {
+      return a.short_name.localeCompare(b.short_name)
+    } else if (sortBy === 'short_name (asc)') {
+      return a.short_name.localeCompare(b.short_name) * -1
+    }
+    // Add more sorting options as needed
+    return 0 // Default sorting behavior
+  })
+
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = membersToDisplay.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems = sortedMembers.slice(indexOfFirstItem, indexOfLastItem)
 
-  const totalPages = Math.ceil(membersToDisplay.length / itemsPerPage)
+  const totalPages = Math.ceil(sortedMembers.length / itemsPerPage)
 
   const nextPage = () => {
     if (currentPage < totalPages) {
@@ -267,7 +315,6 @@ export const MembersListPage = () => {
                 <Link to={member.id}>{member.full_name}</Link>
               </td>
               <td>{member.active_period}</td>
-              <td>{member.email}</td>
             </tr>
           ))}
         </tbody>
