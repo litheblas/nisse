@@ -52,10 +52,10 @@ export const MembersListPage = () => {
 
   // Array of sorting options
   const sortingOptions = [
-    { value: 'full_name (desc)', label: 'Full Name: (A-Ö)' },
-    { value: 'full_name (asc)', label: 'Full Name: (Ö-A)' },
-    { value: 'active_period (asc)', label: 'Active Period: Stigande' },
-    { value: 'active_period (desc)', label: 'Active Period: Minskande' },
+    { value: 'full_name (desc)', label: 'Namn: (A-Ö)' },
+    { value: 'full_name (asc)', label: 'Namn: (Ö-A)' },
+    { value: 'active_period (asc)', label: 'Aktiv period: Ökande' },
+    { value: 'active_period (desc)', label: 'Aktiv period: Minskande' },
     { value: 'short_name (desc)', label: 'Smeknamn: (A-Ö)' },
     { value: 'short_name (asc)', label: 'Smeknamn: (Ö-A)' },
     // Add more sorting options as needed
