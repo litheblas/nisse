@@ -16,9 +16,6 @@ updates:
       pip-dependencies:
         patterns:
           - "*"
-        # TODO: Re-enable
-        exclude-patterns:
-          - "black"
   - package-ecosystem: "npm"
     directory: "frontend/"
     schedule:

@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from rest_framework import serializers
 
 from .models import GrasMembership, Member
@@ -28,6 +30,9 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class MemberSerializer(DynamicFieldsModelSerializer):
+    memberships = serializers.SerializerMethodField()
+    engagements = serializers.SerializerMethodField()
+
     class Meta:
         model = Member
         fields = [
@@ -37,6 +42,7 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "last_name",
             "full_name",
             "short_name",
+            "username",
             "real_name",
             "nickname",
             "birth_date",
@@ -53,8 +59,29 @@ class MemberSerializer(DynamicFieldsModelSerializer):
             "national_id",
             "profile_picture",
             "active_period",
-            "member_of_lithe_gras",
+            "memberships",
+            "engagements",
+            "complete_adress",
         ]
+
+        def validate(self, data):
+            """Validation for serializer is made here. A temp instance of Event is created
+            to run the Event.clean() method."""
+            instance = Member(**data)
+            instance.clean()
+            return data
+
+    def get_memberships(self, obj) -> List[Dict]:
+        return obj.memberships
+
+    def get_engagements(self, obj) -> List[Dict]:
+        return obj.engagements
+
+
+class AttendeeSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Member
+        fields = ["id", "full_name", "profile_picture"]
 
 
 class GrasSerializer(DynamicFieldsModelSerializer):

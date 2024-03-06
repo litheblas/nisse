@@ -1,5 +1,9 @@
+import { useContext, useEffect, useState } from 'react'
+import { QueryObserverResult, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { Event, EventTypeEnum } from '../api'
+import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
+import OtherIcon from '../assets/blottartuban.svg'
+import { AuthContext } from '../context/AuthContext'
 import { DurationPill } from './DurationPill'
 import style from './styling/EventLite.module.css'
 
@@ -14,7 +18,102 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
   }
 }
 
+interface EventAttendeesListProps {
+  attendees: Attendee[]
+}
+
+const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
+  return (
+    <div className={style.attendeesContainer}>
+      <div className={style.attendeesTable}>
+        <div className={style.headerRow}>
+          <h3>Deltagare: {attendees.length} st</h3>
+        </div>
+        {attendees.map((attendee, index) => (
+          <div key={index} className={style.dataRow}>
+            <div className={style.attendeeCounter}>
+              <div>{index + 1}</div>
+            </div>
+            <div className={style.pictureColumn}>
+              <img
+                src={OtherIcon} // TODO: Change to attendee.profile_picture
+                alt={'No Icon found'}
+                className={style.profilePicture}
+              />
+            </div>
+            <div className={style.attendeeInfo}>
+              <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+interface RegistrationButtonProps {
+  eventId: string
+  memberId: string
+  refetchQuery: () => Promise<QueryObserverResult<Event, unknown>>
+}
+const RegistrationButton = ({
+  eventId,
+  memberId,
+  refetchQuery,
+}: RegistrationButtonProps) => {
+  const [isAttending, setIsAttending] = useState(false)
+
+  useEffect(() => {
+    EventsService.eventsIsAttendingRetrieve(eventId, memberId)
+      .then((response) => {
+        setIsAttending(response)
+      })
+      .catch((error) => {
+        console.error('Error checking attendance:', error)
+      })
+  }, [eventId, memberId])
+
+  const handleButtonClick = () => {
+    let updatePromise
+
+    if (isAttending) {
+      updatePromise = EventsService.eventsUnregisterAttendeesCreate(eventId, {
+        members: [memberId],
+      })
+    } else {
+      updatePromise = EventsService.eventsRegisterAttendeesCreate(eventId, {
+        members: [memberId],
+      })
+    }
+
+    updatePromise
+      .then(() => {
+        setIsAttending(!isAttending)
+
+        // Manually trigger a refetch of the query to update attendees list
+        return refetchQuery()
+      })
+      .catch((error) => {
+        console.error('Error updating attendance:', error)
+      })
+  }
+
+  return (
+    <button onClick={handleButtonClick} className={`standardButton blueButton`}>
+      {isAttending ? 'Avanmäla' : 'Anmäla'}
+    </button>
+  )
+}
+
 export const EventLite = ({ event }: { event: Event }) => {
+  // Access the AuthContext, keycloak
+  const { getUserInfo } = useContext(AuthContext)
+  // Get userId from keycloak. Keycloak id synced with memberId
+  const userInfo = getUserInfo()
+  // Replace with backend member ID like: 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' to test.
+  // Should work when keycloak id synced with backend member id.
+  const memberId = userInfo.id ? userInfo.id : ''
+
   const start_time = new Date(event.start_time)
   const end_time = new Date(event.end_time)
 
@@ -28,6 +127,37 @@ export const EventLite = ({ event }: { event: Event }) => {
     hour: '2-digit',
     minute: '2-digit',
   })
+
+  const [showAttendees, setShowAttendees] = useState(false)
+  const changeAttendeesVisibility = () => {
+    setShowAttendees((prev) => !prev)
+  }
+
+  const { refetch, isLoading, isError, isIdle, data, error } = useQuery({
+    queryKey: 'events/' + event.id,
+    queryFn: EventsService.eventsRetrieve.bind(window, event.id),
+    enabled: showAttendees,
+  })
+
+  if (showAttendees && (isLoading || isIdle)) {
+    return (
+      <>
+        <span>Loading!</span>
+      </>
+    )
+  }
+
+  if (showAttendees && isError) {
+    return (
+      <>
+        {error instanceof Error ? (
+          <span>Error: {error.message}</span>
+        ) : (
+          <span>Unknown error!</span>
+        )}
+      </>
+    )
+  }
 
   return (
     <div id={event.id} className={style.eventContainer}>
@@ -51,19 +181,36 @@ export const EventLite = ({ event }: { event: Event }) => {
             <span>Plats: {event.location}</span>
             {/* Shows the event creator, if one exists */}
             {event.creator ? (
-              <span>
+              <>
                 <br />
-                {/* TODO: Show the creator name instead */}
                 Skapare: {event.creator}
-              </span>
+              </>
             ) : null}
           </div>
           <Link to={`edit/${event.id}`}>
             <button className="standardButton blueButton">Redigera</button>
           </Link>
-          <button className="standardButton blueButton">Visa deltagare</button>
+          <button
+            onClick={changeAttendeesVisibility}
+            className="standardButton blueButton"
+          >
+            {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
+          </button>
+          <RegistrationButton
+            eventId={event.id}
+            memberId={memberId}
+            refetchQuery={refetch}
+          />
         </div>
       </div>
+      <div className={style.emptyColumn}></div>
+      {showAttendees === false || (
+        <div>
+          {data && data.attendees ? (
+            <EventAttendeesList attendees={data.attendees} />
+          ) : null}
+        </div>
+      )}
     </div>
   )
 }

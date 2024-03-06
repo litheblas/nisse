@@ -24,6 +24,7 @@ class MemberAdmin(UserAdmin):
                     "profile_picture",
                     "nickname",
                     "birth_date",
+                    "pronouns",
                     "liu_id",
                     "street_address",
                     "postal_code",
@@ -32,6 +33,7 @@ class MemberAdmin(UserAdmin):
                     "phone_number_1",
                     "phone_number_2",
                     "phone_number_3",
+                    "arbitrary_text",
                 ]
             },
         ),

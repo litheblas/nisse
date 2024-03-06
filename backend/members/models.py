@@ -54,6 +54,21 @@ class Member(AbstractUser):
         ],
     )
 
+    def set_active_period(self):
+        memberships = Membership.objects.filter(member=self).order_by("start")
+        if not memberships:
+            self.active_period = ""
+            self.save()
+            return
+
+        start = memberships.first().start.year
+        memberships = memberships.order_by(models.F("end").asc(nulls_last=True))
+        end = memberships.last().end.year if memberships.last().end else None
+        self.active_period = f"{start}–{end}" if end else f"{start}–"
+        self.save()
+
+    active_period = models.CharField(blank=True, max_length=9, editable=False)
+
     @property
     def full_name(self) -> str:
         return (
@@ -75,26 +90,57 @@ class Member(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
     @property
-    def active_period(self) -> str:
-        memberships = Membership.objects.filter(member=self).order_by("start")
-        if not memberships:
-            return ""
-        # Below is an implementation which will guarantee the correct start/end year
-        # in edge cases where someone is accepted on several instruments at the same time,
-        # or if the Memberships are assigned incorrectly.
-        # We can easily ensure correct Membership assignments with new members, but
-        # there's lots of weird stuff going on in the old database...
-        # TODO: remove comments or replace implementation once we try on old data
-
-        # start = memberships.first().start.year
-        # memberships = memberships.order_by(models.F("end").asc(nulls_last=True))
-        # end = memberships.last().end.year if memberships.last().end else None
-        # return f"{start}–{end}" if end else f"{start}–"
+    def complete_adress(self) -> str:
         return (
-            f"{memberships.first().start.year}–{memberships.last().end.year}"
-            if memberships.last().end
-            else f"{memberships.first().start.year}–"
+            f"{self.street_address}, {self.postal_code} {self.postal_town}, {self.postal_country}"
+            if self.street_address
+            and self.postal_code
+            and self.postal_town
+            and self.postal_country
+            else ""
         )
+
+    def clean(self) -> None:
+        """This is used in Django.admin and serializer"""
+        super().clean()
+        from django.core.exceptions import ValidationError
+
+        if self.username == "":
+            raise ValidationError("username cannot be empty")
+
+    @property
+    def memberships(self):
+        memberships = Membership.objects.filter(member=self).order_by("start")
+        formatted_memberships = []
+
+        for membership in memberships:
+            formatted_membership = {
+                "id": membership.id,
+                "member_name": membership.member.full_name,
+                "membership_type": str(membership.membershipType),
+                "start_date": membership.start,
+                "end_date": membership.end if membership.end else None,
+            }
+            formatted_memberships.append(formatted_membership)
+
+        return formatted_memberships
+
+    @property
+    def engagements(self):
+        engagements = Engagement.objects.filter(member=self).order_by("start")
+        formatted_engagements = []
+
+        for engagement in engagements:
+            formatted_engagement = {
+                "id": engagement.id,
+                "member_name": engagement.member.full_name,
+                "engagement_type": str(engagement.engagementType),
+                "start_date": engagement.start,
+                "end_date": engagement.end if engagement.end else None,
+            }
+            formatted_engagements.append(formatted_engagement)
+
+        return formatted_engagements
 
     def __str__(self):
         return self.full_name

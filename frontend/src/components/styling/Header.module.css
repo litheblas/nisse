@@ -7,15 +7,10 @@
   align-items: center;
 }
 
-.container a {
-  text-decoration: none;
-  color: var(--blue);
-}
-
 .content {
   align-items: center;
   display: grid;
-  grid-template-columns: max-content 1fr max-content;
+  grid-template-columns: max-content 1fr max-content max-content;
   margin: 0 var(--page-side-padding);
   max-width: var(--page-max-width);
   width: 100%;
@@ -24,11 +19,22 @@
 .logo {
   grid-column: 1;
   height: 40px;
-  color: blue;
+
+  & > img {
+    height: 100%;
+  }
+}
+
+.logoutButton {
+  grid-column: 3;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
 }
 
 .menu {
-  grid-column: 3;
+  grid-column: 4;
 
   @media (min-width: 801px) {
     display: none;

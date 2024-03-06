@@ -20,9 +20,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 APP_DIR = Path(__file__).resolve().parent
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -44,6 +41,12 @@ ALLOWED_HOSTS = (
 CORS_ORIGIN_WHITELIST = (
     os.getenv("NISSE_CORS_ORIGIN_WHITELIST").split(",")
     if os.getenv("NISSE_CORS_ORIGIN_WHITELIST")
+    else []
+)
+
+CSRF_TRUSTED_ORIGINS = (
+    os.getenv("NISSE_CSRF_TRUSTED_ORIGINS").split(",")
+    if os.getenv("NISSE_CSRF_TRUSTED_ORIGINS")
     else []
 )
 
@@ -86,6 +89,32 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+AUTH_BYPASS = (
+    os.getenv("NISSE_AUTH_BYPASS") == "true" or os.getenv("NISSE_AUTH_BYPASS") == "True"
+)
+if not AUTH_BYPASS:
+    MIDDLEWARE += ["nisse_backend.auth.NisseKeycloakMiddleware"]
+
+KEYCLOAK_EXEMPT_URIS = []
+
+KEYCLOAK_CONFIG = {
+    "KEYCLOAK_SERVER_URL": os.getenv("NISSE_KEYCLOAK_SERVER_URL"),
+    "KEYCLOAK_REALM": os.getenv("NISSE_KEYCLOAK_REALM"),
+    "KEYCLOAK_CLIENT_ID": os.getenv("NISSE_KEYCLOAK_CLIENT_ID"),
+    "KEYCLOAK_CLIENT_SECRET_KEY": os.getenv("NISSE_KEYCLOAK_CLIENT_SECRET_KEY", ""),
+    "KEYCLOAK_CACHE_TTL": 60,
+    "LOCAL_DECODE": True,
+    "KEYCLOAK_AUDIENCE": os.getenv("NISSE_KEYCLOAK_AUDIENCE"),
+}
+
+KEYCLOAK_NISSE_DEFAULT_ROLES = {
+    "GET": ["user", "staff"],
+    "POST": ["user", "staff"],
+    "UPDATE": ["user", "staff"],
+    "DELETE": ["user", "staff"],
+    "PATCH": ["user", "staff"],
+}
 
 ROOT_URLCONF = "nisse_backend.urls"
 
@@ -181,6 +210,10 @@ AUTH_USER_MODEL = "members.Member"
 
 STATIC_URL = "static/"
 STATIC_ROOT = APP_DIR / "static"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = APP_DIR / "media"
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
