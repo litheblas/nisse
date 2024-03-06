@@ -41,8 +41,8 @@ class OpenDoor(APIView):
         """
         Sends a HTTP-request through a reverse ssh-tunnel to lådan lådan in Blåsrummet to open the door
         """
-        resp = requests.post(url="localhost:5000", auth=(username, key), timeout=180)
-        if resp == 200:
+        resp = requests.post(url=ip, auth=(username, key), timeout=180)
+        if resp.status_code == 200:
             return Response(status=200)
         else:
             return Response({"error": "could not open door"}, status=500)

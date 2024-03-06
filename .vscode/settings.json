@@ -9,7 +9,7 @@
     "pyenv"
   ],
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "source.sortImports": true
+    "source.organizeImports": "explicit",
+    "source.sortImports": "explicit"
   }
 }
