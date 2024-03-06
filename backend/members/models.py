@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from phonenumber_field.modelfields import PhoneNumberField
@@ -160,9 +161,9 @@ class GrasMembership(models.Model):
         ]
 
     class StatusChoices(models.TextChoices):
-        LIFETIME = "L"
-        UNSURE = "U"
-        NEW = "N"
+        LIFETIME = "L", _("Lifetime")
+        UNSURE = "U", _("Unsure")
+        NEW = "N", _("New")
 
     status = models.CharField(
         max_length=1,
