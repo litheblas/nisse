@@ -41,6 +41,15 @@ class MemberAdmin(UserAdmin):
     inlines = [MemberMembershipInline, MemberEngagementInline]
 
 
+@admin.register(models.GrasMembership)
+class GrasMembershipAdmin(admin.ModelAdmin):
+    list_diplay = [
+        "id",
+        "member",
+        "status",
+    ]
+
+
 @admin.register(models.MembershipType)
 class MembershipTypeAdmin(admin.ModelAdmin):
     list_display = ["instrument"]
