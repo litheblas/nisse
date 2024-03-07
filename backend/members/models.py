@@ -4,6 +4,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+# imagekit requires newer fork Pillow not the default package PIL
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from phonenumber_field.modelfields import PhoneNumberField
