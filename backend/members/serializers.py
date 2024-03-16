@@ -2,7 +2,7 @@ from typing import Dict, List
 
 from rest_framework import serializers
 
-from .models import Member
+from .models import GrasMembership, Member
 
 
 # Copied from https://www.django-rest-framework.org/api-guide/serializers/#dynamically-modifying-fields
@@ -82,3 +82,9 @@ class AttendeeSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Member
         fields = ["id", "full_name", "profile_picture"]
+
+
+class GrasSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = GrasMembership
+        fields = ["id", "member", "status", "status_date"]
