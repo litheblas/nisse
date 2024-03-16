@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 django = "==5.0.2"
-daphne = "==4.0.0"
+daphne = "==4.1.0"
 whitenoise = "==6.6.0"
 python-dotenv = "==1.0.1"
-psycopg = {extras = ["binary"], version = "==3.1.17"}
+psycopg = {extras = ["binary"], version = "==3.1.18"}
 django-ical = "==1.9.2"
 django-cors-headers = "==4.3.1"
 djangorestframework = "==3.14.0"
@@ -16,12 +16,12 @@ drf-spectacular = "==0.27.1"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "==7.3.0"}
 pillow = "==10.2.0"
 django-imagekit = "==5.0.0"
-django-keycloak-auth = "==0.9.9"
+django-keycloak-auth = "==1.0.0"
 django-extensions = "==3.2.3"
 requests = "*"
 
 [dev-packages]
-black = "==24.1.1"
+black = "==24.2.0"
 pydotplus = "==2.0.2"
 
 [requires]
