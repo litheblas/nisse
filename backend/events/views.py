@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import get_object_or_404
 from django_ical.views import ICalFeed
 from drf_spectacular.types import OpenApiTypes
@@ -91,6 +93,10 @@ class EventViewSet(viewsets.ModelViewSet):
     def register_attendees(self, request, pk=None):
         event = self.get_object()
         members_to_register = request.data.get("members", [])
+        if event.end_time < datetime.now():
+            return Response(
+                {"error": "event has already ended"}, status=status.HTTP_403_FORBIDDEN
+            )
 
         for member_id in members_to_register:
             try:
@@ -110,6 +116,11 @@ class EventViewSet(viewsets.ModelViewSet):
     def unregister_attendees(self, request, pk=None):
         event = self.get_object()
         members_to_unregister = request.data.get("members", [])
+
+        if event.end_time < datetime.now():
+            return Response(
+                {"error": "event has already ended"}, status=status.HTTP_403_FORBIDDEN
+            )
 
         for member_id in members_to_unregister:
             try:
