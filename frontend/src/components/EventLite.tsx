@@ -196,11 +196,13 @@ export const EventLite = ({ event }: { event: Event }) => {
           >
             {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
           </button>
-          <RegistrationButton
-            eventId={event.id}
-            memberId={memberId}
-            refetchQuery={refetch}
-          />
+          {end_time > new Date() && (
+            <RegistrationButton
+              eventId={event.id}
+              memberId={memberId}
+              refetchQuery={refetch}
+            />
+          )}
         </div>
       </div>
       <div className={style.emptyColumn}></div>
