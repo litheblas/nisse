@@ -3,6 +3,9 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+# imagekit requires newer fork Pillow not the default package PIL
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from phonenumber_field.modelfields import PhoneNumberField
@@ -15,6 +18,7 @@ PLACEHOLDER_IMAGE_PATH = os.path.join(AVATAR_LOCATION, PLACEHOLDER_IMAGE)
 def member_profile_picture_path(instance, filename):
     # Produces a path for the image file for profile picture
     # makes filename to "username.FILE_TYPE"
+    # Maybe save old image as something else somwhere else?
     filetype_index = filename.rfind(".")
     file_end = filename[filetype_index:]
     new_filename = str(instance.id) + file_end
@@ -34,10 +38,14 @@ class Member(AbstractUser):
     postal_town = models.CharField(blank=True, max_length=50)
     postal_country = models.CharField(blank=True, max_length=50)
     phone_number_1 = PhoneNumberField(blank=True)
+    # These needs to be here for backwards komp-ability (-öjj!)
     phone_number_2 = PhoneNumberField(blank=True)
     phone_number_3 = PhoneNumberField(blank=True)
+    ############################################
     arbitrary_text = models.TextField(blank=True)
     national_id = models.CharField(blank=True, max_length=4)
+    # The django model only stores the path to the profile picture, not the file it self
+    # The image is served by something else such as nginx
     profile_picture = ProcessedImageField(
         blank=True,
         default=PLACEHOLDER_IMAGE_PATH,
@@ -139,6 +147,34 @@ class Member(AbstractUser):
 
     def __str__(self):
         return self.full_name
+
+
+class GrasMembership(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    member = models.OneToOneField(Member, null=False, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(status__exact="", status_date__isnull=False)
+                | (~models.Q(status__exact="") & models.Q(status_date__isnull=True)),
+                name="grasstatus",
+            )
+        ]
+
+    class StatusChoices(models.TextChoices):
+        LIFETIME = "L", _("Lifetime")
+        UNSURE = "U", _("Unsure")
+        NEW = "N", _("New")
+
+    status = models.CharField(
+        max_length=1,
+        blank=True,
+        choices=StatusChoices,
+        default="",
+    )
+
+    status_date = models.DateField(null=True, blank=True)
 
 
 class EngagementType(models.Model):
