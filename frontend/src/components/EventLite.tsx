@@ -158,18 +158,6 @@ export const EventLite = ({ event }: { event: Event }) => {
       </>
     )
   }
-  // Check if end date is after current date
-  // Render button if it is
-  let button
-  if (end_time > new Date()) {
-    button = (
-      <RegistrationButton
-        eventId={event.id}
-        memberId={memberId}
-        refetchQuery={refetch}
-      />
-    )
-  }
 
   return (
     <div id={event.id} className={style.eventContainer}>
@@ -208,7 +196,13 @@ export const EventLite = ({ event }: { event: Event }) => {
           >
             {showAttendees ? 'Göm deltagare' : 'Visa deltagare'}
           </button>
-          {button}
+          {end_time > new Date() && (
+            <RegistrationButton
+              eventId={event.id}
+              memberId={memberId}
+              refetchQuery={refetch}
+            />
+          )}
         </div>
       </div>
       <div className={style.emptyColumn}></div>
