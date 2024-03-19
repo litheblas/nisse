@@ -6,9 +6,9 @@ from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES, MEDIA_ROOT
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-username = os.getenv("ladan_name")
-key = os.getenv("ladan_key")
-ip = os.getenv("ladan_ip")
+username = os.getenv("NISSE_LADAN_NAME")
+key = os.getenv("NISSE_LADAN_KEY")
+ip = os.getenv("NISS_LADAN_IP")
 
 
 def serve_media(_request, file_name):
