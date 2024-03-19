@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django_ical.views import ICalFeed
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
@@ -79,6 +78,14 @@ class EventViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"])
+    def list_now_and_future(self, request):
+        queryset = Event.objects.filter(start_time__gte=timezone.now())
+        serializer = EventSerializer(
+            queryset, many=True, fields=request.query_params.get("fields")
+        )
+        return Response(serializer.data)
+
     def retrieve(self, request, pk=None):
         queryset = Event.objects.all()
         event = get_object_or_404(queryset, pk=pk)
@@ -93,7 +100,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def register_attendees(self, request, pk=None):
         event = self.get_object()
         members_to_register = request.data.get("members", [])
-        if event.end_time < datetime.now():
+        if event.end_time < timezone.now():
             return Response(
                 {"error": "event has already ended"}, status=status.HTTP_403_FORBIDDEN
             )
@@ -117,7 +124,7 @@ class EventViewSet(viewsets.ModelViewSet):
         event = self.get_object()
         members_to_unregister = request.data.get("members", [])
 
-        if event.end_time < datetime.now():
+        if event.end_time < timezone.now():
             return Response(
                 {"error": "event has already ended"}, status=status.HTTP_403_FORBIDDEN
             )
