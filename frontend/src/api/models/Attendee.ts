@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * A ModelSerializer that takes an additional `fields` argument that
  * controls which fields should be displayed.
