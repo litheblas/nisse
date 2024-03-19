@@ -79,8 +79,8 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"])
-    def list_now_and_future(self, request):
-        queryset = Event.objects.filter(start_time__gte=timezone.now())
+    def list_upcomming(self, request):
+        queryset = Event.objects.filter(end_time__gte=timezone.now())
         serializer = EventSerializer(
             queryset, many=True, fields=request.query_params.get("fields")
         )
