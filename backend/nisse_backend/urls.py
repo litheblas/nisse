@@ -25,10 +25,13 @@ from nisse_backend import settings
 from nisse_backend.auth import Authorize
 from nisse_backend.views import serve_media
 
+from .views import OpenDoor
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/events/", include("events.urls")),
     path("api/members/", include("members.urls")),
+    path("api/door/", OpenDoor.as_view()),
     path("authorize/", Authorize.as_view()),
 ]
 
