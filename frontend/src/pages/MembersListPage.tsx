@@ -5,18 +5,30 @@ import { Link } from 'react-router-dom'
 import { MembersService } from '../api'
 import style from './styling/MembersListPage.module.css'
 
-// TODO: Create more search filters such as sektion, aktiv, gamling, uppdrag...
-// TODO: Add sort_by functionality for full_name, last_name, short_name, active_period...
-// Make it possible to change between high->low or low->high
+/*
+MemberListPage, Blåsbasen
+This file includes the logic for Blåsbasen, how filtering and search works.
 
+There is two filtering steps.
+First a static filter which is handled by the advanced search functionality.
+Then a dynamic filter which is the text input filtering.
+
+The static filter is first applied, which makes it possible to search with text.
+*/
+
+// Used to tell TS what Membership contains
+// It does contain more but we only use membership_type
 interface Membership {
   membership_type: string
 }
 
+// Used to tell TS what Engagement contains
+// It does contain more but we only use engagement_type
 interface Engagement {
   engagement_type: string
 }
 
+// List of what memberships that are shown in dropdown list, advanced search
 const membershipGroups = [
   'Kompet',
   'Klarinett',
@@ -27,6 +39,7 @@ const membershipGroups = [
   'Balett',
 ]
 
+// List of what instruments that are shown in dropdown list, advanced search
 const instrumentGroups = [
   'Banjo',
   'Klarinett',
@@ -41,6 +54,7 @@ const instrumentGroups = [
   'Horn',
 ]
 
+// "Dictionary" for connecting instrument to sektioner
 const instrumentMembershipGroups: Record<string, string> = {
   Banjo: 'Kompet',
   Klarinett: 'Klarinett',
@@ -55,6 +69,7 @@ const instrumentMembershipGroups: Record<string, string> = {
   Balett: 'Balett',
 }
 
+// List of what engagements that are shown in dropdown list, advanced search
 const engagementGroups = [
   'Dictator',
   'Skrivkunig',
@@ -68,26 +83,31 @@ const engagementGroups = [
   'Jubelgeneral',
 ]
 
-// Define your initial queryFields
+// Define your initial queryFields, this is what is going to be loaded from each member as standard
 const initialQueryFields =
   'id,full_name,active_period,real_name,email,short_name'
 
 export const MembersListPage = () => {
   const [queryFields, setQueryFields] = useState(initialQueryFields)
 
+  // MemberList query, change queryFields and trigger refetch() to add more information on each member
   const { isLoading, isError, isIdle, data, error, refetch } = useQuery(
     ['member_list', queryFields],
     MembersService.membersList.bind(window, queryFields)
   )
 
+  // Pagination variables
   const [itemsPerPage, setItemsPerPage] = useState(15)
   const [currentPage, setCurrentPage] = useState(1)
 
+  // Search filter variables
   const [searchQuery, setSearchQuery] = useState('')
   const [staticFilteredMembers, setStaticFilteredMembers] = useState(data)
   const [filteredMembers, setFilteredMembers] = useState(data)
 
+  // Sort order variable
   const [sortBy, setSortBy] = useState('short_name (desc)')
+
   // Function to handle sorting option change
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value)
@@ -104,6 +124,7 @@ export const MembersListPage = () => {
     // Add more sorting options as needed
   ]
 
+  // filter logic for user text input searching
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
     setSearchQuery(query)
@@ -155,14 +176,17 @@ export const MembersListPage = () => {
     }
   }
 
+  // Trigger for updating static filter
   const [triggerFilterUpdate, setTriggerFilterUpdate] = useState(false)
+
+  // Variables for advanced static search
   const [sortActive, setSortActive] = useState(true)
   const [sortGamling, setSortGamling] = useState(true)
   const [selectedMembershipGroup, setSelectedMembershipGroup] = useState('')
   const [selectedInstrumentGroup, setSelectedInstrumentGroup] = useState('')
   const [selectedEngagementGroup, setSelectedEngagementGroup] = useState('')
 
-  // Baed on checkboxes marked, update query field to load extra information.
+  // Function for "Sök advancerat" button. Based on variables, update search query, refetch information and trigger filter
   const searchAdvanced = () => {
     let searchQuery: string = initialQueryFields
 
@@ -186,7 +210,9 @@ export const MembersListPage = () => {
     setTriggerFilterUpdate(!triggerFilterUpdate)
   }
 
-  // useEffect to update staticFilteredMembers after refetch() completes or showAdvancedSearch is pressed
+  // useEffect to update staticFilteredMembers when data is changed or showAdvancedSearch is pressed
+  // This is where the static filter is applied.
+  //Normal text search is possible to search within after this filter is applied.
   useEffect(() => {
     const filterAdvanced = () => {
       if (!data) {
@@ -207,7 +233,7 @@ export const MembersListPage = () => {
           selectedMembershipGroup !== 'Alla medlemsgrupper'
         ) {
           const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership // Inform TS about the Membership structure
+            const typedMembership = membership as Membership
             return (
               instrumentMembershipGroups[typedMembership.membership_type] ===
               selectedMembershipGroup
@@ -221,7 +247,7 @@ export const MembersListPage = () => {
           selectedInstrumentGroup !== 'Alla instrumentgrupper'
         ) {
           const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership // Inform TS about the Membership structure
+            const typedMembership = membership as Membership
             return typedMembership.membership_type === selectedInstrumentGroup
           })
           staticFilter = matchingMembership
@@ -232,7 +258,7 @@ export const MembersListPage = () => {
           selectedEngagementGroup !== 'Alla engagemangsgrupper'
         ) {
           const matchingEngagement = member.engagements.some((engagement) => {
-            const typedEngagement = engagement as Engagement // Inform TS about the Engagment structure
+            const typedEngagement = engagement as Engagement
             return typedEngagement.engagement_type === selectedEngagementGroup
           })
           staticFilter = matchingEngagement
@@ -243,6 +269,7 @@ export const MembersListPage = () => {
       setStaticFilteredMembers(staticFiltered)
     }
 
+    // When advanced search is active, then use filterAdvanced, otherwise skip the static filter
     if (showAdvancedSearch) {
       filterAdvanced()
     } else {
@@ -251,6 +278,7 @@ export const MembersListPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showAdvancedSearch, triggerFilterUpdate])
 
+  // Rendering of page header
   const renderPageHeader = () => {
     return (
       <>
@@ -293,7 +321,7 @@ export const MembersListPage = () => {
                   checked={sortActive}
                   onChange={() => setSortActive(!sortActive)}
                 />
-                aktiva
+                aktiv
               </label>
               <label>
                 <input
@@ -373,7 +401,7 @@ export const MembersListPage = () => {
     )
   }
 
-  // If no filter (text in search box) is active, show staticFilteredMembers members
+  // If no dynamic filter (text in search box) is active, show staticFilteredMembers members
   const membersToDisplay = searchQuery
     ? filteredMembers || []
     : staticFilteredMembers
