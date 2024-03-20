@@ -78,8 +78,9 @@ class EventViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    @extend_schema(responses=EventSerializer(many=True))
     @action(detail=False, methods=["get"])
-    def list_upcomming(self, request):
+    def list_upcoming(self, request):
         queryset = Event.objects.filter(end_time__gte=timezone.now())
         serializer = EventSerializer(
             queryset, many=True, fields=request.query_params.get("fields")
