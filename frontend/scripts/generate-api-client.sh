@@ -14,7 +14,7 @@ cd ../../backend || fail_and_exit "ERROR: Could not navigate to the backend dire
 
 echo "Generating OpenAPI schema..."
 
-pipenv run ./manage.py spectacular --file ../frontend/$SCHEMA_FILE --validate || fail_and_exit "ERROR: Could not generate OpenAPI file."
+pipenv run ./manage.py spectacular --file ../frontend/$SCHEMA_FILE --validate --fail-on-warn || fail_and_exit "ERROR: Could not generate OpenAPI file."
 
 cd ../frontend || fail_and_exit "ERROR: Could not navigate to the frontend directory."
 
