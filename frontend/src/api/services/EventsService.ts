@@ -173,10 +173,10 @@ export class EventsService {
      * @returns Event
      * @throws ApiError
      */
-    public static eventsListUpcommingRetrieve(): CancelablePromise<Event> {
+    public static eventsListUpcomingList(): CancelablePromise<Array<Event>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/events/list_upcomming/',
+            url: '/api/events/list_upcoming/',
         });
     }
 }

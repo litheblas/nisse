@@ -1,5 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Event, EventTypeEnum, EventsService } from '../api'
@@ -45,17 +45,30 @@ export const EventsPage = () => {
         )
         .sort(
           (a, b) =>
-            new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+            (new Date(a.start_time).getTime() -
+              new Date(b.start_time).getTime()) *
+            (filterSettings.showPastEvents ? -1 : 1)
         )
     },
     [filterSettings]
   )
 
-  const { isLoading, isError, isIdle, data, error } = useQuery(
+  const fetFunc = useCallback(() => {
+    if (filterSettings.showPastEvents) {
+      return EventsService.eventsList()
+    }
+    return EventsService.eventsListUpcomingList()
+  }, [filterSettings.showPastEvents])
+
+  const { isLoading, isError, isIdle, data, error, refetch } = useQuery(
     'event_list',
-    EventsService.eventsList.bind(window),
+    fetFunc,
     { select: filterEvents }
   )
+
+  useEffect(() => {
+    void refetch()
+  }, [filterSettings.showPastEvents, refetch])
 
   const renderInfoAndFilters = () => {
     return (
