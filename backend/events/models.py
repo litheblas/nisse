@@ -11,6 +11,7 @@ from .utils import EventTypes
 class Event(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    full_day = models.BooleanField()
     location = models.CharField(max_length=100)
     end_time = models.DateTimeField()
     name = models.CharField(max_length=280)

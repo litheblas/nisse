@@ -73,6 +73,16 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         </Form.Control>
       </Form.Field>
 
+      {/*Full day event or not*/}
+      <Form.Field className={style.FormField} name="full_day">
+        <div className={style.FormFieldLabelContainer}>
+          <Form.Label className={style.FormLabel}>Heldagsevent? 👀</Form.Label>
+        </div>
+        <Form.Control asChild>
+          <input className={style.Input} type="checkbox" />
+        </Form.Control>
+      </Form.Field>
+
       {/* TODO: Fix date and time formatting, alt. change date/time pickers */}
       {/* Start time */}
       <Form.Field className={style.FormField} name="start_time">
