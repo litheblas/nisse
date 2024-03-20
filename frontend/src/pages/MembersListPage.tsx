@@ -13,6 +13,10 @@ interface Membership {
   membership_type: string
 }
 
+interface Engagement {
+  engagement_type: string
+}
+
 const membershipGroups = [
   'Kompet',
   'Klarinett',
@@ -50,6 +54,19 @@ const instrumentMembershipGroups: Record<string, string> = {
   Trumpet: 'Trumpet',
   Balett: 'Balett',
 }
+
+const engagementGroups = [
+  'Dictator',
+  'Skrivkunig',
+  'Kronharpa',
+  'Intendent',
+  'Balettchef',
+  'Spelraggare',
+  'Domptör',
+  'Notpiccolo',
+  'Luciageneral',
+  'Jubelgeneral',
+]
 
 // Define your initial queryFields
 const initialQueryFields =
@@ -143,6 +160,7 @@ export const MembersListPage = () => {
   const [sortGamling, setSortGamling] = useState(true)
   const [selectedMembershipGroup, setSelectedMembershipGroup] = useState('')
   const [selectedInstrumentGroup, setSelectedInstrumentGroup] = useState('')
+  const [selectedEngagementGroup, setSelectedEngagementGroup] = useState('')
 
   // Baed on checkboxes marked, update query field to load extra information.
   const searchAdvanced = () => {
@@ -156,6 +174,13 @@ export const MembersListPage = () => {
         selectedInstrumentGroup !== 'Alla instrumentgrupper')
     ) {
       searchQuery += ',memberships'
+      handleQueryFieldsChange(searchQuery)
+    }
+    if (
+      selectedEngagementGroup !== '' &&
+      selectedEngagementGroup !== 'Alla engagemangsgrupper'
+    ) {
+      searchQuery += ',engagements'
       handleQueryFieldsChange(searchQuery)
     }
     setTriggerFilterUpdate(!triggerFilterUpdate)
@@ -200,6 +225,17 @@ export const MembersListPage = () => {
             return typedMembership.membership_type === selectedInstrumentGroup
           })
           staticFilter = matchingMembership
+        }
+        // Filter on engagements
+        if (
+          selectedEngagementGroup !== '' &&
+          selectedEngagementGroup !== 'Alla engagemangsgrupper'
+        ) {
+          const matchingEngagement = member.engagements.some((engagement) => {
+            const typedEngagement = engagement as Engagement // Inform TS about the Engagment structure
+            return typedEngagement.engagement_type === selectedEngagementGroup
+          })
+          staticFilter = matchingEngagement
         }
         return staticFilter
       })
@@ -286,6 +322,18 @@ export const MembersListPage = () => {
               >
                 <option value="">Alla instrumentgrupper</option>
                 {instrumentGroups.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={style.dropdown}
+                value={selectedEngagementGroup}
+                onChange={(e) => setSelectedEngagementGroup(e.target.value)}
+              >
+                <option value="">Alla engagemangsgrupper</option>
+                {engagementGroups.map((group) => (
                   <option key={group} value={group}>
                     {group}
                   </option>
