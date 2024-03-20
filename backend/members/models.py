@@ -29,6 +29,7 @@ class Member(AbstractUser):
     """A LiTHe Blas internal sites member"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(blank=False, unique=True)
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
     liu_id = models.CharField(blank=True, max_length=8)
