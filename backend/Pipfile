@@ -23,6 +23,7 @@ requests = "2.32.0"
 [dev-packages]
 black = "==24.4.2"
 pydotplus = "==2.0.2"
+factory-boy = "==3.3.0"
 
 [requires]
 python_version = "3.11"
