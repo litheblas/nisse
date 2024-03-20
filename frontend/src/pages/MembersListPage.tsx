@@ -23,6 +23,20 @@ const membershipGroups = [
   'Balett',
 ]
 
+const instrumentGroups = [
+  'Banjo',
+  'Klarinett',
+  'Bas',
+  'Flöjt',
+  'Saxofon',
+  'Trummor',
+  'Tuba',
+  'Trombon',
+  'Trumpet',
+  'Balett',
+  'Horn',
+]
+
 const instrumentMembershipGroups: Record<string, string> = {
   Banjo: 'Kompet',
   Klarinett: 'Klarinett',
@@ -128,6 +142,7 @@ export const MembersListPage = () => {
   const [sortActive, setSortActive] = useState(true)
   const [sortGamling, setSortGamling] = useState(true)
   const [selectedMembershipGroup, setSelectedMembershipGroup] = useState('')
+  const [selectedInstrumentGroup, setSelectedInstrumentGroup] = useState('')
 
   // Baed on checkboxes marked, update query field to load extra information.
   const searchAdvanced = () => {
@@ -135,8 +150,10 @@ export const MembersListPage = () => {
 
     // If membership needs to be loaded for advanced search query, add and refetch
     if (
-      selectedMembershipGroup !== '' &&
-      selectedMembershipGroup !== 'Alla medlemsgrupper'
+      (selectedMembershipGroup !== '' &&
+        selectedMembershipGroup !== 'Alla medlemsgrupper') ||
+      (selectedInstrumentGroup !== '' &&
+        selectedInstrumentGroup !== 'Alla instrumentgrupper')
     ) {
       searchQuery += ',memberships'
       handleQueryFieldsChange(searchQuery)
@@ -159,6 +176,7 @@ export const MembersListPage = () => {
         if (sortGamling && member.active_period.length == 9) {
           staticFilter = true
         }
+        // Filter on instrument groups
         if (
           selectedMembershipGroup !== '' &&
           selectedMembershipGroup !== 'Alla medlemsgrupper'
@@ -169,6 +187,17 @@ export const MembersListPage = () => {
               instrumentMembershipGroups[typedMembership.membership_type] ===
               selectedMembershipGroup
             )
+          })
+          staticFilter = matchingMembership
+        }
+        // Filter on instrument
+        if (
+          selectedInstrumentGroup !== '' &&
+          selectedInstrumentGroup !== 'Alla instrumentgrupper'
+        ) {
+          const matchingMembership = member.memberships.some((membership) => {
+            const typedMembership = membership as Membership // Inform TS about the Membership structure
+            return typedMembership.membership_type === selectedInstrumentGroup
           })
           staticFilter = matchingMembership
         }
@@ -245,6 +274,18 @@ export const MembersListPage = () => {
               >
                 <option value="">Alla medlemsgrupper</option>
                 {membershipGroups.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={style.dropdown}
+                value={selectedInstrumentGroup}
+                onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
+              >
+                <option value="">Alla instrumentgrupper</option>
+                {instrumentGroups.map((group) => (
                   <option key={group} value={group}>
                     {group}
                   </option>
