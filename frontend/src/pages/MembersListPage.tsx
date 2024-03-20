@@ -9,8 +9,21 @@ import style from './styling/MembersListPage.module.css'
 // TODO: Add sort_by functionality for full_name, last_name, short_name, active_period...
 // Make it possible to change between high->low or low->high
 
-/*
-const membershipGroups: Record<string, string> = {
+interface Membership {
+  membership_type: string
+}
+
+const membershipGroups = [
+  'Kompet',
+  'Klarinett',
+  'Hornbasun',
+  'Flöjt',
+  'Saxofon',
+  'Trumpet',
+  'Balett',
+]
+
+const instrumentMembershipGroups: Record<string, string> = {
   Banjo: 'Kompet',
   Klarinett: 'Klarinett',
   Bas: 'Kompet',
@@ -23,7 +36,6 @@ const membershipGroups: Record<string, string> = {
   Trumpet: 'Trumpet',
   Balett: 'Balett',
 }
-*/
 
 // Define your initial queryFields
 const initialQueryFields =
@@ -115,19 +127,21 @@ export const MembersListPage = () => {
   const [triggerFilterUpdate, setTriggerFilterUpdate] = useState(false)
   const [sortActive, setSortActive] = useState(true)
   const [sortGamling, setSortGamling] = useState(true)
+  const [selectedMembershipGroup, setSelectedMembershipGroup] = useState('')
 
   // Baed on checkboxes marked, update query field to load extra information.
   const searchAdvanced = () => {
     let searchQuery: string = initialQueryFields
-    const example = false
-    if (example) {
-      // make true if you want to refetch data with new search query
-      //  This is an example
-      searchQuery += ',email'
+
+    // If membership needs to be loaded for advanced search query, add and refetch
+    if (
+      selectedMembershipGroup !== '' &&
+      selectedMembershipGroup !== 'Alla medlemsgrupper'
+    ) {
+      searchQuery += ',memberships'
       handleQueryFieldsChange(searchQuery)
-    } else {
-      setTriggerFilterUpdate(!triggerFilterUpdate)
     }
+    setTriggerFilterUpdate(!triggerFilterUpdate)
   }
 
   // useEffect to update staticFilteredMembers after refetch() completes or showAdvancedSearch is pressed
@@ -144,6 +158,19 @@ export const MembersListPage = () => {
         }
         if (sortGamling && member.active_period.length == 9) {
           staticFilter = true
+        }
+        if (
+          selectedMembershipGroup !== '' &&
+          selectedMembershipGroup !== 'Alla medlemsgrupper'
+        ) {
+          const matchingMembership = member.memberships.some((membership) => {
+            const typedMembership = membership as Membership // Inform TS about the Membership structure
+            return (
+              instrumentMembershipGroups[typedMembership.membership_type] ===
+              selectedMembershipGroup
+            )
+          })
+          staticFilter = matchingMembership
         }
         return staticFilter
       })
@@ -211,6 +238,18 @@ export const MembersListPage = () => {
                 />
                 gamling
               </label>
+              <select
+                className={style.dropdown}
+                value={selectedMembershipGroup}
+                onChange={(e) => setSelectedMembershipGroup(e.target.value)}
+              >
+                <option value="">Alla medlemsgrupper</option>
+                {membershipGroups.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
             </div>
             <button className={style.advancedButton} onClick={searchAdvanced}>
               Sök advancerat
