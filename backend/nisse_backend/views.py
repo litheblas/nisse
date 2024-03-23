@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES, MEDIA_ROOT
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
+from rest_framework import serializers
 
 username = os.getenv("NISSE_LADAN_NAME")
 key = os.getenv("NISSE_LADAN_KEY")
@@ -33,10 +35,12 @@ def serve_media(_request, file_name):
     except FileNotFoundError:
         return Response({"error": "File not found"}, status=404)
 
+class OpenDoorSerializer(serializers.Serializer):
+    pass
 
 class OpenDoor(APIView):
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
-
+    @extend_schema(request=None, responses=OpenDoorSerializer)
     def post(self, request, format=None):
         """
         Sends a HTTP-request through a reverse ssh-tunnel to lådan lådan in Blåsrummet to open the door
@@ -46,3 +50,5 @@ class OpenDoor(APIView):
             return Response(status=200)
         else:
             return Response({"error": "could not open door"}, status=500)
+
+

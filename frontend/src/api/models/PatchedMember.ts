@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * A ModelSerializer that takes an additional `fields` argument that
  * controls which fields should be displayed.
@@ -38,3 +37,4 @@ export type PatchedMember = {
     readonly engagements?: Array<Record<string, any>>;
     readonly complete_adress?: string;
 };
+

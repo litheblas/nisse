@@ -15,6 +15,5 @@ export type { PatchedEvent } from './models/PatchedEvent';
 export type { PatchedMember } from './models/PatchedMember';
 export type { StringList } from './models/StringList';
 
-export { EventsService } from './services/EventsService';
-export { MembersService } from './services/MembersService';
-export { SchemaService } from './services/SchemaService';
+export { ApiService } from './services/ApiService';
+export { AuthorizeService } from './services/AuthorizeService';
