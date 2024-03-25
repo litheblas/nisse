@@ -4,13 +4,10 @@
 /* eslint-disable */
 import type { Member } from '../models/Member';
 import type { PatchedMember } from '../models/PatchedMember';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class MembersService {
-
     /**
      * @param fields
      * @returns Member
@@ -27,7 +24,6 @@ export class MembersService {
             },
         });
     }
-
     /**
      * @param requestBody
      * @returns Member
@@ -43,7 +39,6 @@ export class MembersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @param fields
@@ -65,7 +60,6 @@ export class MembersService {
             },
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @param requestBody
@@ -86,7 +80,6 @@ export class MembersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @param requestBody
@@ -107,7 +100,6 @@ export class MembersService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @returns void
@@ -124,5 +116,4 @@ export class MembersService {
             },
         });
     }
-
 }
