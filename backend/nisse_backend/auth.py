@@ -5,6 +5,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
+def spectacular_auth_hook(endpoints):
+    for path, path_regex, method, callback in endpoints:
+        if path == "/authorize/":
+            endpoints.remove((path, path_regex, method, callback))
+    return endpoints
+
+
 class NisseKeycloakConnect(KeycloakConnect):
     def decode(self, token, audience=None, options=None, raise_exception=True):
         return super().decode(
