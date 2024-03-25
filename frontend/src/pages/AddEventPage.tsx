@@ -7,6 +7,7 @@ const defaultEvent: Event = {
   id: '',
   name: '',
   location: '',
+  full_day: false,
   start_time: new Date().toISOString(),
   end_time: new Date().toISOString(),
   description: '',
