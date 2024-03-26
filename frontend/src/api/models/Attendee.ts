@@ -11,4 +11,3 @@ export type Attendee = {
     readonly full_name: string;
     profile_picture?: string;
 };
-
