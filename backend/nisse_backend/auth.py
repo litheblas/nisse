@@ -3,8 +3,13 @@ from django_keycloak_auth.middleware import KeycloakMiddleware
 from nisse_backend.settings import KEYCLOAK_CONFIG, KEYCLOAK_NISSE_DEFAULT_ROLES
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers
-from drf_spectacular.utils import extend_schema
+
+
+def spectacular_auth_hook(endpoints):
+    for path, path_regex, method, callback in endpoints:
+        if path == "/authorize/":
+            endpoints.remove((path, path_regex, method, callback))
+    return endpoints
 
 
 class NisseKeycloakConnect(KeycloakConnect):
@@ -29,11 +34,8 @@ class NisseKeycloakMiddleware(KeycloakMiddleware):
         )
 
 
-class AuthorizeSerialzier(serializers.Serializer):
-    pass
-
 class Authorize(APIView):
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
-    @extend_schema(request=None, responses=AuthorizeSerialzier)
+
     def get(self, request, format=None):
         return Response(status=200)

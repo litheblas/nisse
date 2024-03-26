@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import logo from 'src/assets/logo-blue.svg'
+import { DoorService } from '../api'
 import { useAuth } from '../context/AuthContext'
 import { PopoverMenu } from './PopoverMenu'
 import style from './styling/Header.module.css'
-import { useQuery } from 'react-query'
 
 export const Header = () => {
   const { logout } = useAuth()
@@ -16,11 +16,9 @@ export const Header = () => {
         </Link>
 
         <button
-        onClick={
-          () => {
-            return;
-          }
-        }
+          onClick={() => {
+            void DoorService.doorCreate()
+          }}
           className={`standardButton blueButton ${style.openDoorButton}`}
         >
           Öppna Blåsrumsdörren

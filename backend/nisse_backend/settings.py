@@ -168,6 +168,9 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "The API that powers LiTHe Blås Internal Website",
     "VERSION": "0.0.0",
     "SERVE_INCLUDE_SCHEMA": True,
+    "PREPROCESSING_HOOKS": [
+        "nisse_backend.auth.spectacular_auth_hook",
+    ],
 }
 
 # Password validation
