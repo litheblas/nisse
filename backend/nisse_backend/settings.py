@@ -114,6 +114,7 @@ KEYCLOAK_NISSE_DEFAULT_ROLES = {
     "UPDATE": ["user", "staff"],
     "DELETE": ["user", "staff"],
     "PATCH": ["user", "staff"],
+    "PUT": ["user", "staff"],
 }
 
 ROOT_URLCONF = "nisse_backend.urls"
