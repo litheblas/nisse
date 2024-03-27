@@ -28,13 +28,18 @@ class NisseKeycloakMiddleware(KeycloakMiddleware):
 
 
 """
-This class is used to authorize the user. It is used to check if the user has the required roles to access the endpoint.
+The class below used to authorize the user.
 Any new endpoint that requires authorization should also add the required roles in the keycloak_roles variable.
-If this is note done the endpoint will be accessible to all users, even if they are not logged in.
+If this isn't done the endpoint will be accessible to all users, even if they are not logged in.
 """
 
 
 class Authorize(APIView):
+    """
+    This authorize class is used by nginx to check if the user is authorized to access other endpoints.
+    It is not accessible externally.
+    """
+
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
     def get(self, request, format=None):
