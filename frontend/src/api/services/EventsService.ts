@@ -5,13 +5,10 @@
 import type { Event } from '../models/Event';
 import type { PatchedEvent } from '../models/PatchedEvent';
 import type { StringList } from '../models/StringList';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class EventsService {
-
     /**
      * @returns Event
      * @throws ApiError
@@ -22,7 +19,6 @@ export class EventsService {
             url: '/api/events/',
         });
     }
-
     /**
      * @param requestBody
      * @returns Event
@@ -38,7 +34,6 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this event.
      * @returns Event
@@ -55,7 +50,6 @@ export class EventsService {
             },
         });
     }
-
     /**
      * @param id A UUID string identifying this event.
      * @param requestBody
@@ -76,7 +70,6 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this event.
      * @param requestBody
@@ -97,7 +90,6 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @param id A UUID string identifying this event.
      * @returns void
@@ -114,7 +106,6 @@ export class EventsService {
             },
         });
     }
-
     /**
      * @param id A UUID string identifying this event.
      * @param memberId
@@ -136,7 +127,6 @@ export class EventsService {
             },
         });
     }
-
     /**
      * Register attendees for the event.
      * @param id A UUID string identifying this event.
@@ -158,7 +148,6 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Unregister attendees for the event.
      * @param id A UUID string identifying this event.
@@ -180,5 +169,14 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
-
+    /**
+     * @returns Event
+     * @throws ApiError
+     */
+    public static eventsListUpcomingList(): CancelablePromise<Array<Event>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/events/list_upcoming/',
+        });
+    }
 }
