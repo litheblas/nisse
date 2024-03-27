@@ -27,6 +27,13 @@ class NisseKeycloakMiddleware(KeycloakMiddleware):
         )
 
 
+"""
+This class is used to authorize the user. It is used to check if the user has the required roles to access the endpoint.
+Any new endpoint that requires authorization should also add the required roles in the keycloak_roles variable.
+If this is note done the endpoint will be accessible to all users, even if they are not logged in.
+"""
+
+
 class Authorize(APIView):
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
