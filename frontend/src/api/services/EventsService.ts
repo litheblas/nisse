@@ -169,4 +169,14 @@ export class EventsService {
             mediaType: 'application/json',
         });
     }
+    /**
+     * @returns Event
+     * @throws ApiError
+     */
+    public static eventsListUpcomingList(): CancelablePromise<Array<Event>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/events/list_upcoming/',
+        });
+    }
 }
