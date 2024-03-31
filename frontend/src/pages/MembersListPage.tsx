@@ -212,7 +212,7 @@ export const MembersListPage = () => {
 
   // useEffect to update staticFilteredMembers when data is changed or showAdvancedSearch is pressed
   // This is where the static filter is applied.
-  //Normal text search is possible to search within after this filter is applied.
+  // Normal text search is possible to search within after this filter is applied.
   useEffect(() => {
     const filterAdvanced = () => {
       if (!data) {
@@ -277,6 +277,66 @@ export const MembersListPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showAdvancedSearch, triggerFilterUpdate])
+
+  // Function to export data as CSV
+  const exportToCsv = () => {
+    // load more information from each member
+    let searchQuery: string = initialQueryFields
+    searchQuery += ',complete_adress,birth_date,phone_number_1'
+    handleQueryFieldsChange(searchQuery)
+
+    // Replace en dash with hyphen in active_period for CSV export
+    const membersForExport = sortedMembers.map((member) => ({
+      ...member,
+      active_period: member.active_period.replace(/–/g, '-'),
+    }))
+
+    // Define the fields to include in the CSV
+    const fields = [
+      'real_name',
+      'short_name',
+      'active_period',
+      'email',
+      'complete_adress',
+      'birth_date',
+      'phone_number_1',
+    ]
+
+    // Generate CSV header
+    const header = fields.join(';')
+
+    // Generate CSV content for each member
+    const csvContent = membersForExport
+      .map((member) => {
+        // Extract values for each field
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        const values = fields.map((field) => member[field] || '')
+        // Join values with semicolons
+        return values.join(';')
+      })
+      .join('\n')
+
+    // Combine header and content
+    const csvData = `${header}\n${csvContent}`
+    console.log(csvData)
+
+    // Create a Blob object for the CSV data
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' })
+
+    // Create a temporary URL for the Blob
+    const url = URL.createObjectURL(blob)
+
+    // Create a temporary anchor element
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'members.csv')
+
+    // Simulate a click on the anchor element to download the CSV file
+    link.click()
+
+    // Release the URL object
+    URL.revokeObjectURL(url)
+  }
 
   // Rendering of page header
   const renderPageHeader = () => {
@@ -370,6 +430,9 @@ export const MembersListPage = () => {
             </div>
             <button className={style.advancedButton} onClick={searchAdvanced}>
               Sök advancerat
+            </button>
+            <button className={style.advancedButton} onClick={exportToCsv}>
+              Export Members as CSV
             </button>
           </div>
         )}
