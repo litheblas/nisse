@@ -17,8 +17,8 @@ class EventSerializer(DynamicFieldsModelSerializer):
             "end_time",
             "id",
             "location",
-            "name",
             "full_day",
+            "name",
             "start_time",
             "event_type",
         ]
