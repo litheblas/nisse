@@ -2,6 +2,7 @@ import * as Form from '@radix-ui/react-form'
 import { Event, EventTypeEnum } from '../api'
 import { eventTypeToString } from '../utils/EventTypeToString'
 import style from './styling/EditEventForm.module.css'
+import { useState } from 'react'
 
 interface EditEventFormProps {
   baseEvent: Event
@@ -9,6 +10,13 @@ interface EditEventFormProps {
 }
 
 export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
+  const [isChecked, setIsChecked] = useState(false)
+
+  const checkHandler = () => {
+    setIsChecked(!isChecked)
+    baseEvent.full_day = !isChecked
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = Object.fromEntries(new FormData(event.currentTarget))
@@ -19,9 +27,11 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
       event_type: data.event_type as unknown as EventTypeEnum,
       description: data.description as string,
       location: data.location as string,
+      full_day: data.full_day as unknown as boolean,
       start_time: data.start_time as string,
       end_time: data.stop_time as string,
     }
+
     onSubmit(submittedEvent)
   }
 
@@ -76,10 +86,18 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
       {/*Full day event or not*/}
       <Form.Field className={style.FormField} name="full_day">
         <div className={style.FormFieldLabelContainer}>
-          <Form.Label className={style.FormLabel}>Heldagsevent? 👀</Form.Label>
+          <Form.Label className={style.FormLabel}>
+            Heldagsevenemang?{' '}
+          </Form.Label>
         </div>
         <Form.Control asChild>
-          <input className={style.Input} type="checkbox" />
+          <input
+            className={style.Checkbox}
+            type="checkbox"
+            checked={baseEvent.full_day}
+            value={isChecked.toString()}
+            onChange={checkHandler}
+          />
         </Form.Control>
       </Form.Field>
 
@@ -114,9 +132,11 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
           </Form.Message>
           <Form.Message
             className={style.FormMessage}
-            match={(value: string, formData) =>
-              new Date(value) <=
-              new Date(formData.get('start_time') as unknown as string)
+            match={(
+              value: string,
+              formData: { get: (arg0: string) => unknown }
+            ) =>
+              new Date(value) <= new Date(formData.get('start_time') as string)
             }
           >
             Eventet kan inte sluta innan det har börjat
