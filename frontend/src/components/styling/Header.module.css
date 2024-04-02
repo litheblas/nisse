@@ -11,17 +11,10 @@
   align-items: center;
   display: grid;
 
-  /*grid-template-columns: max-content 8px min-content 1fr max-content max-content;*/
+  grid-template-columns: max-content 1fr max-content max-content;
   margin: 0 var(--page-side-padding);
   max-width: var(--page-max-width);
   width: 100%;
-  @media (min-width: 800px) {
-    grid-template-columns: max-content 8px max-content 1fr max-content max-content;
-  }
-
-  @media (max-width: 801px) {
-    grid-template-columns: max-content 1fr min-content 1fr max-content max-content;
-  }
 }
 
 .logo {
@@ -37,19 +30,15 @@
 }
 
 .logoutButton {
-  grid-column: 5;
+  grid-column: 3;
 
   @media (max-width: 800px) {
     display: none;
   }
 }
 
-.openDoorButton {
-  grid-column: 3;
-}
-
 .menu {
-  grid-column: 6;
+  grid-column: 4;
 
   @media (min-width: 801px) {
     display: none;
