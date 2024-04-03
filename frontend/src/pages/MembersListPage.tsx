@@ -16,6 +16,20 @@ Then a dynamic filter which is the text input filtering.
 The static filter is first applied, which makes it possible to search with text.
 */
 
+interface Member {
+  id: string
+  full_name: string
+  active_period: string
+  real_name?: string
+  email?: string
+  short_name?: string
+  complete_adress?: string
+  birth_date?: string
+  phone_number_1?: string
+  memberships?: Membership[]
+  engagements?: Engagement[]
+}
+
 // Used to tell TS what Membership contains
 // It does contain more but we only use membership_type
 interface Membership {
@@ -280,7 +294,6 @@ export const MembersListPage = () => {
 
   // Function to export data as CSV
   const exportToCsv = () => {
-    // load more information from each member
     let searchQuery: string = initialQueryFields
     searchQuery += ',complete_adress,birth_date,phone_number_1'
     handleQueryFieldsChange(searchQuery)
@@ -292,7 +305,7 @@ export const MembersListPage = () => {
     }))
 
     // Define the fields to include in the CSV
-    const fields = [
+    const fields: (keyof Member)[] = [
       'real_name',
       'short_name',
       'active_period',
@@ -305,11 +318,9 @@ export const MembersListPage = () => {
     // Generate CSV header
     const header = fields.join(';')
 
-    // Generate CSV content for each member
     const csvContent = membersForExport
       .map((member) => {
         // Extract values for each field
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const values = fields.map((field) => member[field] || '')
         // Join values with semicolons
         return values.join(';')
