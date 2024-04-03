@@ -38,6 +38,79 @@ def has_grass_membership(member):
     return False
 
 
+def do_events():
+    print("Migrating events...")
+
+    old_events = get_all_events()
+    for old_event in old_events:
+        """
+        TODO: Here we need to do some data transformation
+        """
+        Event().save()
+
+    print("Events migrated!")
+
+
+def do_members():
+    print("Migrating members...")
+    old_members = get_all_members()
+    membership_types = get_all_membership_types()
+    engagement_types = get_all_engagement_types()
+
+    for old_member in old_members:
+        """
+        TODO: Here we need to do some data transformation
+        """
+
+        """Here we crate the member"""
+        m = Member()
+        m.save()
+
+        """ Here we do the engagements"""
+        for old_engagement in old_member.engagements:
+            if old_engagement.type.lower() in engagement_types.keys():
+                Engagement(
+                    engagementType=engagement_types[old_engagement.type.lower()],
+                    member=m.id,
+                    start=old_engagement.start,
+                    end=old_engagement.end,
+                ).save()
+            else:
+                e = EngagementType(old_engagement.type.capitalize())
+                e.save()
+                Engagement(
+                    engagementType=e.id,
+                    member=m.id,
+                ).save()
+                engagement_types = get_all_engagement_types()
+
+        """Here we do the memberships"""
+        for old_membership in old_member.memberships:
+            if old_membership.type.lower() in membership_types.keys():
+                Membership(
+                    membershipType=membership_types[old_membership.type.lower()],
+                    member=m.id,
+                    start=old_engagement.start,
+                    end=old_engagement.end,
+                ).save()
+            else:
+                m = MembershipType(old_membership.type.capitalize())
+                m.save()
+                Membership(
+                    membershipType=m.id,
+                    member=m.id,
+                    start=old_membership.start,
+                ).save()
+                membership_types = get_all_membership_types()
+        if has_grass_membership(old_member):
+            """
+            TODO: CONDITIONAL TIME OF GRAS MEMBERSHIP
+            """
+            GrasMembership(member=m.id).save()
+
+    print("Members migrated!")
+
+
 class Comand(BaseCommand):
     help = """Migrate the old Database to the new one.\n
     --test: Test if connection to old db can be established\n
@@ -81,86 +154,11 @@ class Comand(BaseCommand):
             )
             print("Connection to old database successful!")
         elif options["all"] or (options["events"] and options["members"]):
-            print("Migrating all data...")
-            # Migrate all data
-
-            print("Migrating events...")
-            events = get_all_events()
-            for event in events:
-                """
-                TODO: Here we need to do some data transformation
-                """
-                Event().save()
-            print("Events migrated!")
-
-            print("Migrating members...")
-            members = get_all_members()
-            membership_types = get_all_membership_types()
-            engagement_types = get_all_engagement_types()
-
-            for old_member in members:
-                """
-                TODO: Here we need to do some data transformation
-                """
-
-                """Here we crate the member"""
-                m = Member()
-                m.save()
-
-                """ Here we do the engagements"""
-                for old_engagement in old_member.engagements:
-                    if old_engagement.type.lower() in engagement_types.keys():
-                        Engagement(
-                            engagementType=engagement_types[
-                                old_engagement.type.lower()
-                            ],
-                            member=m.id,
-                            start=old_engagement.start,
-                            end=old_engagement.end,
-                        ).save()
-                    else:
-                        e = EngagementType(old_engagement.type.capitalize())
-                        e.save()
-                        Engagement(
-                            engagementType=e.id,
-                            member=m.id,
-                        ).save()
-                        engagement_types = get_all_engagement_types()
-
-                """Here we do the memberships"""
-                for old_membership in old_member.memberships:
-                    if old_membership.type.lower() in membership_types.keys():
-                        Membership(
-                            membershipType=membership_types[
-                                old_membership.type.lower()
-                            ],
-                            member=m.id,
-                            start=old_engagement.start,
-                            end=old_engagement.end,
-                        ).save()
-                    else:
-                        m = MembershipType(old_membership.type.capitalize())
-                        m.save()
-                        Membership(
-                            membershipType=m.id,
-                            member=m.id,
-                            start=old_membership.start,
-                        ).save()
-                        membership_types = get_all_membership_types()
-                if has_grass_membership(old_member):
-                    """
-                    TODO: CONDITIONAL TIME OF GRAS MEMBERSHIP
-                    """
-                    GrasMembership(member=m.id).save()
-
-            print("All data migrated!")
+            do_events()
+            do_members()
         elif options["events"]:
-            print("Migrating events...")
-            # Migrate events
-            print("Events migrated!")
+            do_events()
         elif options["members"]:
-            print("Migrating members...")
-            # Migrate members
-            print("Members migrated!")
+            do_members()
         else:
             print("No option was selected. Please select an option to migrate data.")
