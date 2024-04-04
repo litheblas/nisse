@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { DoorService } from '../api'
 import { useAuth } from '../context/AuthContext'
 import style from './styling/Menu.module.css'
 
@@ -11,6 +12,15 @@ export const Menu = () => {
 
   return (
     <menu className={style.container}>
+      <button
+        onClick={() => {
+          void DoorService.doorCreate()
+          return false
+        }}
+        className={`standardButton blueButton`}
+      >
+        Öppna Blåsrumsdörren
+      </button>
       <div className={style.menuHeading}>Sidor</div>
       <NavLink className={linkStyle} to="/">
         Info
