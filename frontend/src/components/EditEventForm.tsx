@@ -113,7 +113,7 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type="datetime-local"
+            type={isChecked ? 'date' : 'datetime-local'}
             required
             defaultValue={new Date(baseEvent.start_time)
               .toISOString()
@@ -145,7 +145,7 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type="datetime-local"
+            type={isChecked ? 'date' : 'datetime-local'}
             required
             defaultValue={new Date(baseEvent.end_time)
               .toISOString()
