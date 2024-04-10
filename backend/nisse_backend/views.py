@@ -3,6 +3,7 @@ import os
 import requests
 from django.http import HttpResponse
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES, MEDIA_ROOT
+from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -34,8 +35,13 @@ def serve_media(_request, file_name):
         return Response({"error": "File not found"}, status=404)
 
 
+class OpenDoorSerializer(serializers.Serializer):
+    pass
+
+
 class OpenDoor(APIView):
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+    serializer_class = OpenDoorSerializer
 
     def post(self, request, format=None):
         """

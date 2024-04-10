@@ -15,6 +15,7 @@ export type { PatchedEvent } from './models/PatchedEvent';
 export type { PatchedMember } from './models/PatchedMember';
 export type { StringList } from './models/StringList';
 
+export { DoorService } from './services/DoorService';
 export { EventsService } from './services/EventsService';
 export { MembersService } from './services/MembersService';
 export { SchemaService } from './services/SchemaService';

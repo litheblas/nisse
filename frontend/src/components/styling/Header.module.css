@@ -10,6 +10,7 @@
 .content {
   align-items: center;
   display: grid;
+
   grid-template-columns: max-content 1fr max-content max-content;
   margin: 0 var(--page-side-padding);
   max-width: var(--page-max-width);
@@ -22,6 +23,9 @@
 
   & > img {
     height: 100%;
+    @media (max-width: 800px) {
+      font-size: smaller;
+    }
   }
 }
 
