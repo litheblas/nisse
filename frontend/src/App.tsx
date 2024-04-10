@@ -43,10 +43,6 @@ const router = createBrowserRouter(
               path: ':memberId',
               element: <MemberPage />,
             },
-            {
-              path: 'edit/:memberId',
-              element: <EditMemberPage />,
-            },
           ],
         },
         {
