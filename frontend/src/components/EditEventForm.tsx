@@ -87,10 +87,8 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
             className={style.Input}
             type="datetime-local"
             required
-            defaultValue={new Date(baseEvent.start_time)
-              .toISOString()
-              .slice(0, 19)}
-            key={new Date(baseEvent.start_time).toISOString().slice(0, 19)}
+            defaultValue={baseEvent.start_time.slice(0, 19)}
+            key={baseEvent.start_time.slice(0, 19)}
           />
         </Form.Control>
       </Form.Field>
@@ -117,10 +115,8 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
             className={style.Input}
             type="datetime-local"
             required
-            defaultValue={new Date(baseEvent.end_time)
-              .toISOString()
-              .slice(0, 19)}
-            key={new Date(baseEvent.end_time).toISOString().slice(0, 19)}
+            defaultValue={baseEvent.end_time.slice(0, 19)}
+            key={baseEvent.end_time.slice(0, 19)}
           />
         </Form.Control>
       </Form.Field>

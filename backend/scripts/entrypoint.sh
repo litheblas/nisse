@@ -1,9 +1,6 @@
 #!/bin/sh
 
-pipenv run python3 manage.py collectstatic --no-input
-
-# TODO: Determine if we should run makemigrations in production?
-pipenv run python manage.py makemigrations
+pipenv run python manage.py collectstatic --no-input
 pipenv run python manage.py migrate
 pipenv run web &
 

@@ -6,6 +6,7 @@ import { AppShell } from './components/AppShell'
 import AuthProvider from './context/AuthProvider'
 import { AddEventPage } from './pages/AddEventPage'
 import { EditEventPage } from './pages/EditEventPage'
+import { EditMemberPage } from './pages/EditMemberPage'
 import { EventsPage } from './pages/EventsPage'
 import { HomePage } from './pages/HomePage'
 import { InformationChannelsPage } from './pages/InformationChannelsPage'
@@ -37,6 +38,10 @@ const router = createBrowserRouter(
               path: ':memberId',
               element: <MemberPage />,
             },
+            {
+              path: 'edit/:memberId',
+              element: <EditMemberPage />,
+            },
           ],
         },
         {
@@ -57,9 +62,13 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: '/informationChannels',
+          path: '/informationskanaler',
           element: <InformationChannelsPage />,
         },
+        // {
+        //   path: '/integritet',
+        //   element: <IntegrityPage />,
+        // },
       ],
     },
   ],
