@@ -10,7 +10,6 @@ import { EditMemberPage } from './pages/EditMemberPage'
 import { EventsPage } from './pages/EventsPage'
 import { HomePage } from './pages/HomePage'
 import { InformationChannelsPage } from './pages/InformationChannelsPage'
-import { IntegrityPage } from './pages/IntegrityPage'
 import { MemberPage } from './pages/MemberPage'
 import { MembersListPage } from './pages/MembersListPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
@@ -66,10 +65,10 @@ const router = createBrowserRouter(
           path: '/informationskanaler',
           element: <InformationChannelsPage />,
         },
-        {
-          path: '/integritet',
-          element: <IntegrityPage />,
-        },
+        // {
+        //   path: '/integritet',
+        //   element: <IntegrityPage />,
+        // },
       ],
     },
   ],
