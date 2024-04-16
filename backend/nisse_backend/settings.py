@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "corsheaders",
+    "nisse_backend",
 ]
 
 if DEBUG:

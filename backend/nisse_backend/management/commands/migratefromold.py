@@ -1,3 +1,6 @@
+import json
+import os
+
 import mariadb
 from django.core.management.base import BaseCommand
 from events.models import Event
@@ -9,6 +12,9 @@ from members.models import (
     Membership,
     MembershipType,
 )
+
+KEYCLOAK_API = ""
+KEYCLOAK_REALM = ""
 
 """
 SELECT * FROM medlem
@@ -94,8 +100,40 @@ medlem = medlemskap
 instr = instrumentID
 sektion = obsoloete
 
-
+Keycloak: POST to /admin/realms/{realm}/users
+Body UserRepresentation:
+self                        : optional String
+id                          : optional String
+origin                      : optional String
+createdTimestamp            : optional Longint64
+username                    : optional String
+enabled                     : optional Boolean
+totp                        : optional Boolean
+emailVerified               : optional Boolean
+firstName                   : optional String
+lastName                    : optional String
+email                       : optional String
+federationLink              : optional String
+serviceAccountClientId      : optional String
+attributes                  : optional Map of [array]
+credentials                 : optional List of CredentialRepresentation
+disableableCredentialTypes  : optional Set of [string]
+requiredActions             : optional List of [string]
+federatedIdentities         : optional List of FederatedIdentityRepresentation
+realmRoles                  : optional List of [string]
+clientRoles                 : optional Map of [array]
+clientConsents              : optional List of UserConsentRepresentation
+notBefore                   : optional Integer
+applicationRoles            : optional Map of [array]
+socialLinks                 : optional List of SocialLinkRepresentation
+groups                      : optional List of [string]
+access                      : optional Map of [boolean]
 """
+
+
+def get_legacy_toblapp():
+    with open("legacy_id_to_blapp_id.json") as f:
+        return json.load(f)
 
 
 def open_connection():
@@ -215,22 +253,22 @@ def do_members(db_conn):
 
         """Here we crate the member"""
         m = Member(
-            first_name=fnamn,
-            last_name=enamn,
-            nickname=smek,
-            birth_date=fodd,
-            email=epost,
-            pronouns=kon,
-            phone_number_1=mobilnr,
-            phone_number_2=hemnr,
-            phone_number_3=jobbnr,
-            street_address=gatuadr,
-            postal_code=postnr,
-            postal_town=ort,
-            postal_country=land,
-            liu_id=studentid,
-            arbitary_text=fritext,
-            national_id=pnr_sista,
+            first_name=fnamn if fnamn else "",
+            last_name=enamn if enamn else "",
+            nickname=smek if smek else "",
+            birth_date=fodd if fodd else None,
+            email=epost if epost else "",
+            pronouns=kon if kon else "",
+            phone_number_1=mobilnr if mobilnr else "",
+            phone_number_2=hemnr if hemnr else "",
+            phone_number_3=jobbnr if jobbnr else "",
+            street_address=gatuadr if gatuadr else "",
+            postal_code=postnr if postnr else "",
+            postal_town=ort if ort else "",
+            postal_country=land if land else "",
+            liu_id=studentid if studentid else "",
+            arbitary_text=fritext if fritext else "",
+            national_id=pnr_sista if pnr_sista else "",
         )
         m.save()
 
@@ -295,7 +333,7 @@ def do_members(db_conn):
     print("Members migrated!")
 
 
-class Comand(BaseCommand):
+class Command(BaseCommand):
     help = """Migrate the old Database to the new one.\n
     --test: Test if connection to old db can be established\n
     --events: Migrate only events\n
@@ -332,7 +370,49 @@ class Comand(BaseCommand):
             # Test connection to old database
             conn = open_connection()
             if conn is None:
+                print("Could not connect to old database")
                 return
+            if not os.path.exists("legacy_id_to_blapp_id.json"):
+                print("Could not find file with legacy id to blapp id mapping")
+                return
+            test1 = get_all_members(conn)
+            (
+                persid,
+                fnamn,
+                enamn,
+                smek,
+                fodd,
+                pnr_sista,
+                gatuadr,
+                postnr,
+                ort,
+                land,
+                epost,
+                studentid,
+                hemnr,
+                mobilnr,
+                jobbnr,
+                icqnr,
+                fritext,
+                blasmail,
+                gras_medlem_till,
+                arbete,
+                icke_blasare,
+                password,
+                nomail,
+                veg,
+                gluten,
+                nykter,
+                allergi,
+                admin,
+                sedd_av_anv,
+                latlong,
+                kon,
+                epost_utskick,
+                senast_kollad,
+            ) = test1[0]
+            print(f"First member: \n {test1[0]}")
+
             print(
                 "Here the developler should have tried to do conversions of old database models to new database models."
             )
