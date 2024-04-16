@@ -171,6 +171,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": True,
     "PREPROCESSING_HOOKS": [
         "nisse_backend.auth.spectacular_auth_hook",
+        "nisse_backend.utils.drf_spectacular_ignore_endpoints",
     ],
 }
 

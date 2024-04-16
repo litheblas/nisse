@@ -1,0 +1,42 @@
+name: Generate API and check
+
+on: [push, pull_request]
+
+jobs:
+  pipenv-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup backend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pipenv
+      - run: pipenv install --deploy --dev
+        working-directory: backend/
+
+      # Setup frontend
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - run: npm ci
+        working-directory: frontend/
+
+      # Generate API
+      - run: npm run generate-api-client
+        working-directory: frontend/
+
+      # Run pre-commit to format the files
+      - uses: pre-commit/action@v3.0.1
+        continue-on-error: true
+
+      # Check if anything changed
+      - run: git add -A && git diff --staged --exit-code
+
+    env:
+      # Skip `no-commit-to-branch`, since it isn't relevant in a pipeline.
+      # Skip `eslint`, since it needs the frontend to be installed to work. It
+      # is instead run in the node.js pipeline.
+      SKIP: no-commit-to-branch,eslint
