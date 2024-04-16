@@ -62,9 +62,13 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: '/informationChannels',
+          path: '/informationskanaler',
           element: <InformationChannelsPage />,
         },
+        // {
+        //   path: '/integritet',
+        //   element: <IntegrityPage />,
+        // },
       ],
     },
   ],

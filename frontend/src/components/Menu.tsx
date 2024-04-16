@@ -22,9 +22,6 @@ export const Menu = () => {
         Öppna Blåsrumsdörren
       </button>
       <div className={style.menuHeading}>Sidor</div>
-      <NavLink className={linkStyle} to="/">
-        Info
-      </NavLink>
       <NavLink className={linkStyle} to="/events">
         Kalender
       </NavLink>
@@ -33,46 +30,73 @@ export const Menu = () => {
       </NavLink>
 
       <div className={style.menuHeading}>Information</div>
-      <NavLink className={linkStyle} to="/informationChannels">
+      <NavLink className={linkStyle} to="/informationskanaler">
         Informationskanaler
       </NavLink>
-      <NavLink className={linkStyle} to="/">
-        Stadgar
+      <NavLink
+        className={style.menuItem}
+        to="https://drive.google.com/drive/folders/1DNFzCN0o3qRWROojrVfndK-37J9w27Td?usp=sharing"
+      >
+        Mötesprotokoll och stadgar
       </NavLink>
-      <NavLink className={linkStyle} to="/">
+      <NavLink className={style.menuItem} to="https://wiki.litheblas.org">
         Wiki
       </NavLink>
-      <NavLink className={linkStyle} to="/">
+      <NavLink
+        className={style.menuItem}
+        to="https://wiki.litheblas.org/Integritetspolicy"
+      >
         Integritetspolicy
       </NavLink>
 
-      <div className={style.menuHeading}>Musik</div>
-      <NavLink className={linkStyle} to="/">
+      <div className={style.menuHeading}>Musik & Dans</div>
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/danser/"
+      >
+        Danser
+      </NavLink>
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/notarkiv/"
+      >
         Notarkiv
       </NavLink>
-      <NavLink className={linkStyle} to="/">
+      <NavLink
+        className={style.menuItem}
+        to="https://wiki.litheblas.org/Kategori:S%C3%A5ngl%C3%A5tar"
+      >
         Sing-a-long
       </NavLink>
-      <NavLink className={linkStyle} to="/">
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/musik/"
+      >
         Inspelningar
       </NavLink>
 
-      <div className={style.menuHeading}>Dans</div>
-      <NavLink className={linkStyle} to="/">
-        Aktiva danser
-      </NavLink>
-      <NavLink className={linkStyle} to="/">
-        Gamla danser
-      </NavLink>
-
       <div className={style.menuHeading}>Bilder</div>
-      <NavLink className={linkStyle} to="/">
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/galleri/"
+      >
         Galleriet
       </NavLink>
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/timeline/"
+      >
+        Blåsare i tiden
+      </NavLink>
 
-      <div className={`${style.menuHeading} ${style.hideInDesktopMode}`}>
-        Övrigt
-      </div>
+      <div className={style.menuHeading}>Övrigt</div>
+      <NavLink
+        className={style.menuItem}
+        to="https://www.litheblas.org/internt/barstat/"
+      >
+        Barstatistik
+      </NavLink>
+
       <NavLink
         className={`${style.menuItem} ${style.hideInDesktopMode}`}
         to="/"

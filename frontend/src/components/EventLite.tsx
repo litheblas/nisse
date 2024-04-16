@@ -123,6 +123,10 @@ export const EventLite = ({ event }: { event: Event }) => {
   const month = start_time.toLocaleDateString('sv-SV', {
     month: 'long',
   })
+  const year = start_time.toLocaleDateString('sv-SV', {
+    year: 'numeric',
+  })
+  const current_year = new Date().getFullYear()
   const time = start_time.toLocaleTimeString('sv-SV', {
     hour: '2-digit',
     minute: '2-digit',
@@ -164,6 +168,7 @@ export const EventLite = ({ event }: { event: Event }) => {
       <div className={style.eventDateBox}>
         <span className={style.eventDateDay}>{day}</span>
         <span>{month}</span>
+        <span>{Number(year) != current_year ? year : null}</span>
         <span>{time}</span>
       </div>
       <div className={style.eventInfo}>

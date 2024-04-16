@@ -2,14 +2,15 @@ import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { Event, EventsService } from '../api'
 import { EditEventForm } from '../components/EditEventForm'
+import { dateTimeToIsoWithTimezone } from '../utils/CustomTimeFormat'
 
 const defaultEvent: Event = {
   id: '',
   name: '',
   location: '',
   full_day: false,
-  start_time: new Date().toISOString(),
-  end_time: new Date().toISOString(),
+  start_time: dateTimeToIsoWithTimezone(new Date()),
+  end_time: dateTimeToIsoWithTimezone(new Date()),
   description: '',
   attendees: [],
   creator: '',
