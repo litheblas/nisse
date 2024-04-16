@@ -1,8 +1,8 @@
 import * as Form from '@radix-ui/react-form'
+import { useState } from 'react'
 import { Event, EventTypeEnum } from '../api'
 import { eventTypeToString } from '../utils/EventTypeToString'
 import style from './styling/EditEventForm.module.css'
-import { useState } from 'react'
 
 interface EditEventFormProps {
   baseEvent: Event
@@ -86,9 +86,7 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
       {/*Full day event or not*/}
       <Form.Field className={style.FormField} name="full_day">
         <div className={style.FormFieldLabelContainer}>
-          <Form.Label className={style.FormLabel}>
-            Heldagsevenemang?{' '}
-          </Form.Label>
+          <Form.Label className={style.FormLabel}>Heldagsevenemang?</Form.Label>
         </div>
         <Form.Control asChild>
           <input
