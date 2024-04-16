@@ -224,65 +224,93 @@ export const MembersListPage = () => {
     setTriggerFilterUpdate(!triggerFilterUpdate)
   }
 
+  const filterAdvanced = () => {
+    if (!data) {
+      return <span>No data available</span>
+    }
+
+    const staticFiltered = data.filter((member) => {
+      let staticFilter = false
+      if (sortActive && member.active_period.length == 5) {
+        staticFilter = true
+      }
+      if (sortGamling && member.active_period.length == 9) {
+        staticFilter = true
+      }
+      // Filter on instrument groups
+      if (
+        selectedMembershipGroup !== '' &&
+        selectedMembershipGroup !== 'Alla medlemsgrupper'
+      ) {
+        const matchingMembership = member.memberships.some((membership) => {
+          const typedMembership = membership as Membership
+          return (
+            instrumentMembershipGroups[typedMembership.membership_type] ===
+            selectedMembershipGroup
+          )
+        })
+        staticFilter = matchingMembership
+      }
+      // Filter on instrument
+      if (
+        selectedInstrumentGroup !== '' &&
+        selectedInstrumentGroup !== 'Alla instrumentgrupper'
+      ) {
+        const matchingMembership = member.memberships.some((membership) => {
+          const typedMembership = membership as Membership
+          return typedMembership.membership_type === selectedInstrumentGroup
+        })
+        staticFilter = matchingMembership
+      }
+      // Filter on engagements
+      if (
+        selectedEngagementGroup !== '' &&
+        selectedEngagementGroup !== 'Alla engagemangsgrupper'
+      ) {
+        const matchingEngagement = member.engagements.some((engagement) => {
+          const typedEngagement = engagement as Engagement
+          return typedEngagement.engagement_type === selectedEngagementGroup
+        })
+        staticFilter = matchingEngagement
+      }
+      return staticFilter
+    })
+
+    setStaticFilteredMembers(staticFiltered)
+  }
+
+  // If no dynamic filter (text in search box) is active, show staticFilteredMembers members
+  const membersToDisplay = searchQuery
+    ? filteredMembers || []
+    : staticFilteredMembers
+    ? staticFilteredMembers
+    : data || []
+
+  // Sort membersToDisplay array based on the selected option
+  const sortedMembers = [...membersToDisplay].sort((a, b) => {
+    if (sortBy === 'full_name (desc)') {
+      return a.full_name.localeCompare(b.full_name)
+    } else if (sortBy === 'full_name (asc)') {
+      return a.full_name.localeCompare(b.full_name) * -1
+    } else if (sortBy === 'active_period (asc)') {
+      return a.active_period.localeCompare(b.active_period)
+    } else if (sortBy === 'active_period (desc)') {
+      return a.active_period.localeCompare(b.active_period) * -1
+    } else if (sortBy === 'short_name (desc)') {
+      return a.short_name.localeCompare(b.short_name)
+    } else if (sortBy === 'short_name (asc)') {
+      return a.short_name.localeCompare(b.short_name) * -1
+    }
+    // Add more sorting options as needed
+    return 0 // Default sorting behavior
+  })
+
+  const [exportToCsvState, setExportToCsvState] = useState(false)
+
   // useEffect to update staticFilteredMembers when data is changed or showAdvancedSearch is pressed
   // This is where the static filter is applied.
   // Normal text search is possible to search within after this filter is applied.
   useEffect(() => {
-    const filterAdvanced = () => {
-      if (!data) {
-        return <span>No data available</span>
-      }
-
-      const staticFiltered = data.filter((member) => {
-        let staticFilter = false
-        if (sortActive && member.active_period.length == 5) {
-          staticFilter = true
-        }
-        if (sortGamling && member.active_period.length == 9) {
-          staticFilter = true
-        }
-        // Filter on instrument groups
-        if (
-          selectedMembershipGroup !== '' &&
-          selectedMembershipGroup !== 'Alla medlemsgrupper'
-        ) {
-          const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership
-            return (
-              instrumentMembershipGroups[typedMembership.membership_type] ===
-              selectedMembershipGroup
-            )
-          })
-          staticFilter = matchingMembership
-        }
-        // Filter on instrument
-        if (
-          selectedInstrumentGroup !== '' &&
-          selectedInstrumentGroup !== 'Alla instrumentgrupper'
-        ) {
-          const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership
-            return typedMembership.membership_type === selectedInstrumentGroup
-          })
-          staticFilter = matchingMembership
-        }
-        // Filter on engagements
-        if (
-          selectedEngagementGroup !== '' &&
-          selectedEngagementGroup !== 'Alla engagemangsgrupper'
-        ) {
-          const matchingEngagement = member.engagements.some((engagement) => {
-            const typedEngagement = engagement as Engagement
-            return typedEngagement.engagement_type === selectedEngagementGroup
-          })
-          staticFilter = matchingEngagement
-        }
-        return staticFilter
-      })
-
-      setStaticFilteredMembers(staticFiltered)
-    }
-
     // When advanced search is active, then use filterAdvanced, otherwise skip the static filter
     if (showAdvancedSearch) {
       filterAdvanced()
@@ -292,12 +320,24 @@ export const MembersListPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showAdvancedSearch, triggerFilterUpdate])
 
-  // Function to export data as CSV
-  const exportToCsv = () => {
+  useEffect(() => {
+    if (
+      exportToCsvState &&
+      sortedMembers.every((member) => member.complete_adress !== undefined)
+    ) {
+      exportToCsv()
+    }
+  }, [sortedMembers])
+
+  const exportToCsvButtonAction = () => {
     let searchQuery: string = initialQueryFields
     searchQuery += ',complete_adress,birth_date,phone_number_1'
     handleQueryFieldsChange(searchQuery)
+    setExportToCsvState(true)
+  }
 
+  // Function to export data as CSV
+  const exportToCsv = () => {
     // Replace en dash with hyphen in active_period for CSV export
     const membersForExport = sortedMembers.map((member) => ({
       ...member,
@@ -347,6 +387,9 @@ export const MembersListPage = () => {
 
     // Release the URL object
     URL.revokeObjectURL(url)
+
+    // Reset to original query information
+    setExportToCsvState(false)
   }
 
   // Rendering of page header
@@ -442,7 +485,10 @@ export const MembersListPage = () => {
             <button className={style.advancedButton} onClick={searchAdvanced}>
               Sök advancerat
             </button>
-            <button className={style.advancedButton} onClick={exportToCsv}>
+            <button
+              className={style.advancedButton}
+              onClick={exportToCsvButtonAction}
+            >
               Export Members as CSV
             </button>
           </div>
@@ -474,32 +520,6 @@ export const MembersListPage = () => {
       </>
     )
   }
-
-  // If no dynamic filter (text in search box) is active, show staticFilteredMembers members
-  const membersToDisplay = searchQuery
-    ? filteredMembers || []
-    : staticFilteredMembers
-    ? staticFilteredMembers
-    : data
-
-  // Sort membersToDisplay array based on the selected option
-  const sortedMembers = [...membersToDisplay].sort((a, b) => {
-    if (sortBy === 'full_name (desc)') {
-      return a.full_name.localeCompare(b.full_name)
-    } else if (sortBy === 'full_name (asc)') {
-      return a.full_name.localeCompare(b.full_name) * -1
-    } else if (sortBy === 'active_period (asc)') {
-      return a.active_period.localeCompare(b.active_period)
-    } else if (sortBy === 'active_period (desc)') {
-      return a.active_period.localeCompare(b.active_period) * -1
-    } else if (sortBy === 'short_name (desc)') {
-      return a.short_name.localeCompare(b.short_name)
-    } else if (sortBy === 'short_name (asc)') {
-      return a.short_name.localeCompare(b.short_name) * -1
-    }
-    // Add more sorting options as needed
-    return 0 // Default sorting behavior
-  })
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage
