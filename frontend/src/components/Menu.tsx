@@ -42,7 +42,10 @@ export const Menu = () => {
       <NavLink className={style.menuItem} to="https://wiki.litheblas.org">
         Wiki
       </NavLink>
-      <NavLink className={style.menuItem} to="/integritet">
+      <NavLink
+        className={style.menuItem}
+        to="https://wiki.litheblas.org/Integritetspolicy"
+      >
         Integritetspolicy
       </NavLink>
 
