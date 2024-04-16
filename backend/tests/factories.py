@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta, timezone
+
+from events.models import Event
 from factory import LazyAttribute
 from factory.django import DjangoModelFactory, ImageField, Password
 from factory.faker import Faker
-from factory.fuzzy import FuzzyChoice, FuzzyText
+from factory.fuzzy import FuzzyChoice, FuzzyDateTime, FuzzyText
 from factory.random import randgen
 from members.models import Member
 
@@ -38,3 +41,16 @@ class MemberFactory(DjangoModelFactory):
     arbitrary_text = Faker("sentence")
     national_id = FuzzyText(length=4, chars=NUMBERS)
     profile_picture = ImageField()
+
+
+class EventFactory(DjangoModelFactory):
+    class Meta:
+        model = Event
+
+    creator = MemberFactory()
+    location = Faker("street_address")
+    name = Faker("word")
+    start_time = FuzzyDateTime(start_dt=datetime(1974, 1, 1, tzinfo=timezone.utc))
+    end_time = LazyAttribute(lambda d: d.start_time + timedelta(hours=3))
+    event_type = FuzzyChoice([1, 2, 3])
+    description = Faker("sentence")
