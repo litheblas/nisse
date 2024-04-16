@@ -111,7 +111,7 @@ export const MembersListPage = () => {
   )
 
   // Pagination variables
-  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [itemsPerPage, setItemsPerPage] = useState(Infinity)
   const [currentPage, setCurrentPage] = useState(1)
 
   // Search filter variables
