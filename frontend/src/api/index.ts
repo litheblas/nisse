@@ -1,4 +1,4 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -18,4 +18,3 @@ export type { StringList } from './models/StringList';
 export { DoorService } from './services/DoorService';
 export { EventsService } from './services/EventsService';
 export { MembersService } from './services/MembersService';
-export { SchemaService } from './services/SchemaService';
