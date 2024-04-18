@@ -28,7 +28,13 @@
 
 .searchBarContainer {
   display: grid;
-  grid-template-columns: 1fr max-content max-content;
+  grid-template-columns: 1fr max-content;
+  gap: 16px;
+}
+
+.searchBarContainer .buttonContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
@@ -40,7 +46,7 @@
   .searchBarContainer .buttonContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px; /* Adjust the gap size as needed */
+
     width: 100%;
   }
 }
