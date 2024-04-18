@@ -482,24 +482,24 @@ export const MembersListPage = () => {
   return (
     <>
       {renderPageHeader()}
-      <table>
-        <thead>
-          <tr>
-            <th>Namn</th>
-            <th>Aktiv period</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((member) => (
-            <tr key={member.id}>
-              <td>
-                <Link to={member.id}>{member.full_name}</Link>
-              </td>
-              <td>{member.active_period}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={style.tableContainer}>
+        <div className={style.table}>
+          <div className={style.thead}>
+            <div>Namn</div>
+            <div>Aktiv period</div>
+          </div>
+          <div className={style.tbody}>
+            {currentItems.map((member) => (
+              <div className={style.row} key={member.id}>
+                <div>
+                  <Link to={member.id}>{member.full_name}</Link>
+                </div>
+                <div>{member.active_period}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       {(membersToDisplay.length > itemsPerPage ||
         itemsPerPage === Infinity) && (
         <div className={style.pagination}>
