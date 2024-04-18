@@ -352,7 +352,7 @@ export const MembersListPage = () => {
               >
                 {showAdvancedSearch
                   ? 'Hide Advanced Search'
-                  : 'Show Advanced Search'}
+                  : 'Advanced Search'}
               </button>
             </div>
           </div>
