@@ -334,25 +334,27 @@ export const MembersListPage = () => {
               value={searchQuery}
               onChange={handleSearch}
             />
-            <select
-              className={style.advancedButton}
-              value={sortBy}
-              onChange={handleSortChange}
-            >
-              {sortingOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <button
-              className={style.advancedButton}
-              onClick={toggleAdvancedSearch}
-            >
-              {showAdvancedSearch
-                ? 'Hide Advanced Search'
-                : 'Show Advanced Search'}
-            </button>
+            <div className={style.buttonContainer}>
+              <select
+                className={style.advancedButton}
+                value={sortBy}
+                onChange={handleSortChange}
+              >
+                {sortingOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                className={style.advancedButton}
+                onClick={toggleAdvancedSearch}
+              >
+                {showAdvancedSearch
+                  ? 'Hide Advanced Search'
+                  : 'Show Advanced Search'}
+              </button>
+            </div>
           </div>
         </div>
         {showAdvancedSearch && (
