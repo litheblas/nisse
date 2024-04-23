@@ -1,5 +1,7 @@
+import { Button } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useCallback, useEffect, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Event, EventTypeEnum, EventsService } from '../api'
@@ -65,6 +67,13 @@ export const EventsPage = () => {
     fetFunc,
     { select: filterEvents }
   )
+  const [textToCopy] = useState('ayo?') // The text you want to copy
+  const [copyStatus, setCopyStatus] = useState(false) // To indicate if the text was copied
+
+  const onCopyText = () => {
+    setCopyStatus(true)
+    setTimeout(() => setCopyStatus(false), 2000) // Reset status after 2 seconds
+  }
 
   useEffect(() => {
     void refetch()
@@ -90,6 +99,14 @@ export const EventsPage = () => {
               Skapa nytt event
             </button>
           </Link>
+          <CopyToClipboard text={textToCopy} onCopy={onCopyText}>
+            <Button
+              className={`standardButton blueButton ${style.newEventButton}`}
+            >
+              Prenumerera
+            </Button>
+          </CopyToClipboard>
+          {copyStatus && <p>Länk kopierad till urklipp</p>}
           <EventFilterBox
             filterSettings={filterSettings}
             setFilterSettings={setFilterSettings}
