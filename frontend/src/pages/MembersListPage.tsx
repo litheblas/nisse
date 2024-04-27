@@ -359,65 +359,67 @@ export const MembersListPage = () => {
         </div>
         {showAdvancedSearch && (
           <div className={style.advancedSearchContainer}>
-            <div className={style.advancedSearchRow}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortActive}
-                  onChange={() => setSortActive(!sortActive)}
-                />
-                aktiv
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortGamling}
-                  onChange={() => setSortGamling(!sortGamling)}
-                />
-                gamling
-              </label>
-            </div>
-            <div>
-              <select
-                className={style.dropdown}
-                value={selectedMembershipGroup}
-                onChange={(e) => setSelectedMembershipGroup(e.target.value)}
-              >
-                <option value="">Alla medlemsgrupper</option>
-                {membershipGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select
-                className={style.dropdown}
-                value={selectedInstrumentGroup}
-                onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
-              >
-                <option value="">Alla instrumentgrupper</option>
-                {instrumentGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select
-                className={style.dropdown}
-                value={selectedEngagementGroup}
-                onChange={(e) => setSelectedEngagementGroup(e.target.value)}
-              >
-                <option value="">Alla engagemangsgrupper</option>
-                {engagementGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
+            <div className={style.advancedSearchOptionsContainer}>
+              <div className={style.advancedSearchRow}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortActive}
+                    onChange={() => setSortActive(!sortActive)}
+                  />
+                  aktiv
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortGamling}
+                    onChange={() => setSortGamling(!sortGamling)}
+                  />
+                  gamling
+                </label>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedMembershipGroup}
+                  onChange={(e) => setSelectedMembershipGroup(e.target.value)}
+                >
+                  <option value="">Alla medlemsgrupper</option>
+                  {membershipGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedInstrumentGroup}
+                  onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
+                >
+                  <option value="">Alla instrumentgrupper</option>
+                  {instrumentGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedEngagementGroup}
+                  onChange={(e) => setSelectedEngagementGroup(e.target.value)}
+                >
+                  <option value="">Alla engagemangsgrupper</option>
+                  {engagementGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className={style.lastRow}>
               <button className={style.advancedButton} onClick={searchAdvanced}>

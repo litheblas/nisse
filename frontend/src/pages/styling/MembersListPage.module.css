@@ -164,17 +164,21 @@ a:hover {
   padding: 10px;
   margin-bottom: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  justify-items: start;
-  font-size: 14px;
+  grid-template-columns: 1fr;
 }
 
 .advancedSearchContainer div {
   padding: 5px;
 }
 
+.advancedSearchOptionsContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
 @media screen and (max-width: 800px) {
-  .advancedSearchContainer {
+  .advancedSearchOptionsContainer {
     grid-template-columns: 1fr;
   }
 }
@@ -199,6 +203,7 @@ a:hover {
   cursor: pointer;
   font-size: 14px;
   padding: 5px;
+  width: 100%;
 }
 
 .dropdown:hover {
@@ -215,9 +220,8 @@ a:hover {
 }
 
 .advancedSearchContainer .lastRow {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  grid-column: span 2;
-  justify-content: right;
 }
