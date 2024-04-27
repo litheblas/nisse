@@ -359,7 +359,7 @@ export const MembersListPage = () => {
         </div>
         {showAdvancedSearch && (
           <div className={style.advancedSearchContainer}>
-            <div>
+            <div className={style.advancedSearchRow}>
               <label>
                 <input
                   type="checkbox"
@@ -376,6 +376,8 @@ export const MembersListPage = () => {
                 />
                 gamling
               </label>
+            </div>
+            <div>
               <select
                 className={style.dropdown}
                 value={selectedMembershipGroup}
@@ -388,6 +390,8 @@ export const MembersListPage = () => {
                   </option>
                 ))}
               </select>
+            </div>
+            <div>
               <select
                 className={style.dropdown}
                 value={selectedInstrumentGroup}
@@ -400,6 +404,8 @@ export const MembersListPage = () => {
                   </option>
                 ))}
               </select>
+            </div>
+            <div>
               <select
                 className={style.dropdown}
                 value={selectedEngagementGroup}
@@ -413,15 +419,17 @@ export const MembersListPage = () => {
                 ))}
               </select>
             </div>
-            <button className={style.advancedButton} onClick={searchAdvanced}>
-              Sök advancerat
-            </button>
-            <button
-              className={style.advancedButton}
-              onClick={exportToCsvButtonAction}
-            >
-              Export Members as CSV
-            </button>
+            <div className={style.lastRow}>
+              <button className={style.advancedButton} onClick={searchAdvanced}>
+                Sök advancerat
+              </button>
+              <button
+                className={style.advancedButton}
+                onClick={exportToCsvButtonAction}
+              >
+                Export Members as CSV
+              </button>
+            </div>
           </div>
         )}
       </>
