@@ -180,6 +180,7 @@ a:hover {
 @media screen and (max-width: 800px) {
   .advancedSearchOptionsContainer {
     grid-template-columns: 1fr;
+    width: fit-content;
   }
 }
 
@@ -219,8 +220,16 @@ a:hover {
   padding: 5px;
 }
 
-.advancedSearchContainer .lastRow {
+.advancedSearchContainer .lastRowContainer {
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 5px;
+  justify-items: end;
+}
+
+.advancedSearchContainer .lastRow {
+  width: fit-content;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;

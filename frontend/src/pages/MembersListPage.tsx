@@ -421,16 +421,21 @@ export const MembersListPage = () => {
                 </select>
               </div>
             </div>
-            <div className={style.lastRow}>
-              <button className={style.advancedButton} onClick={searchAdvanced}>
-                Sök advancerat
-              </button>
-              <button
-                className={style.advancedButton}
-                onClick={exportToCsvButtonAction}
-              >
-                Export Members as CSV
-              </button>
+            <div className={style.lastRowContainer}>
+              <div className={style.lastRow}>
+                <button
+                  className={style.advancedButton}
+                  onClick={searchAdvanced}
+                >
+                  Sök advancerat
+                </button>
+                <button
+                  className={style.advancedButton}
+                  onClick={exportToCsvButtonAction}
+                >
+                  Export Members as CSV
+                </button>
+              </div>
             </div>
           </div>
         )}
