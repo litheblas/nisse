@@ -59,11 +59,13 @@ export const EditMemberForm = ({
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Profilbild </Form.Label>
         </div>
-        <input
-          type="file"
-          id="profile_picture"
-          key={baseMember.profile_picture}
-        ></input>
+        <Form.Control asChild>
+          <input
+            type="file"
+            id="profile_picture"
+            key={baseMember.profile_picture}
+          ></input>
+        </Form.Control>
         <img src={baseMember.profile_picture}></img>
       </Form.Field>
 
