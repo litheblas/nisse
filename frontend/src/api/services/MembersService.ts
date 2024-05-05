@@ -25,18 +25,18 @@ export class MembersService {
         });
     }
     /**
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersCreate(
-        requestBody: Member,
+        formData: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/members/',
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
     /**
@@ -62,13 +62,13 @@ export class MembersService {
     }
     /**
      * @param id A UUID string identifying this user.
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersUpdate(
         id: string,
-        requestBody: Member,
+        formData: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'PUT',
@@ -76,19 +76,19 @@ export class MembersService {
             path: {
                 'id': id,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
     /**
      * @param id A UUID string identifying this user.
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersPartialUpdate(
         id: string,
-        requestBody?: PatchedMember,
+        formData?: PatchedMember,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'PATCH',
@@ -96,8 +96,8 @@ export class MembersService {
             path: {
                 'id': id,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
     /**
