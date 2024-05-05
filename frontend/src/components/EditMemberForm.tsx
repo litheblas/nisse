@@ -68,7 +68,10 @@ export const EditMemberForm = ({
             title="Välj profilbild"
           ></input>
         </Form.Control>
-        <img src={OpenAPI.BASE + baseMember.profile_picture}></img>
+        <img
+          src={OpenAPI.BASE + baseMember.profile_picture}
+          alt="Profilbild"
+        ></img>
       </Form.Field>
 
       {/*first_name */}
