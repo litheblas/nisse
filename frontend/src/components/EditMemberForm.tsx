@@ -1,5 +1,5 @@
 import * as Form from '@radix-ui/react-form'
-import { Member } from '../api'
+import { Member, OpenAPI } from '../api'
 import style from './styling/EditMemberForm.module.css'
 
 interface EditMemberFormProps {
@@ -68,7 +68,7 @@ export const EditMemberForm = ({
             title="Välj profilbild"
           ></input>
         </Form.Control>
-        <img src={baseMember.profile_picture}></img>
+        <img src={OpenAPI.BASE + baseMember.profile_picture}></img>
       </Form.Field>
 
       {/*first_name */}
