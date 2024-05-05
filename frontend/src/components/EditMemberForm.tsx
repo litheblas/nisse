@@ -64,6 +64,7 @@ export const EditMemberForm = ({
             type="file"
             id="profile_picture"
             key={baseMember.profile_picture}
+            accept="image/png, image/jpeg"
           ></input>
         </Form.Control>
         <img src={baseMember.profile_picture}></img>
