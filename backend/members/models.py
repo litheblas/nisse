@@ -176,6 +176,9 @@ class GrasMembership(models.Model):
 
     status_date = models.DateField(null=True, blank=True)
 
+    def __str__(self):
+        return self.member.full_name
+
 
 class EngagementType(models.Model):
     """Titles such as Dictator, Skrivkunig or Luciageneral"""
