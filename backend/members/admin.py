@@ -45,11 +45,7 @@ class MemberAdmin(UserAdmin):
 
 @admin.register(models.GrasMembership)
 class GrasMembershipAdmin(admin.ModelAdmin):
-    list_display = [
-        "id",
-        "member",
-        "status",
-    ]
+    list_display = ["member", "status", "status_date"]
 
 
 @admin.register(models.MembershipType)
