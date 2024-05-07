@@ -6,11 +6,13 @@ from . import models
 
 class MemberEngagementInline(admin.TabularInline):
     model = models.Engagement
+    raw_id_fields = ["member"]
     extra = 0
 
 
 class MemberMembershipInline(admin.TabularInline):
     model = models.Membership
+    raw_id_fields = ["member"]
     extra = 0
 
 
