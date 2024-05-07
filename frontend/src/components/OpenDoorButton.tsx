@@ -48,6 +48,7 @@ export const OpenDoorButton = () => {
   return (
     <>
       <button
+        type="button"
         className={`standardButton blueButton`}
         title="Öppna Blåsrummet"
         onClick={() => {
