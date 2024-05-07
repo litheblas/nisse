@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 username = os.getenv("NISSE_LADAN_NAME")
 key = os.getenv("NISSE_LADAN_KEY")
-ip = os.getenv("NISS_LADAN_IP")
+ip = os.getenv("NISSE_LADAN_IP")
 
 
 def serve_media(_request, file_name):
