@@ -8,6 +8,8 @@ jobs:
     defaults:
       run:
         working-directory: backend/
+    env:
+      NISSE_DB_NAME: nisse_test_db
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
