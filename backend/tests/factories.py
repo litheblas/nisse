@@ -1,12 +1,18 @@
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from events.models import Event
 from factory import LazyAttribute, SubFactory
 from factory.django import DjangoModelFactory, ImageField, Password
 from factory.faker import Faker
-from factory.fuzzy import FuzzyChoice, FuzzyDateTime, FuzzyText
+from factory.fuzzy import FuzzyChoice, FuzzyDate, FuzzyDateTime, FuzzyText
 from factory.random import randgen
-from members.models import Member
+from members.models import (
+    Engagement,
+    EngagementType,
+    Member,
+    Membership,
+    MembershipType,
+)
 
 NUMBERS = "0123456789"
 PRONOUNS = ["he/him", "she/her", "they/them"]
@@ -54,3 +60,38 @@ class EventFactory(DjangoModelFactory):
     end_time = LazyAttribute(lambda d: d.start_time + timedelta(hours=3))
     event_type = FuzzyChoice([1, 2, 3])
     description = Faker("sentence")
+
+
+class MembershipTypeFactory(DjangoModelFactory):
+    class Meta:
+        model = MembershipType
+
+    instrument = Faker("word")
+
+
+class MembershipFactory(DjangoModelFactory):
+    class Meta:
+        model = Membership
+
+    member = SubFactory(MemberFactory)
+    membershipType = SubFactory(MembershipTypeFactory)
+    start = FuzzyDate(start_date=date(1974, 1, 1))
+    end = LazyAttribute(lambda d: d.start + timedelta(days=365))
+    is_trial = randgen.choice([True, False])
+
+
+class EngagementTypeFactory(DjangoModelFactory):
+    class Meta:
+        model = EngagementType
+
+    title = Faker("word")
+
+
+class EngagementFactory(DjangoModelFactory):
+    class Meta:
+        model = Engagement
+
+    member = SubFactory(MemberFactory)
+    engagementType = SubFactory(EngagementTypeFactory)
+    start = FuzzyDate(start_date=date(1974, 1, 1))
+    end = LazyAttribute(lambda d: d.start + timedelta(days=365))
