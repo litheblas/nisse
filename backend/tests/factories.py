@@ -9,6 +9,7 @@ from factory.random import randgen
 from members.models import (
     Engagement,
     EngagementType,
+    GrasMembership,
     Member,
     Membership,
     MembershipType,
@@ -95,3 +96,28 @@ class EngagementFactory(DjangoModelFactory):
     engagementType = SubFactory(EngagementTypeFactory)
     start = FuzzyDate(start_date=date(1974, 1, 1))
     end = LazyAttribute(lambda d: d.start + timedelta(days=365))
+
+
+class GrasMembershipFactory(DjangoModelFactory):
+    class Params:
+        empty_status = False
+
+    class Meta:
+        model = GrasMembership
+
+    member = SubFactory(MemberFactory)
+
+    status = LazyAttribute(
+        lambda g: (
+            ""
+            if g.empty_status
+            else randgen.choice([s.value for s in GrasMembership.StatusChoices])
+        )
+    )
+    status_date = LazyAttribute(
+        lambda g: (
+            date(1974, 1, 1) + timedelta(days=randgen.randrange(0, 365 * 5))
+            if g.empty_status
+            else None
+        )
+    )
