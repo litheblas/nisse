@@ -8,7 +8,7 @@
  */
 export type Member = {
     readonly id: string;
-    email?: string;
+    email: string;
     first_name?: string;
     last_name?: string;
     readonly full_name: string;
