@@ -160,6 +160,7 @@ DATABASES = {
 
 if "test" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
+    DATABASES["default"]["NAME"] = "nisse_test_db"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": (
