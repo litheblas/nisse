@@ -41,6 +41,12 @@ li {
   gap: 10px;
 }
 
+@media (max-width: 800px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Style information boxes */
 .box {
   position: relative;
