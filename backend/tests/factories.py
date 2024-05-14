@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 from events.models import Event
-from factory import LazyAttribute
+from factory import LazyAttribute, SubFactory
 from factory.django import DjangoModelFactory, ImageField, Password
 from factory.faker import Faker
 from factory.fuzzy import FuzzyChoice, FuzzyDateTime, FuzzyText
@@ -47,7 +47,7 @@ class EventFactory(DjangoModelFactory):
     class Meta:
         model = Event
 
-    creator = MemberFactory()
+    creator = SubFactory(MemberFactory)
     location = Faker("street_address")
     name = Faker("word")
     start_time = FuzzyDateTime(start_dt=datetime(1974, 1, 1, tzinfo=timezone.utc))
