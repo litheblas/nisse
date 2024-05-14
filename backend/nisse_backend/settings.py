@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -156,6 +157,9 @@ DATABASES = {
         },
     }
 }
+
+if "test" in sys.argv:
+    DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": (
