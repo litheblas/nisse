@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9d14575378990153544f19029c210bb3b1f307ffd82e0c65d4c8a741fcf863c6"
+            "sha256": "a7ad98a52dfaad09f660c7a8355e9773c9884f704fe3d4cd0ea3de2eb617f57e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "asgiref": {
             "hashes": [
-                "sha256:30fc07797ad71a0abb8fe34aa03c8043308a8389abc7942d797ea9911540bc28",
-                "sha256:ec75d9d0f04e2dbfedef1f20ee73a6594af80c333df47cdd31f37e6701f7c53a"
+                "sha256:3e1e3ecc849832fe52ccf2cb6686b7a55f82bb1d6aee72a58826471390335e47",
+                "sha256:c343bd80a0bec947a9860adb4c432ffa7db769836c64238fc34bdc3fec84d590"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==3.8.0"
+            "version": "==3.8.1"
         },
         "attrs": {
             "hashes": [
@@ -706,11 +706,11 @@
         },
         "referencing": {
             "hashes": [
-                "sha256:191e936b0c696d0af17ad7430a3dc68e88bc11be6514f4757dc890f04ab05889",
-                "sha256:8080727b30e364e5783152903672df9b6b091c926a146a759080b62ca3126cd6"
+                "sha256:25b42124a6c8b632a425174f24087783efb348a6f1e0008e63cd4466fedf703c",
+                "sha256:eda6d3234d62814d1c64e305c1331c9a3a6132da475ab6382eaa997b21ee75de"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==0.35.0"
+            "version": "==0.35.1"
         },
         "requests": {
             "hashes": [
@@ -1001,11 +1001,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:5fb5aa9749d09971e04a41281ae3ceda9414f683d4810a694f8a8eebb8f9edec",
-                "sha256:9978025e765ba79f8bf6154c9630a9c2b7f9c9b0f175d4ad5e04b19a82a8d8d6"
+                "sha256:45b84f47ff1ef86e3d1a8d11583ca871ecf6730fad0660edadc02576583a2423",
+                "sha256:cfe97c4857c4c36ee32ea4aaabef884895992e209bae4cbd26807cf3e05c6918"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==24.3.0"
+            "version": "==25.2.0"
         },
         "mypy-extensions": {
             "hashes": [
