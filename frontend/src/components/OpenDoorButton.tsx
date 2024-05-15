@@ -13,13 +13,9 @@ export const OpenDoorButton = (props: OpenDoorButtonProps) => {
     },
     onSuccess: () => {
       props.onOpen('Blåsrummet är öppet')
-      // setOpen(true)
-      // setMessage('Blåsrumsdörren är öppen')
     },
     onError: () => {
       props.onOpen('Det gick inte att öppna Blåsrummet')
-      // setOpen(true)
-      // setMessage('Det gick inte att öppna Blåsrummet')
     },
   })
 

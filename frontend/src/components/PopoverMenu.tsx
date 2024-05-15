@@ -9,9 +9,6 @@ import { Menu } from './Menu'
 export const PopoverMenu = () => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const closeSnackbar = () => {
-    setOpen(false)
-  }
   const handleClick = (status: string) => {
     setOpen(true)
     setMessage(status)
@@ -50,7 +47,9 @@ export const PopoverMenu = () => {
       <DoorSnackbar
         open={open}
         message={message}
-        closeSnackbar={closeSnackbar}
+        closeSnackbar={() => {
+          setOpen(false)
+        }}
       />
     </>
   )
