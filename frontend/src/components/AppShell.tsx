@@ -8,11 +8,11 @@ import { Menu } from './Menu'
 import style from './styling/AppShell.module.css'
 
 export const AppShell = () => {
-  const [open, setOpen] = useState(false)
-  const [message, setMessage] = useState('')
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const handleClick = (status: string) => {
-    setOpen(true)
-    setMessage(status)
+    setSnackbarOpen(true)
+    setSnackbarMessage(status)
   }
 
   return (
@@ -22,12 +22,12 @@ export const AppShell = () => {
         <div className={style.pageContainer}>
           <div className={style.pageContent}>
             <div className={style.sidebarMenu}>
-              <Menu onOpen={(status: string) => handleClick(status)} />
+              <Menu onDoorOpen={(status: string) => handleClick(status)} />
               <DoorSnackbar
-                open={open}
-                message={message}
+                open={snackbarOpen}
+                message={snackbarMessage}
                 closeSnackbar={() => {
-                  setOpen(false)
+                  setSnackbarOpen(false)
                 }}
               />
             </div>

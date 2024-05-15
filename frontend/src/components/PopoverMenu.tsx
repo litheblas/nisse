@@ -37,7 +37,7 @@ export const PopoverMenu = () => {
           <Popover.Content style={style.menuContainer}>
             <Popover.Arrow />
             <Menu
-              onOpen={(status: string) => {
+              onDoorOpen={(status: string) => {
                 handleClick(status)
               }}
             />

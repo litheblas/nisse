@@ -4,23 +4,19 @@ import { OpenDoorButton } from './OpenDoorButton'
 import style from './styling/Menu.module.css'
 
 interface MenuProps {
-  onOpen: (status: string) => void
+  onDoorOpen: (status: string) => void
 }
 
 const linkStyle = ({ isActive }: { isActive: boolean }) => {
   return [style.menuItem, isActive ? style.menuItemActive : ''].join(' ')
 }
 
-export const Menu = (props: MenuProps) => {
+export const Menu = ({ onDoorOpen }: MenuProps) => {
   const { logout } = useAuth()
 
   return (
     <menu className={style.container}>
-      <OpenDoorButton
-        onOpen={(status: string) => {
-          props.onOpen(status)
-        }}
-      />
+      <OpenDoorButton onDoorOpen={onDoorOpen} />
       <div className={style.menuHeading}>Sidor</div>
       <NavLink className={linkStyle} to="/events">
         Kalender
