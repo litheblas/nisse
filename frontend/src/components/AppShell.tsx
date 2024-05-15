@@ -10,9 +10,6 @@ import style from './styling/AppShell.module.css'
 export const AppShell = () => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const closeSnackbar = () => {
-    setOpen(false)
-  }
   const handleClick = (status: string) => {
     setOpen(true)
     setMessage(status)
@@ -29,7 +26,9 @@ export const AppShell = () => {
               <DoorSnackbar
                 open={open}
                 message={message}
-                closeSnackbar={closeSnackbar}
+                closeSnackbar={() => {
+                  setOpen(false)
+                }}
               />
             </div>
             <div>
