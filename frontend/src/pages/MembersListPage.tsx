@@ -325,7 +325,9 @@ export const MembersListPage = () => {
   const renderPageHeader = () => {
     return (
       <>
-        <h1 className={style.header}>Blåsbasen</h1>
+        <header className={style.header}>
+          <h1>Blåsbasen</h1>
+        </header>
         <div className={style.inputContainer}>
           <div className={style.searchBarContainer}>
             <input

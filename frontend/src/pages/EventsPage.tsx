@@ -74,7 +74,9 @@ export const EventsPage = () => {
     return (
       <div className={style.container}>
         <div>
-          <h1 className="pageHeading">Events</h1>
+          <header className={style.header}>
+            <h1>Events</h1>
+          </header>
           <p>
             Här kan man se kommande händelser för blåset, inklusive spelningar,
             officiella events, och andra roliga saker. Om du har något kul som
