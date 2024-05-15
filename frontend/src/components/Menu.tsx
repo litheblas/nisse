@@ -3,16 +3,24 @@ import { useAuth } from '../context/AuthContext'
 import { OpenDoorButton } from './OpenDoorButton'
 import style from './styling/Menu.module.css'
 
+interface MenuProps {
+  onOpen: (status: string) => void
+}
+
 const linkStyle = ({ isActive }: { isActive: boolean }) => {
   return [style.menuItem, isActive ? style.menuItemActive : ''].join(' ')
 }
 
-export const Menu = () => {
+export const Menu = (props: MenuProps) => {
   const { logout } = useAuth()
 
   return (
     <menu className={style.container}>
-      <OpenDoorButton />
+      <OpenDoorButton
+        onOpen={(status: string) => {
+          props.onOpen(status)
+        }}
+      />
       <div className={style.menuHeading}>Sidor</div>
       <NavLink className={linkStyle} to="/events">
         Kalender

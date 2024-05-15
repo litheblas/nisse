@@ -1,34 +1,25 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CircularProgress, IconButton, Snackbar } from '@mui/material'
-import { useState } from 'react'
+import { CircularProgress } from '@mui/material'
 import { useMutation } from 'react-query'
 import { DoorService } from '../api'
 
-export const OpenDoorButton = () => {
-  const [open, setOpen] = useState(false)
-  const [message, setMessage] = useState('')
-  const closeSnackbar = () => {
-    setOpen(false)
-  }
+interface OpenDoorButtonProps {
+  onOpen: (status: string) => void
+}
 
-  const action = (
-    <IconButton onClick={closeSnackbar}>
-      <FontAwesomeIcon icon={faClose} color="white" />
-    </IconButton>
-  )
-
+export const OpenDoorButton = (props: OpenDoorButtonProps) => {
   const mutation = useMutation({
     mutationFn: () => {
       return DoorService.doorCreate()
     },
     onSuccess: () => {
-      setOpen(true)
-      setMessage('Blåsrumsdörren är öppen')
+      props.onOpen('Blåsrummet är öppet')
+      // setOpen(true)
+      // setMessage('Blåsrumsdörren är öppen')
     },
     onError: () => {
-      setOpen(true)
-      setMessage('Det gick inte att öppna Blåsrummet')
+      props.onOpen('Det gick inte att öppna Blåsrummet')
+      // setOpen(true)
+      // setMessage('Det gick inte att öppna Blåsrummet')
     },
   })
 
@@ -46,25 +37,15 @@ export const OpenDoorButton = () => {
   }
 
   return (
-    <>
-      <button
-        type="button"
-        className={`standardButton blueButton`}
-        title="Öppna Blåsrummet"
-        onClick={() => {
-          mutation.mutate()
-        }}
-      >
-        Öppna Blåsrummet
-      </button>
-      {/* TODO: fix Snackbar in mobile view*/}
-      <Snackbar
-        open={open}
-        message={message}
-        autoHideDuration={5000}
-        onClose={closeSnackbar}
-        action={action}
-      />
-    </>
+    <button
+      type="button"
+      className={`standardButton blueButton`}
+      title="Öppna Blåsrummet"
+      onClick={() => {
+        mutation.mutate()
+      }}
+    >
+      Öppna Blåsrummet
+    </button>
   )
 }
