@@ -3,19 +3,19 @@ import { useMutation } from 'react-query'
 import { DoorService } from '../api'
 
 interface OpenDoorButtonProps {
-  onOpen: (status: string) => void
+  onDoorOpen: (status: string) => void
 }
 
-export const OpenDoorButton = (props: OpenDoorButtonProps) => {
+export const OpenDoorButton = ({ onDoorOpen }: OpenDoorButtonProps) => {
   const mutation = useMutation({
     mutationFn: () => {
       return DoorService.doorCreate()
     },
     onSuccess: () => {
-      props.onOpen('Blåsrummet är öppet')
+      onDoorOpen('Blåsrummet är öppet')
     },
     onError: () => {
-      props.onOpen('Det gick inte att öppna Blåsrummet')
+      onDoorOpen('Det gick inte att öppna Blåsrummet')
     },
   })
 
