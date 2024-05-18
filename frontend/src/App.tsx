@@ -13,6 +13,7 @@ import { InformationChannelsPage } from './pages/InformationChannelsPage'
 import { MemberPage } from './pages/MemberPage'
 import { MembersListPage } from './pages/MembersListPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
+import { StatuesPage } from './pages/StatuesPage'
 
 OpenAPI.BASE = import.meta.env.VITE_NISSE_BACKEND_API_URL
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter(
         {
           path: '/informationskanaler',
           element: <InformationChannelsPage />,
+        },
+        {
+          path: '/stadgar',
+          element: <StatuesPage />,
         },
         // {
         //   path: '/integritet',
