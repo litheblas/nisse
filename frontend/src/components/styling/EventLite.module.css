@@ -88,9 +88,20 @@
 
 .dataRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 10fr;
+  grid-template-columns: 10fr 4fr;
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+@media screen and (max-width: 800px) {
+  .dataRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.attendeeInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 8fr;
 }
 
 .headerRow {
@@ -120,4 +131,69 @@
 .pictureColumn {
   display: grid;
   justify-content: center;
+}
+
+.adminReporting {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.attendanceStatus {
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    color 0.1s ease;
+  border: 1px solid #ddd;
+  width: 80%;
+  min-width: min-content;
+  border-radius: 8px;
+
+  position: relative;
+
+  /* Flexbox properties to center content */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.attendanceStatus:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.selected {
+  color: var(--blue); /* Adjust as needed for selected color */
+  border-color: var(--blue); /* Adjust as needed for selected border color */
+  border-width: 2px; /* Make the border thicker */
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.searchInput {
+  padding: 5px;
+  margin-right: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.searchResults {
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  position: absolute;
+  z-index: 10;
+}
+
+.searchResultItem {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.searchResultItem:hover {
+  background-color: #f0f0f0;
 }

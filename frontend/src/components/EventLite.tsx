@@ -21,8 +21,32 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
 interface EventAttendeesListProps {
   attendees: Attendee[]
 }
+// Define the type for the attendance status state
+type AttendanceStatusState = Record<string, string>
+
+const attendanceStatusList = [
+  { id: '1', label: 'N' },
+  { id: '2', label: 'SA' },
+  { id: '3', label: 'OF' },
+  { id: '4', label: 'AF' },
+  { id: '5', label: 'AS' },
+  { id: '6', label: 'SAF' },
+]
 
 const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
+  const [attendanceStatus, setAttendanceStatus] =
+    useState<AttendanceStatusState>({})
+
+  const handleAttendanceStatusClick = (
+    attendeeId: string,
+    statusId: string
+  ) => {
+    setAttendanceStatus((prevStatus) => ({
+      ...prevStatus,
+      [attendeeId]: statusId,
+    }))
+  }
+
   return (
     <div className={style.attendeesContainer}>
       <div className={style.attendeesTable}>
@@ -31,18 +55,34 @@ const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
         </div>
         {attendees.map((attendee, index) => (
           <div key={index} className={style.dataRow}>
-            <div className={style.attendeeCounter}>
-              <div>{index + 1}</div>
+            <div className={style.attendeeInfoContainer}>
+              <div className={style.attendeeCounter}>
+                <div>{index + 1}</div>
+              </div>
+              <div className={style.pictureColumn}>
+                <img
+                  src={OtherIcon} // TODO: Change to attendee.profile_picture
+                  alt={'No Icon found'}
+                  className={style.profilePicture}
+                />
+              </div>
+              <div className={style.attendeeInfo}>
+                <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+              </div>
             </div>
-            <div className={style.pictureColumn}>
-              <img
-                src={OtherIcon} // TODO: Change to attendee.profile_picture
-                alt={'No Icon found'}
-                className={style.profilePicture}
-              />
-            </div>
-            <div className={style.attendeeInfo}>
-              <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+
+            <div className={style.adminReporting}>
+              {attendanceStatusList.map(({ id, label }) => (
+                <div
+                  key={id}
+                  className={`${style.attendanceStatus} ${
+                    attendanceStatus[attendee.id] === id ? style.selected : ''
+                  }`}
+                  onClick={() => handleAttendanceStatusClick(attendee.id, id)}
+                >
+                  {label}
+                </div>
+              ))}
             </div>
           </div>
         ))}
