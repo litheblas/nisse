@@ -167,33 +167,30 @@
   border-width: 2px; /* Make the border thicker */
 }
 
-.searchBox {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
+.attendeesSection {
+  display: grid;
 }
 
-.searchInput {
-  padding: 5px;
-  margin-right: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.attendeesSection input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .searchResults {
-  margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-  position: absolute;
-  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-.searchResultItem {
-  padding: 5px;
+.searchResult {
+  padding: 10px;
   cursor: pointer;
 }
 
-.searchResultItem:hover {
+.searchResult:hover {
   background-color: #f0f0f0;
 }
