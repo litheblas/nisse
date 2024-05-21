@@ -4,6 +4,7 @@ import './App.css'
 import { OpenAPI } from './api'
 import { AppShell } from './components/AppShell'
 import AuthProvider from './context/AuthProvider'
+import SnackbarProvider from './context/SnackbarProvider'
 import { AddEventPage } from './pages/AddEventPage'
 import { EditEventPage } from './pages/EditEventPage'
 import { EditMemberPage } from './pages/EditMemberPage'
@@ -81,7 +82,9 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <SnackbarProvider>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </QueryClientProvider>
     </AuthProvider>
   )
