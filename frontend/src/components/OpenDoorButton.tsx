@@ -1,21 +1,20 @@
 import { CircularProgress } from '@mui/material'
 import { useMutation } from 'react-query'
 import { DoorService } from '../api'
+import { useSnackbar } from '../context/SnackbarContext'
 
-interface OpenDoorButtonProps {
-  onDoorOpen: (status: string) => void
-}
+export const OpenDoorButton = () => {
+  const { showSnackbar } = useSnackbar()
 
-export const OpenDoorButton = ({ onDoorOpen }: OpenDoorButtonProps) => {
   const mutation = useMutation({
     mutationFn: () => {
       return DoorService.doorCreate()
     },
     onSuccess: () => {
-      onDoorOpen('Blåsrummet är öppet')
+      showSnackbar('Blåsrummet är öppet')
     },
     onError: () => {
-      onDoorOpen('Det gick inte att öppna Blåsrummet')
+      showSnackbar('Det gick inte att öppna Blåsrummet')
     },
   })
 
