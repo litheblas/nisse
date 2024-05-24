@@ -43,6 +43,7 @@ interface Membership {
   membership_type: string
   start_date: string
   end_date?: string | null
+  is_trial: boolean
 }
 
 interface Engagement {
@@ -224,7 +225,8 @@ export const MemberPage = () => {
                   />
                   <div>
                     <p className={style.membershipTypeFont}>
-                      Antagen {membership.membership_type}
+                      {(membership.is_trial && 'Antagen ') || 'Prov '}
+                      {membership.membership_type}
                     </p>
                     <p className={style.dataRangeFont}>
                       {membership.start_date} - {membership.end_date || ''}
