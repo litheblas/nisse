@@ -123,11 +123,14 @@ available at <http://localhost:8000/api/schema/redoc/>, or at
 
 ## Deployment
 
-The backend is automatically built into a Docker image when a new commit is
-pushed to the `main` (with the name `main`) or `dev` (with the name
-`nisse-dev`) branches, with a new version tag for each commit. The Docker image
-is pushed to the GitHub Container Registry. To deploy the backend, update the
-tag of the image used in the docker compose files in [the infra
+The backend is automatically built into a Docker image.
+
+- The image `nisse-dev` is built for every commit to the `main` branch.
+- The image `nisse` is built for every new release.
+
+The Docker image is pushed to the GitHub Container Registry. To deploy the
+backend, update the tag of the image used in the docker compose files in [the
+infra
 repository](https://github.com/litheblas/infra/tree/master/salt/pillar/docker/stacks).
 
 When the docker container starts, it will automatically run the migrations on

@@ -14,7 +14,7 @@ repos:
         args: [--fix=lf]
       - id: trailing-whitespace
       - id: no-commit-to-branch
-        args: [--branch, master, --branch, main, --branch, dev]
+        args: [--branch, master, --branch, main]
 
   # Python formatting
   - repo: https://github.com/psf/black
