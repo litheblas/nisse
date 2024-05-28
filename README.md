@@ -25,11 +25,12 @@ repository, run `pre-commit run --all-files`.
 
 This is the recommended development workflow for this project:
 
-- The `dev` branch is the main development branch. All new features should be
-  developed in a separate branch and then merged into `dev` when they are
+- The `main` branch is the main development branch. All new features should be
+  developed in a separate branch and then merged into `main` when they are
   finished.
-- The `main` branch is the production branch. It should always be in a working
-  state and should only be updated with new releases.
+- A new release is created by creating a new release in Gitlab. This will
+  trigger a CI pipeline that will build the new docker image and and deploy the
+  new frontend.
 - Use [pre-commit](#installing-pre-commit) to ensure that the code you commit
   follows the coding standard.
 - Commit messages should be written in the imperative mood, and should follow
