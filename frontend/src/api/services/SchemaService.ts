@@ -5,7 +5,9 @@
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+
 export class SchemaService {
+
     /**
      * OpenApi3 schema for this API. Format can be selected via content negotiation.
      *
@@ -29,4 +31,5 @@ export class SchemaService {
             },
         });
     }
+
 }

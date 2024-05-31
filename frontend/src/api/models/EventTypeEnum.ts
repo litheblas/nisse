@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+
 /**
  * * `1` - CONCERT
  * * `2` - OFFICIAL

@@ -5,7 +5,9 @@
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+
 export class DoorService {
+
     /**
      * Sends a HTTP-request through a reverse ssh-tunnel to lådan lådan in Blåsrummet to open the door
      * @returns any No response body
@@ -17,4 +19,5 @@ export class DoorService {
             url: '/api/door/',
         });
     }
+
 }
