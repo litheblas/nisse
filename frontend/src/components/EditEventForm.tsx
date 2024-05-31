@@ -1,5 +1,5 @@
 import * as Form from '@radix-ui/react-form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Event, EventTypeEnum } from '../api'
 import { eventTypeToString } from '../utils/EventTypeToString'
 import style from './styling/EditEventForm.module.css'
@@ -10,12 +10,13 @@ interface EditEventFormProps {
 }
 
 export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
-  const [isChecked, setIsChecked] = useState(false)
+  const [isFullDay, setIsFullDay] = useState<boolean>(baseEvent.full_day)
 
-  const checkHandler = () => {
-    setIsChecked(!isChecked)
-    baseEvent.full_day = !isChecked
-  }
+  // This is needed, since the component is rendered before the baseEvent is
+  // fully loaded
+  useEffect(() => {
+    setIsFullDay(baseEvent.full_day)
+  }, [baseEvent.full_day])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -92,9 +93,9 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
           <input
             className={style.Checkbox}
             type="checkbox"
-            checked={baseEvent.full_day}
-            value={isChecked.toString()}
-            onChange={checkHandler}
+            checked={isFullDay}
+            value={isFullDay.toString()}
+            onChange={() => setIsFullDay(!isFullDay)}
           />
         </Form.Control>
       </Form.Field>
@@ -111,10 +112,18 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type={isChecked ? 'date' : 'datetime-local'}
+            type={isFullDay ? 'date' : 'datetime-local'}
             required
-            defaultValue={baseEvent.start_time.slice(0, 19)}
-            key={baseEvent.start_time.slice(0, 19)}
+            defaultValue={
+              isFullDay
+                ? baseEvent.start_time.slice(0, 10)
+                : baseEvent.start_time.slice(0, 19)
+            }
+            key={
+              isFullDay
+                ? baseEvent.start_time.slice(0, 10)
+                : baseEvent.start_time.slice(0, 19)
+            }
           />
         </Form.Control>
       </Form.Field>
@@ -141,10 +150,18 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type={isChecked ? 'date' : 'datetime-local'}
+            type={isFullDay ? 'date' : 'datetime-local'}
             required
-            defaultValue={baseEvent.end_time.slice(0, 19)}
-            key={baseEvent.end_time.slice(0, 19)}
+            defaultValue={
+              isFullDay
+                ? baseEvent.end_time.slice(0, 10)
+                : baseEvent.end_time.slice(0, 19)
+            }
+            key={
+              isFullDay
+                ? baseEvent.end_time.slice(0, 10)
+                : baseEvent.end_time.slice(0, 19)
+            }
           />
         </Form.Control>
       </Form.Field>
