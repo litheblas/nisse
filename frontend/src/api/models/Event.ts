@@ -1,11 +1,9 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Attendee } from './Attendee';
 import type { EventTypeEnum } from './EventTypeEnum';
-
 /**
  * A ModelSerializer that takes an additional `fields` argument that
  * controls which fields should be displayed.

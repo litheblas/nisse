@@ -63,7 +63,8 @@
   display: block; /* Show text on hover */
 }
 
-@media screen and (max-width: 600px) {
+/* var(--small-page-max-width) does not seem to work here? */
+@media screen and (max-width: 800px) {
   .personalInfoTableContainer {
     grid-template-columns: 1fr;
   }
@@ -152,7 +153,7 @@
   grid-column: 2 / 3; /* Span second column */
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .container {
     grid-template-columns: 1fr;
   }

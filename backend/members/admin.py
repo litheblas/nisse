@@ -6,11 +6,13 @@ from . import models
 
 class MemberEngagementInline(admin.TabularInline):
     model = models.Engagement
+    raw_id_fields = ["member"]
     extra = 0
 
 
 class MemberMembershipInline(admin.TabularInline):
     model = models.Membership
+    raw_id_fields = ["member"]
     extra = 0
 
 
@@ -43,11 +45,7 @@ class MemberAdmin(UserAdmin):
 
 @admin.register(models.GrasMembership)
 class GrasMembershipAdmin(admin.ModelAdmin):
-    list_diplay = [
-        "id",
-        "member",
-        "status",
-    ]
+    list_display = ["member", "status", "status_date"]
 
 
 @admin.register(models.MembershipType)

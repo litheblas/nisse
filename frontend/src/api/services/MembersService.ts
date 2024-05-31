@@ -1,16 +1,13 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { Member } from '../models/Member';
 import type { PatchedMember } from '../models/PatchedMember';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class MembersService {
-
     /**
      * @param fields
      * @returns Member
@@ -27,23 +24,21 @@ export class MembersService {
             },
         });
     }
-
     /**
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersCreate(
-        requestBody: Member,
+        formData: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/members/',
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @param fields
@@ -65,16 +60,15 @@ export class MembersService {
             },
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersUpdate(
         id: string,
-        requestBody: Member,
+        formData: Member,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'PUT',
@@ -82,20 +76,19 @@ export class MembersService {
             path: {
                 'id': id,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
-     * @param requestBody
+     * @param formData
      * @returns Member
      * @throws ApiError
      */
     public static membersPartialUpdate(
         id: string,
-        requestBody?: PatchedMember,
+        formData?: PatchedMember,
     ): CancelablePromise<Member> {
         return __request(OpenAPI, {
             method: 'PATCH',
@@ -103,11 +96,10 @@ export class MembersService {
             path: {
                 'id': id,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
         });
     }
-
     /**
      * @param id A UUID string identifying this user.
      * @returns void
@@ -124,5 +116,4 @@ export class MembersService {
             },
         });
     }
-
 }

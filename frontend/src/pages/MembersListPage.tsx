@@ -3,6 +3,15 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { MembersService } from '../api'
+import {
+  Engagement,
+  Member,
+  Membership,
+  engagementGroups,
+  instrumentGroups,
+  instrumentMembershipGroups,
+  membershipGroups,
+} from '../components/MembersListPageInterfaces.ts'
 import style from './styling/MembersListPage.module.css'
 
 /*
@@ -15,73 +24,6 @@ Then a dynamic filter which is the text input filtering.
 
 The static filter is first applied, which makes it possible to search with text.
 */
-
-// Used to tell TS what Membership contains
-// It does contain more but we only use membership_type
-interface Membership {
-  membership_type: string
-}
-
-// Used to tell TS what Engagement contains
-// It does contain more but we only use engagement_type
-interface Engagement {
-  engagement_type: string
-}
-
-// List of what memberships that are shown in dropdown list, advanced search
-const membershipGroups = [
-  'Kompet',
-  'Klarinett',
-  'Hornbasun',
-  'Flöjt',
-  'Saxofon',
-  'Trumpet',
-  'Balett',
-]
-
-// List of what instruments that are shown in dropdown list, advanced search
-const instrumentGroups = [
-  'Banjo',
-  'Klarinett',
-  'Bas',
-  'Flöjt',
-  'Saxofon',
-  'Trummor',
-  'Tuba',
-  'Trombon',
-  'Trumpet',
-  'Balett',
-  'Horn',
-]
-
-// "Dictionary" for connecting instrument to sektioner
-const instrumentMembershipGroups: Record<string, string> = {
-  Banjo: 'Kompet',
-  Klarinett: 'Klarinett',
-  Bas: 'Kompet',
-  Horn: 'Hornbasun',
-  Flöjt: 'Flöjt',
-  Saxofon: 'Saxofon',
-  Trummor: 'Kompet',
-  Tuba: 'Kompet',
-  Trombon: 'Hornbasun',
-  Trumpet: 'Trumpet',
-  Balett: 'Balett',
-}
-
-// List of what engagements that are shown in dropdown list, advanced search
-const engagementGroups = [
-  'Dictator',
-  'Skrivkunig',
-  'Kronharpa',
-  'Intendent',
-  'Balettchef',
-  'Spelraggare',
-  'Domptör',
-  'Notpiccolo',
-  'Luciageneral',
-  'Jubelgeneral',
-]
 
 // Define your initial queryFields, this is what is going to be loaded from each member as standard
 const initialQueryFields =
@@ -97,7 +39,7 @@ export const MembersListPage = () => {
   )
 
   // Pagination variables
-  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [itemsPerPage, setItemsPerPage] = useState(Infinity)
   const [currentPage, setCurrentPage] = useState(1)
 
   // Search filter variables
@@ -210,65 +152,93 @@ export const MembersListPage = () => {
     setTriggerFilterUpdate(!triggerFilterUpdate)
   }
 
-  // useEffect to update staticFilteredMembers when data is changed or showAdvancedSearch is pressed
-  // This is where the static filter is applied.
-  //Normal text search is possible to search within after this filter is applied.
-  useEffect(() => {
-    const filterAdvanced = () => {
-      if (!data) {
-        return <span>No data available</span>
-      }
-
-      const staticFiltered = data.filter((member) => {
-        let staticFilter = false
-        if (sortActive && member.active_period.length == 5) {
-          staticFilter = true
-        }
-        if (sortGamling && member.active_period.length == 9) {
-          staticFilter = true
-        }
-        // Filter on instrument groups
-        if (
-          selectedMembershipGroup !== '' &&
-          selectedMembershipGroup !== 'Alla medlemsgrupper'
-        ) {
-          const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership
-            return (
-              instrumentMembershipGroups[typedMembership.membership_type] ===
-              selectedMembershipGroup
-            )
-          })
-          staticFilter = matchingMembership
-        }
-        // Filter on instrument
-        if (
-          selectedInstrumentGroup !== '' &&
-          selectedInstrumentGroup !== 'Alla instrumentgrupper'
-        ) {
-          const matchingMembership = member.memberships.some((membership) => {
-            const typedMembership = membership as Membership
-            return typedMembership.membership_type === selectedInstrumentGroup
-          })
-          staticFilter = matchingMembership
-        }
-        // Filter on engagements
-        if (
-          selectedEngagementGroup !== '' &&
-          selectedEngagementGroup !== 'Alla engagemangsgrupper'
-        ) {
-          const matchingEngagement = member.engagements.some((engagement) => {
-            const typedEngagement = engagement as Engagement
-            return typedEngagement.engagement_type === selectedEngagementGroup
-          })
-          staticFilter = matchingEngagement
-        }
-        return staticFilter
-      })
-
-      setStaticFilteredMembers(staticFiltered)
+  const filterAdvanced = () => {
+    if (!data) {
+      return <span>No data available</span>
     }
 
+    const staticFiltered = data.filter((member) => {
+      let staticFilter = false
+      if (sortActive && member.active_period.length == 5) {
+        staticFilter = true
+      }
+      if (sortGamling && member.active_period.length == 9) {
+        staticFilter = true
+      }
+      // Filter on instrument groups
+      if (
+        selectedMembershipGroup !== '' &&
+        selectedMembershipGroup !== 'Alla medlemsgrupper'
+      ) {
+        const matchingMembership = member.memberships.some((membership) => {
+          const typedMembership = membership as Membership
+          return (
+            instrumentMembershipGroups[typedMembership.membership_type] ===
+            selectedMembershipGroup
+          )
+        })
+        staticFilter = matchingMembership
+      }
+      // Filter on instrument
+      if (
+        selectedInstrumentGroup !== '' &&
+        selectedInstrumentGroup !== 'Alla instrumentgrupper'
+      ) {
+        const matchingMembership = member.memberships.some((membership) => {
+          const typedMembership = membership as Membership
+          return typedMembership.membership_type === selectedInstrumentGroup
+        })
+        staticFilter = matchingMembership
+      }
+      // Filter on engagements
+      if (
+        selectedEngagementGroup !== '' &&
+        selectedEngagementGroup !== 'Alla engagemangsgrupper'
+      ) {
+        const matchingEngagement = member.engagements.some((engagement) => {
+          const typedEngagement = engagement as Engagement
+          return typedEngagement.engagement_type === selectedEngagementGroup
+        })
+        staticFilter = matchingEngagement
+      }
+      return staticFilter
+    })
+
+    setStaticFilteredMembers(staticFiltered)
+  }
+
+  // If no dynamic filter (text in search box) is active, show staticFilteredMembers members
+  const membersToDisplay = searchQuery
+    ? filteredMembers || []
+    : staticFilteredMembers
+    ? staticFilteredMembers
+    : data || []
+
+  // Sort membersToDisplay array based on the selected option
+  const sortedMembers = [...membersToDisplay].sort((a, b) => {
+    if (sortBy === 'full_name (desc)') {
+      return a.full_name.localeCompare(b.full_name)
+    } else if (sortBy === 'full_name (asc)') {
+      return a.full_name.localeCompare(b.full_name) * -1
+    } else if (sortBy === 'active_period (asc)') {
+      return a.active_period.localeCompare(b.active_period)
+    } else if (sortBy === 'active_period (desc)') {
+      return a.active_period.localeCompare(b.active_period) * -1
+    } else if (sortBy === 'short_name (desc)') {
+      return a.short_name.localeCompare(b.short_name)
+    } else if (sortBy === 'short_name (asc)') {
+      return a.short_name.localeCompare(b.short_name) * -1
+    }
+    // Add more sorting options as needed
+    return 0 // Default sorting behavior
+  })
+
+  const [exportToCsvState, setExportToCsvState] = useState(false)
+
+  // useEffect to update staticFilteredMembers when data is changed or showAdvancedSearch is pressed
+  // This is where the static filter is applied.
+  // Normal text search is possible to search within after this filter is applied.
+  useEffect(() => {
     // When advanced search is active, then use filterAdvanced, otherwise skip the static filter
     if (showAdvancedSearch) {
       filterAdvanced()
@@ -277,6 +247,79 @@ export const MembersListPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showAdvancedSearch, triggerFilterUpdate])
+
+  useEffect(() => {
+    if (
+      exportToCsvState &&
+      sortedMembers.every((member) => member.complete_adress !== undefined)
+    ) {
+      exportToCsv()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedMembers])
+
+  const exportToCsvButtonAction = () => {
+    let searchQuery: string = initialQueryFields
+    searchQuery += ',complete_adress,birth_date,phone_number_1'
+    handleQueryFieldsChange(searchQuery)
+    setExportToCsvState(true)
+  }
+
+  // Function to export data as CSV
+  const exportToCsv = () => {
+    // Replace en dash with hyphen in active_period for CSV export
+    const membersForExport = sortedMembers.map((member) => ({
+      ...member,
+      active_period: member.active_period.replace(/–/g, '-'),
+    }))
+
+    // Define the fields to include in the CSV
+    const fields: (keyof Member)[] = [
+      'real_name',
+      'short_name',
+      'active_period',
+      'email',
+      'complete_adress',
+      'birth_date',
+      'phone_number_1',
+    ]
+
+    // Generate CSV header
+    const header = fields.join(';')
+
+    const csvContent = membersForExport
+      .map((member) => {
+        // Extract values for each field
+        const values = fields.map((field) => member[field] || '')
+        // Join values with semicolons
+        return values.join(';')
+      })
+      .join('\n')
+
+    // Combine header and content
+    const csvData = `${header}\n${csvContent}`
+    console.log(csvData)
+
+    // Create a Blob object for the CSV data
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' })
+
+    // Create a temporary URL for the Blob
+    const url = URL.createObjectURL(blob)
+
+    // Create a temporary anchor element
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'members.csv')
+
+    // Simulate a click on the anchor element to download the CSV file
+    link.click()
+
+    // Release the URL object
+    URL.revokeObjectURL(url)
+
+    // Reset to original query information
+    setExportToCsvState(false)
+  }
 
   // Rendering of page header
   const renderPageHeader = () => {
@@ -291,86 +334,109 @@ export const MembersListPage = () => {
               value={searchQuery}
               onChange={handleSearch}
             />
-            <select
-              className={style.advancedButton}
-              value={sortBy}
-              onChange={handleSortChange}
-            >
-              {sortingOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <button
-              className={style.advancedButton}
-              onClick={toggleAdvancedSearch}
-            >
-              {showAdvancedSearch
-                ? 'Hide Advanced Search'
-                : 'Show Advanced Search'}
-            </button>
+            <div className={style.buttonContainer}>
+              <select
+                className={style.advancedButton}
+                value={sortBy}
+                onChange={handleSortChange}
+              >
+                {sortingOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                className={style.advancedButton}
+                onClick={toggleAdvancedSearch}
+              >
+                {showAdvancedSearch
+                  ? 'Hide Advanced Search'
+                  : 'Advanced Search'}
+              </button>
+            </div>
           </div>
         </div>
         {showAdvancedSearch && (
           <div className={style.advancedSearchContainer}>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortActive}
-                  onChange={() => setSortActive(!sortActive)}
-                />
-                aktiv
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortGamling}
-                  onChange={() => setSortGamling(!sortGamling)}
-                />
-                gamling
-              </label>
-              <select
-                className={style.dropdown}
-                value={selectedMembershipGroup}
-                onChange={(e) => setSelectedMembershipGroup(e.target.value)}
-              >
-                <option value="">Alla medlemsgrupper</option>
-                {membershipGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-              <select
-                className={style.dropdown}
-                value={selectedInstrumentGroup}
-                onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
-              >
-                <option value="">Alla instrumentgrupper</option>
-                {instrumentGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-              <select
-                className={style.dropdown}
-                value={selectedEngagementGroup}
-                onChange={(e) => setSelectedEngagementGroup(e.target.value)}
-              >
-                <option value="">Alla engagemangsgrupper</option>
-                {engagementGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
+            <div className={style.advancedSearchOptionsContainer}>
+              <div className={style.advancedSearchRow}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortActive}
+                    onChange={() => setSortActive(!sortActive)}
+                  />
+                  aktiv
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortGamling}
+                    onChange={() => setSortGamling(!sortGamling)}
+                  />
+                  gamling
+                </label>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedMembershipGroup}
+                  onChange={(e) => setSelectedMembershipGroup(e.target.value)}
+                >
+                  <option value="">Alla medlemsgrupper</option>
+                  {membershipGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedInstrumentGroup}
+                  onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
+                >
+                  <option value="">Alla instrumentgrupper</option>
+                  {instrumentGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedEngagementGroup}
+                  onChange={(e) => setSelectedEngagementGroup(e.target.value)}
+                >
+                  <option value="">Alla engagemangsgrupper</option>
+                  {engagementGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <button className={style.advancedButton} onClick={searchAdvanced}>
-              Sök advancerat
-            </button>
+            <div className={style.lastRowContainer}>
+              <div className={style.lastRow}>
+                <button
+                  className={style.advancedButton}
+                  onClick={searchAdvanced}
+                >
+                  Sök advancerat
+                </button>
+                <button
+                  className={style.advancedButton}
+                  onClick={exportToCsvButtonAction}
+                >
+                  Export Members as CSV
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </>
@@ -400,32 +466,6 @@ export const MembersListPage = () => {
       </>
     )
   }
-
-  // If no dynamic filter (text in search box) is active, show staticFilteredMembers members
-  const membersToDisplay = searchQuery
-    ? filteredMembers || []
-    : staticFilteredMembers
-    ? staticFilteredMembers
-    : data
-
-  // Sort membersToDisplay array based on the selected option
-  const sortedMembers = [...membersToDisplay].sort((a, b) => {
-    if (sortBy === 'full_name (desc)') {
-      return a.full_name.localeCompare(b.full_name)
-    } else if (sortBy === 'full_name (asc)') {
-      return a.full_name.localeCompare(b.full_name) * -1
-    } else if (sortBy === 'active_period (asc)') {
-      return a.active_period.localeCompare(b.active_period)
-    } else if (sortBy === 'active_period (desc)') {
-      return a.active_period.localeCompare(b.active_period) * -1
-    } else if (sortBy === 'short_name (desc)') {
-      return a.short_name.localeCompare(b.short_name)
-    } else if (sortBy === 'short_name (asc)') {
-      return a.short_name.localeCompare(b.short_name) * -1
-    }
-    // Add more sorting options as needed
-    return 0 // Default sorting behavior
-  })
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage
@@ -457,24 +497,24 @@ export const MembersListPage = () => {
   return (
     <>
       {renderPageHeader()}
-      <table>
-        <thead>
-          <tr>
-            <th>Namn</th>
-            <th>Aktiv period</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((member) => (
-            <tr key={member.id}>
-              <td>
-                <Link to={member.id}>{member.full_name}</Link>
-              </td>
-              <td>{member.active_period}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={style.tableContainer}>
+        <div className={style.table}>
+          <div className={style.thead}>
+            <div>Namn</div>
+            <div>Aktiv period</div>
+          </div>
+          <div className={style.tbody}>
+            {currentItems.map((member) => (
+              <div className={style.row} key={member.id}>
+                <div>
+                  <Link to={member.id}>{member.full_name}</Link>
+                </div>
+                <div>{member.active_period}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       {(membersToDisplay.length > itemsPerPage ||
         itemsPerPage === Infinity) && (
         <div className={style.pagination}>
