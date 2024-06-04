@@ -1,7 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
-import { MembersService, OpenAPI } from '../api'
+import { MembersService } from '../api'
 import style from './styling/MemberPage.module.css'
 
 // Import membership icons
@@ -37,6 +37,7 @@ import medal6 from '../assets/medalIcons/medal6.png'
 import medal7 from '../assets/medalIcons/medal7.png'
 import medal8 from '../assets/medalIcons/medal8.png'
 import medal9 from '../assets/medalIcons/medal9.png'
+import useProfilePicFetch from '../utils/FetchProfilePicture'
 
 interface Membership {
   id: number
@@ -92,7 +93,10 @@ export const MemberPage = () => {
     )
   )
 
-  if (isLoading || isIdle) {
+  const { isProfilePicLoading, profilePicUrl, profilePicError } =
+    useProfilePicFetch(data?.profile_picture)
+
+  if (isLoading || isProfilePicLoading || isIdle) {
     return (
       <>
         <div className={style.loadingSpinnerContainer}>
@@ -102,8 +106,10 @@ export const MemberPage = () => {
     )
   }
 
-  if (isError) {
+  if (isError || profilePicError) {
     if (error instanceof Error) return <span>Error: {error.message}</span>
+    else if (profilePicError instanceof Error)
+      return <span>Error: {profilePicError.message}</span>
     else return <span>Unknown error!</span>
   }
   if (!data) {
@@ -153,7 +159,7 @@ export const MemberPage = () => {
       <div className={style.container}>
         <div className={style.leftColumnCentered}>
           <div className={style.profileImageContainer}>
-            <img src={OpenAPI.BASE + data.profile_picture} alt="Your Image" />
+            <img src={profilePicUrl} alt="Profile picture" />
           </div>
         </div>
 
