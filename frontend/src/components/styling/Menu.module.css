@@ -1,0 +1,32 @@
+.container {
+  width: 200px;
+  margin: 0px;
+  padding: 0px;
+  display: grid;
+}
+
+.menuHeading {
+  background-color: var(--yellow);
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.menuItem {
+  background-color: var(--light-yellow);
+  padding: 4px 16px;
+  color: var(--blue);
+}
+
+.menuItem:hover {
+  color: var(--brown);
+}
+
+.menuItemActive {
+  font-weight: bold;
+}
+
+.hideInDesktopMode {
+  @media (min-width: 801px) {
+    display: none;
+  }
+}

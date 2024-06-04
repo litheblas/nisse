@@ -1,0 +1,47 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: start;
+  grid-gap: 8px;
+  margin-bottom: 8px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content max-content;
+  }
+}
+
+.buttonAndFilters {
+  display: grid;
+
+  .newEventButton {
+    width: 100%;
+    height: max-content;
+    margin-bottom: 8px;
+  }
+}
+
+.loadingSpinnerContainer {
+  display: flex;
+  justify-content: center;
+  color: var(--blue);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: var(--yellow);
+  color: var(--blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+
+  /* Fit box around title */
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
+}
+
+.header h1 {
+  font-size: 2em;
+  text-align: center;
+}

@@ -1,0 +1,88 @@
+/* InformationChannelsPage.module.css */
+
+/* Style the overall homepage container */
+.container {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  max-width: var(--page-max-width);
+  margin: auto;
+  padding: 0px;
+}
+
+/* Style the header section */
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: var(--yellow);
+  color: var(--blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+
+  /* Fit box around title */
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline-block;
+}
+
+.header h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+/* Style the main content section */
+.mainContent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 800px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Style information boxes */
+.box {
+  position: relative;
+
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px var(--middle-yellow);
+  transition: transform 0.3s ease;
+
+  /* Adjust display and sizing */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+}
+
+.box h2 {
+  color: var(--black);
+  margin-bottom: 10px;
+}
+
+.box p {
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+/* Button style */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: var(--white);
+  background-color: var(--blue);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-top: auto;
+}
+
+.btn:hover {
+  background-color: var(--dark-blue);
+}

@@ -10,92 +10,186 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+APP_DIR = Path(__file__).resolve().parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i1fnvplzs0%jfd9k@onnv=p5#_lbh6ywt=wj&%7!1gqg!oa^go'
+SECRET_KEY = os.getenv("NISSE_DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("NISSE_DEBUG") == "true" or os.getenv("NISSE_DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
+ALLOWED_HOSTS = (
+    os.getenv("NISSE_ALLOWED_HOSTS").split(",")
+    if os.getenv("NISSE_ALLOWED_HOSTS")
+    else []
+)
+
+CORS_ORIGIN_WHITELIST = (
+    os.getenv("NISSE_CORS_ORIGIN_WHITELIST").split(",")
+    if os.getenv("NISSE_CORS_ORIGIN_WHITELIST")
+    else []
+)
+
+CSRF_TRUSTED_ORIGINS = (
+    os.getenv("NISSE_CSRF_TRUSTED_ORIGINS").split(",")
+    if os.getenv("NISSE_CSRF_TRUSTED_ORIGINS")
+    else []
+)
+
+SECURE_PROXY_SSL_HEADER = (
+    tuple(os.getenv("NISSE_SECURE_PROXY_SSL_HEADER").split("=", 1))
+    if os.getenv("NISSE_SECURE_PROXY_SSL_HEADER")
+    else None
+)
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "whitenoise.runserver_nostatic",
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "events.apps.EventsConfig",
+    "imagekit",
+    "members.apps.MembersConfig",
+    "rest_framework",
+    "drf_spectacular",
+    "corsheaders",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ["django_extensions"]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'nisse_backend.urls'
+AUTH_BYPASS = (
+    os.getenv("NISSE_AUTH_BYPASS") == "true" or os.getenv("NISSE_AUTH_BYPASS") == "True"
+)
+if not AUTH_BYPASS:
+    MIDDLEWARE += ["nisse_backend.auth.NisseKeycloakMiddleware"]
+
+KEYCLOAK_EXEMPT_URIS = []
+
+KEYCLOAK_CONFIG = {
+    "KEYCLOAK_SERVER_URL": os.getenv("NISSE_KEYCLOAK_SERVER_URL"),
+    "KEYCLOAK_REALM": os.getenv("NISSE_KEYCLOAK_REALM"),
+    "KEYCLOAK_CLIENT_ID": os.getenv("NISSE_KEYCLOAK_CLIENT_ID"),
+    "KEYCLOAK_CLIENT_SECRET_KEY": os.getenv("NISSE_KEYCLOAK_CLIENT_SECRET_KEY", ""),
+    "KEYCLOAK_CACHE_TTL": 60,
+    "LOCAL_DECODE": True,
+    "KEYCLOAK_AUDIENCE": os.getenv("NISSE_KEYCLOAK_AUDIENCE"),
+}
+
+KEYCLOAK_NISSE_DEFAULT_ROLES = {
+    "GET": ["user", "staff"],
+    "POST": ["user", "staff"],
+    "UPDATE": ["user", "staff"],
+    "DELETE": ["user", "staff"],
+    "PATCH": ["user", "staff"],
+    "PUT": ["user", "staff"],
+}
+
+ROOT_URLCONF = "nisse_backend.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'nisse_backend.wsgi.application'
+WSGI_APPLICATION = "nisse_backend.wsgi.application"
+ASGI_APPLICATION = "nisse_backend.asgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("NISSE_DB_NAME"),
+        "USER": os.getenv("NISSE_DB_USER"),
+        "PASSWORD": os.getenv("NISSE_DB_PASSWORD"),
+        "HOST": os.getenv("NISSE_DB_HOST"),
+        "PORT": os.getenv("NISSE_DB_PORT"),
+        "TEST": {
+            "NAME": "nisse_test_db",
+        },
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Nisse Backend API",
+    "DESCRIPTION": "The API that powers LiTHe Blås Internal Website",
+    "VERSION": "0.0.0",
+    "SERVE_INCLUDE_SCHEMA": True,
+    "PREPROCESSING_HOOKS": [
+        "nisse_backend.auth.spectacular_auth_hook",
+        "nisse_backend.utils.drf_spectacular_ignore_endpoints",
+    ],
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -103,21 +197,38 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Stockholm"
 
 USE_I18N = True
 
 USE_TZ = True
 
+PHONENUMBER_DEFAULT_REGION = "SE"
+
+AUTH_USER_MODEL = "members.Member"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+STATIC_ROOT = APP_DIR / "static"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = APP_DIR / "media"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

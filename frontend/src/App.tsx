@@ -1,34 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
+import { OpenAPI } from './api'
+import { AppShell } from './components/AppShell'
+import AuthProvider from './context/AuthProvider'
+import SnackbarProvider from './context/SnackbarProvider'
+import { AddEventPage } from './pages/AddEventPage'
+import { EditEventPage } from './pages/EditEventPage'
+import { EditMemberPage } from './pages/EditMemberPage'
+import { EventsPage } from './pages/EventsPage'
+import { HomePage } from './pages/HomePage'
+import { InformationChannelsPage } from './pages/InformationChannelsPage'
+import { MemberPage } from './pages/MemberPage'
+import { MembersListPage } from './pages/MembersListPage'
+import { RouteErrorPage } from './pages/RouteErrorPage'
+
+OpenAPI.BASE = import.meta.env.VITE_NISSE_BACKEND_API_URL
+
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <AppShell />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        {
+          path: '/',
+          element: <HomePage />,
+        },
+        {
+          path: '/members/',
+          children: [
+            {
+              path: '',
+              element: <MembersListPage />,
+            },
+            {
+              path: ':memberId',
+              element: <MemberPage />,
+            },
+            {
+              path: 'edit/:memberId',
+              element: <EditMemberPage />,
+            },
+          ],
+        },
+        {
+          path: '/events/',
+          children: [
+            {
+              path: '',
+              element: <EventsPage />,
+            },
+            {
+              path: 'add',
+              element: <AddEventPage />,
+            },
+            {
+              path: 'edit/:eventId',
+              element: <EditEventPage />,
+            },
+          ],
+        },
+        {
+          path: '/informationskanaler',
+          element: <InformationChannelsPage />,
+        },
+        // {
+        //   path: '/integritet',
+        //   element: <IntegrityPage />,
+        // },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL }
+)
+
+const queryClient = new QueryClient()
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <SnackbarProvider>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }
 

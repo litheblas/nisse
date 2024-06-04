@@ -15,8 +15,42 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+from nisse_backend import settings
+from nisse_backend.auth import Authorize
+from nisse_backend.views import serve_media
+
+from .views import OpenDoor
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("api/events/", include("events.urls")),
+    path("api/members/", include("members.urls")),
+    path("api/door/", OpenDoor.as_view()),
+    path("authorize/", Authorize.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path(
+            settings.MEDIA_URL + "<path:file_name>/",
+            serve_media,
+            name="serve-media-files",
+        ),
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path(
+            "api/schema/swagger-ui/",
+            SpectacularSwaggerView.as_view(url_name="schema"),
+            name="swagger-ui",
+        ),
+        path(
+            "api/schema/redoc/",
+            SpectacularRedocView.as_view(url_name="schema"),
+            name="redoc",
+        ),
+    ]

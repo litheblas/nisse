@@ -1,0 +1,14 @@
+.container {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--white);
+
+  width: max-content;
+
+  border-radius: 9999px;
+  padding: 0px 8px;
+
+  .icon {
+    padding-right: 4px;
+  }
+}

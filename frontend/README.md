@@ -1,27 +1,61 @@
-# React + TypeScript + Vite
+# Nisse Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend is a single-page application (SPA) built with React.
 
-Currently, two official plugins are available:
+## Install the frontend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+All the setup instructions assume that you are in the `frontend` directory.
 
-## Expanding the ESLint configuration
+Prerequisites:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- `Node.js v20` - The best way to install Node is using
+  [nvm](https://github.com/nvm-sh/nvm).
+- [Remember to install pre-commit](../README.md#installing-pre-commit)
 
-- Configure the top-level `parserOptions` property like this:
+Configure the environment variables needed with `cp .env.template .env` and
+change the values in the `.env` file (but for development the defaults are
+probably alright).
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+Navigate to the frontend repository with `cd frontend` and install all
+dependencies with
+
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Running the frontend
+
+- `npm run dev` to start a hot-reloading development server.
+- `npm run build` to build the project.
+- `npm run preview` to build and then serve the build locally.
+- `npm run lint` to lint the project.
+
+## Generating the API client
+
+The frontend uses an automatically generated API client to communicate with the
+backend. To generate the API client, run
+
+```bash
+npm run generate-api-client
+```
+
+This will generate the API client in `src/api/`. It assumes that the backend is
+installed and working, otherwise the command will fail.
+
+## Deployment
+
+The frontend is deployed to [GitHub Pages](https://pages.github.com/) and is
+automated using [GitHub Actions](https://github.com/features/actions).
+
+- When a change is pushed to `main`, the changes are built and deployed to the
+  development site, where they can be tested before being deployed to
+  production. The development site can be found at
+  <https://litheblas.github.io/nisse-frontend-deploy-development/>.
+- When a new release is created, the changes are built and deployed to the
+  development site (<https://litheblas.github.io/nisse-frontend-production/>
+  (for now, until a domain is set up)).
+
+The automatic deployment is dependant on a personal access token from Kisac (an
+organization cannot have its own token). The token is stored as a GitHub
+secret. The token has an 1 year lifetime (the maximum allowed) and will need to
+regenerated when it expires. The current token expires on 2024-11-19.
