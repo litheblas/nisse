@@ -4,6 +4,7 @@ interface AuthContextState {
   getUserInfo: () => Keycloak.KeycloakProfile
   isAdmin: () => boolean
   logout: () => void
+  getToken: () => Promise<string>
 }
 
 export const AuthContext = createContext<AuthContextState>(null!)
