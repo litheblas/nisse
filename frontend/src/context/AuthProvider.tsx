@@ -112,10 +112,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     return keycloakInstance.token!
   }
 
-  OpenAPI.TOKEN = getToken
+  OpenAPI.TOKEN = getToken // Do we need to set this if getToken is exported?
 
   return (
-    <AuthContext.Provider value={{ getUserInfo, isAdmin, logout }}>
+    <AuthContext.Provider value={{ getUserInfo, isAdmin, logout, getToken }}>
       {children}
     </AuthContext.Provider>
   )
