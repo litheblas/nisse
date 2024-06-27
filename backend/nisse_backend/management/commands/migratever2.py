@@ -10,7 +10,11 @@ from members.models import (  # GrasMembership,
     Membership,
     MembershipType,
 )
-from personmaker import ImportedAssignment, ImportedInstrument, ImportedPerson
+from nisse_backend.management.commands._personmaker import (
+    ImportedAssignment,
+    ImportedInstrument,
+    ImportedPerson,
+)
 
 KEYCLOAK_API = ""
 KEYCLOAK_REALM = ""
@@ -52,6 +56,8 @@ def do_members():
                 gras_medlem_till=member["gras_medlem_till"],
                 kon=member["kon"],
             )
+            print(f"On member {newmember}")
+
             for assignmentid in assignments["assignments"].keys():
                 for assignment in assignments["assignmentrelations"][assignmentid]:
                     if assignment["persid"] == member["legacyid"]:
@@ -75,6 +81,7 @@ def do_members():
             newmember.sortInstruments()
             newmember.addEnddateToInstrument()
             newmember.purgeGamling()
+
             Member(
                 id=newmember.id,
                 first_name=newmember.fnamn,
@@ -94,6 +101,9 @@ def do_members():
                 arbitrary_text=newmember.fritext,
                 email=newmember.epost,
             ).save()
+
+            print(f"Saved member {newmember}")
+
             for assignment in newmember.assignments:
                 Engagement(
                     member_id=newmember.id,
@@ -103,6 +113,7 @@ def do_members():
                         title=assignment.name
                     ),
                 ).save()
+
             for instrument in newmember.instrument:
                 Membership(
                     member_id=newmember.id,
@@ -118,39 +129,8 @@ def do_members():
 
 
 class Command(BaseCommand):
-    help = """Migrate the old Database to the new one.\n
-    --test: Test if connection to old db can be established\n
-    --events: Migrate only events\n
-    --members: Migrate only members\n
-    --all: Migrate all data\n"""
-
-    def add_arguments(self, parser):
-        # Named arguments
-        parser.add_argument(
-            "--events",
-            action="store_true",
-            help="Migrate only events",
-        )
-        parser.add_argument(
-            "--members",
-            action="store_true",
-            help="Migrate only members",
-        )
-        parser.add_argument(
-            "--all",
-            action="store_true",
-            help="Migrate all data",
-        )
+    help = "Migrate the old Database members to the new one."
 
     def handle(self, *args, **options) -> str | None:
         print("Migrating data from old database to new database...")
-
-        if options["all"] or (options["events"] and options["members"]):
-            do_events()
-            do_members()
-        elif options["events"]:
-            do_events()
-        elif options["members"]:
-            do_members()
-        else:
-            print("No option was selected. Please select an option to migrate data.")
+        do_members()

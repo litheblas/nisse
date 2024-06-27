@@ -1,7 +1,6 @@
 import json
 import os
 
-import mariadb
 from django.core.management.base import BaseCommand
 from events.models import Event
 from members.models import (
@@ -137,18 +136,7 @@ def get_legacy_toblapp():
 
 
 def open_connection():
-    try:
-        conn = mariadb.connect(
-            user="user",
-            password="password",  # nosec
-            host="localhost",
-            port=3306,
-            database="db",
-        )
-        return conn
-    except mariadb.Error:
-        print("Could not connect to old database")
-        return None
+    pass
 
 
 def get_all_events(db_conn):
