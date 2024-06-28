@@ -41,9 +41,13 @@ class EventFeed(ICalFeed):
         return item.description
 
     def item_start_datetime(self, item):
+        if item.full_day:
+            return item.start_time.date()
         return item.start_time
 
     def item_end_datetime(self, item):
+        if item.full_day:
+            return item.end_time.date()
         return item.end_time
 
     def item_link(self) -> str:
