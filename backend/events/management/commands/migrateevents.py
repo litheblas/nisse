@@ -17,7 +17,7 @@ class Command(BaseCommand):
             start_of_name = spelning["fritext"].find("<h1>") + 4
             end_of_name = spelning["fritext"].find("</h1>")
             event_name = spelning["fritext"][start_of_name:end_of_name]
-            event_fritext = spelning["fritext"][end_of_name + 5:]
+            event_fritext = spelning["fritext"][end_of_name + 5 :]
             timestring = spelning["date"] + " " + spelning["time"]
             events.append(
                 ImportedEvent(
