@@ -123,6 +123,7 @@ class Member(AbstractUser):
                 "membership_type": str(membership.membershipType),
                 "start_date": membership.start,
                 "end_date": membership.end if membership.end else None,
+                "is_trial": membership.is_trial,
             }
             formatted_memberships.append(formatted_membership)
 
@@ -175,6 +176,9 @@ class GrasMembership(models.Model):
     )
 
     status_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.member.full_name
 
 
 class EngagementType(models.Model):

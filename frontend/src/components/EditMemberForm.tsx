@@ -1,5 +1,5 @@
 import * as Form from '@radix-ui/react-form'
-import { Member } from '../api'
+import { Member, OpenAPI } from '../api'
 import style from './styling/EditMemberForm.module.css'
 
 interface EditMemberFormProps {
@@ -59,12 +59,19 @@ export const EditMemberForm = ({
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Profilbild </Form.Label>
         </div>
-        <input
-          type="file"
-          id="profile_picture"
-          key={baseMember.profile_picture}
-        ></input>
-        <img src={baseMember.profile_picture}></img>
+        <Form.Control asChild>
+          <input
+            type="file"
+            id="profile_picture"
+            key={baseMember.profile_picture}
+            accept="image/png, image/jpeg"
+            title="Välj profilbild"
+          ></input>
+        </Form.Control>
+        <img
+          src={OpenAPI.BASE + baseMember.profile_picture}
+          alt="Profilbild"
+        ></img>
       </Form.Field>
 
       {/*first_name */}

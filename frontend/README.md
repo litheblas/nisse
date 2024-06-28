@@ -45,17 +45,15 @@ installed and working, otherwise the command will fail.
 ## Deployment
 
 The frontend is deployed to [GitHub Pages](https://pages.github.com/) and is
-automated using [GitHub Actions](https://github.com/features/actions). When a
-new commit is pushed to specific branches, the frontend is automatically built
-and deployed to GitHub Pages. The branches that trigger a deployment are:
+automated using [GitHub Actions](https://github.com/features/actions).
 
-- `dev`: The changes in this branch are deployed to the development site, where
-  they can be tested before being deployed to production. The development site
-  can be found at
+- When a change is pushed to `main`, the changes are built and deployed to the
+  development site, where they can be tested before being deployed to
+  production. The development site can be found at
   <https://litheblas.github.io/nisse-frontend-deploy-development/>.
-- `main`: The production branch. This is what is actually used. The production
-  site can be found at <https://litheblas.github.io/nisse-frontend-production/>
-  (for now, until a domain is set up).
+- When a new release is created, the changes are built and deployed to the
+  development site (<https://litheblas.github.io/nisse-frontend-production/>
+  (for now, until a domain is set up)).
 
 The automatic deployment is dependant on a personal access token from Kisac (an
 organization cannot have its own token). The token is stored as a GitHub

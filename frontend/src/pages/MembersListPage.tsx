@@ -325,7 +325,9 @@ export const MembersListPage = () => {
   const renderPageHeader = () => {
     return (
       <>
-        <h1 className={style.header}>Blåsbasen</h1>
+        <header className={style.header}>
+          <h1>Blåsbasen</h1>
+        </header>
         <div className={style.inputContainer}>
           <div className={style.searchBarContainer}>
             <input
@@ -334,92 +336,109 @@ export const MembersListPage = () => {
               value={searchQuery}
               onChange={handleSearch}
             />
-            <select
-              className={style.advancedButton}
-              value={sortBy}
-              onChange={handleSortChange}
-            >
-              {sortingOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <button
-              className={style.advancedButton}
-              onClick={toggleAdvancedSearch}
-            >
-              {showAdvancedSearch
-                ? 'Hide Advanced Search'
-                : 'Show Advanced Search'}
-            </button>
+            <div className={style.buttonContainer}>
+              <select
+                className={style.advancedButton}
+                value={sortBy}
+                onChange={handleSortChange}
+              >
+                {sortingOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                className={style.advancedButton}
+                onClick={toggleAdvancedSearch}
+              >
+                {showAdvancedSearch
+                  ? 'Hide Advanced Search'
+                  : 'Advanced Search'}
+              </button>
+            </div>
           </div>
         </div>
         {showAdvancedSearch && (
           <div className={style.advancedSearchContainer}>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortActive}
-                  onChange={() => setSortActive(!sortActive)}
-                />
-                aktiv
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sortGamling}
-                  onChange={() => setSortGamling(!sortGamling)}
-                />
-                gamling
-              </label>
-              <select
-                className={style.dropdown}
-                value={selectedMembershipGroup}
-                onChange={(e) => setSelectedMembershipGroup(e.target.value)}
-              >
-                <option value="">Alla medlemsgrupper</option>
-                {membershipGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-              <select
-                className={style.dropdown}
-                value={selectedInstrumentGroup}
-                onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
-              >
-                <option value="">Alla instrumentgrupper</option>
-                {instrumentGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
-              <select
-                className={style.dropdown}
-                value={selectedEngagementGroup}
-                onChange={(e) => setSelectedEngagementGroup(e.target.value)}
-              >
-                <option value="">Alla engagemangsgrupper</option>
-                {engagementGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </select>
+            <div className={style.advancedSearchOptionsContainer}>
+              <div className={style.advancedSearchRow}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortActive}
+                    onChange={() => setSortActive(!sortActive)}
+                  />
+                  aktiv
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortGamling}
+                    onChange={() => setSortGamling(!sortGamling)}
+                  />
+                  gamling
+                </label>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedMembershipGroup}
+                  onChange={(e) => setSelectedMembershipGroup(e.target.value)}
+                >
+                  <option value="">Alla medlemsgrupper</option>
+                  {membershipGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedInstrumentGroup}
+                  onChange={(e) => setSelectedInstrumentGroup(e.target.value)}
+                >
+                  <option value="">Alla instrumentgrupper</option>
+                  {instrumentGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  className={style.dropdown}
+                  value={selectedEngagementGroup}
+                  onChange={(e) => setSelectedEngagementGroup(e.target.value)}
+                >
+                  <option value="">Alla engagemangsgrupper</option>
+                  {engagementGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <button className={style.advancedButton} onClick={searchAdvanced}>
-              Sök advancerat
-            </button>
-            <button
-              className={style.advancedButton}
-              onClick={exportToCsvButtonAction}
-            >
-              Export Members as CSV
-            </button>
+            <div className={style.lastRowContainer}>
+              <div className={style.lastRow}>
+                <button
+                  className={style.advancedButton}
+                  onClick={searchAdvanced}
+                >
+                  Sök advancerat
+                </button>
+                <button
+                  className={style.advancedButton}
+                  onClick={exportToCsvButtonAction}
+                >
+                  Export Members as CSV
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </>
@@ -480,24 +499,24 @@ export const MembersListPage = () => {
   return (
     <>
       {renderPageHeader()}
-      <table>
-        <thead>
-          <tr>
-            <th>Namn</th>
-            <th>Aktiv period</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((member) => (
-            <tr key={member.id}>
-              <td>
-                <Link to={member.id}>{member.full_name}</Link>
-              </td>
-              <td>{member.active_period}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={style.tableContainer}>
+        <div className={style.table}>
+          <div className={style.thead}>
+            <div>Namn</div>
+            <div>Aktiv period</div>
+          </div>
+          <div className={style.tbody}>
+            {currentItems.map((member) => (
+              <div className={style.row} key={member.id}>
+                <div>
+                  <Link to={member.id}>{member.full_name}</Link>
+                </div>
+                <div>{member.active_period}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       {(membersToDisplay.length > itemsPerPage ||
         itemsPerPage === Infinity) && (
         <div className={style.pagination}>

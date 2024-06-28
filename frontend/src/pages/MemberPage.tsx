@@ -1,7 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
-import { MembersService } from '../api'
+import { MembersService, OpenAPI } from '../api'
 import style from './styling/MemberPage.module.css'
 
 // Import membership icons
@@ -38,12 +38,12 @@ import medal7 from '../assets/medalIcons/medal7.png'
 import medal8 from '../assets/medalIcons/medal8.png'
 import medal9 from '../assets/medalIcons/medal9.png'
 
-import tempProfilePic from '../assets/templateProfilePic.jpg'
 interface Membership {
   id: number
   membership_type: string
   start_date: string
   end_date?: string | null
+  is_trial: boolean
 }
 
 interface Engagement {
@@ -153,7 +153,7 @@ export const MemberPage = () => {
       <div className={style.container}>
         <div className={style.leftColumnCentered}>
           <div className={style.profileImageContainer}>
-            <img src={tempProfilePic} alt="Your Image" />
+            <img src={OpenAPI.BASE + data.profile_picture} alt="Your Image" />
           </div>
         </div>
 
@@ -225,7 +225,8 @@ export const MemberPage = () => {
                   />
                   <div>
                     <p className={style.membershipTypeFont}>
-                      Antagen {membership.membership_type}
+                      {(membership.is_trial && 'Antagen ') || 'Prov '}
+                      {membership.membership_type}
                     </p>
                     <p className={style.dataRangeFont}>
                       {membership.start_date} - {membership.end_date || ''}

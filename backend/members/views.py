@@ -4,6 +4,7 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema
 from members.serializers import MemberSerializer
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
 from rest_framework import viewsets
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from .models import Member
@@ -12,6 +13,7 @@ from .models import Member
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
+    parser_classes = [MultiPartParser]
     # permission_classes = [permissions.IsAuthenticated]
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 

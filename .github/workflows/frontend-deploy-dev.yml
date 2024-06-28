@@ -2,7 +2,7 @@ name: Deploy the frontend to staging
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
 
   workflow_dispatch:
 
