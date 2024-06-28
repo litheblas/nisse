@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime
+from datetime import date, datetime, time, timedelta
 
 from django.core.management.base import BaseCommand
 from events.models import Event, EventTypes, ImportedEvent
@@ -22,6 +22,7 @@ class Command(BaseCommand):
             events.append(
                 ImportedEvent(
                     start_date=datetime.strptime(timestring, "%Y-%m-%d %H:%M:%S"),
+                    end_date=None,
                     location=spelning["location"],
                     fritext=event_fritext,
                     eventType=EventTypes.CONCERT,
@@ -32,22 +33,29 @@ class Command(BaseCommand):
         for fest in data["egna_fester"]:
             events.append(
                 ImportedEvent(
-                    start_date=date.strftime(fest["start_date"], "%Y-%m-%d"),
-                    end_date=date.strftime(fest["end_date"], "%Y-%m-%d"),
+                    start_date=datetime.combine(
+                        date.strftime(fest["start_date"], "%Y-%m-%d"), time()
+                    ),
+                    end_date=datetime.combine(
+                        date.strftime(fest["end_date"], "%Y-%m-%d"), time()
+                    ),
                     location="",
                     eventType=EventTypes.OFFICIAL,
                     fritext=fest["fritext"],
                     name=fest["event_name"],
+                    full_day=True,
                 )
             )
 
         for aktivitet in data["andra_aktiviteter"]:
             events.append(
                 ImportedEvent(
-                    start_date=date.strftime(
+                    start_date=datetime.strftime(
                         aktivitet["start_time"], "%Y-%m-%d %H:%M:%S"
                     ),
-                    end_date=date.strftime(aktivitet["end_time"], "%Y-%m-%d %H:%M:%S"),
+                    end_date=datetime.strftime(
+                        aktivitet["end_time"], "%Y-%m-%d %H:%M:%S"
+                    ),
                     location=aktivitet["location"],
                     eventType=EventTypes.OTHER,
                     fritext="",
@@ -60,8 +68,11 @@ class Command(BaseCommand):
                 creator=None,
                 name=event.name,
                 start_time=event.start_date,
-                end_time=event.end_date,
+                end_time=event.end_date
+                if event.end_date
+                else event.start_date + timedelta(hours=1),
                 event_type=event.type,
                 description=event.fritext,
                 location=event.location,
+                full_day=event.full_day,
             ).save()

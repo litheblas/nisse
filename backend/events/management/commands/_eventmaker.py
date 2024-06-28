@@ -4,12 +4,13 @@ import datetime
 class ImportedEvent:
     def __init__(
         self,
-        start_date: datetime.datetime | datetime.date,
+        start_date: datetime.datetime,
         location: str,
         fritext: str,
         eventType,
-        end_date: datetime.datetime | datetime.date = "",
+        end_date: datetime.datetime = None,
         name="",
+        full_day=False,
     ):
         self.name = name
         self.start_date = start_date
@@ -17,3 +18,4 @@ class ImportedEvent:
         self.location = location
         self.fritext = fritext
         self.type = eventType
+        self.full_day = full_day
