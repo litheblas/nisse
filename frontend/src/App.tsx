@@ -36,12 +36,12 @@ const router = createBrowserRouter(
               element: <MembersListPage />,
             },
             {
-              path: ':memberId',
-              element: <MemberPage />,
-            },
-            {
               path: 'edit/:memberId',
               element: <EditMemberPage />,
+            },
+            {
+              path: ':memberId',
+              element: <MemberPage />,
             },
           ],
         },

@@ -8,6 +8,7 @@ const defaultEvent: Event = {
   id: '',
   name: '',
   location: '',
+  full_day: false,
   start_time: dateTimeToIsoWithTimezone(new Date()),
   end_time: dateTimeToIsoWithTimezone(new Date()),
   description: '',

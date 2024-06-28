@@ -1,4 +1,5 @@
 import * as Form from '@radix-ui/react-form'
+import { useEffect, useState } from 'react'
 import { Event, EventTypeEnum } from '../api'
 import { eventTypeToString } from '../utils/EventTypeToString'
 import style from './styling/EditEventForm.module.css'
@@ -9,6 +10,14 @@ interface EditEventFormProps {
 }
 
 export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
+  const [isFullDay, setIsFullDay] = useState<boolean>(baseEvent.full_day)
+
+  // This is needed, since the component is rendered before the baseEvent is
+  // fully loaded
+  useEffect(() => {
+    setIsFullDay(baseEvent.full_day)
+  }, [baseEvent.full_day])
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = Object.fromEntries(new FormData(event.currentTarget))
@@ -19,9 +28,11 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
       event_type: data.event_type as unknown as EventTypeEnum,
       description: data.description as string,
       location: data.location as string,
+      full_day: data.full_day as unknown as boolean,
       start_time: data.start_time as string,
       end_time: data.stop_time as string,
     }
+
     onSubmit(submittedEvent)
   }
 
@@ -73,6 +84,22 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         </Form.Control>
       </Form.Field>
 
+      {/*Full day event or not*/}
+      <Form.Field className={style.FormField} name="full_day">
+        <div className={style.FormFieldLabelContainer}>
+          <Form.Label className={style.FormLabel}>Heldagsevenemang?</Form.Label>
+        </div>
+        <Form.Control asChild>
+          <input
+            className={style.Checkbox}
+            type="checkbox"
+            checked={isFullDay}
+            value={isFullDay.toString()}
+            onChange={() => setIsFullDay(!isFullDay)}
+          />
+        </Form.Control>
+      </Form.Field>
+
       {/* TODO: Fix date and time formatting, alt. change date/time pickers */}
       {/* Start time */}
       <Form.Field className={style.FormField} name="start_time">
@@ -85,10 +112,18 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type="datetime-local"
+            type={isFullDay ? 'date' : 'datetime-local'}
             required
-            defaultValue={baseEvent.start_time.slice(0, 19)}
-            key={baseEvent.start_time.slice(0, 19)}
+            defaultValue={
+              isFullDay
+                ? baseEvent.start_time.slice(0, 10)
+                : baseEvent.start_time.slice(0, 19)
+            }
+            key={
+              isFullDay
+                ? baseEvent.start_time.slice(0, 10)
+                : baseEvent.start_time.slice(0, 19)
+            }
           />
         </Form.Control>
       </Form.Field>
@@ -102,9 +137,11 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
           </Form.Message>
           <Form.Message
             className={style.FormMessage}
-            match={(value: string, formData) =>
-              new Date(value) <=
-              new Date(formData.get('start_time') as unknown as string)
+            match={(
+              value: string,
+              formData: { get: (arg0: string) => unknown }
+            ) =>
+              new Date(value) <= new Date(formData.get('start_time') as string)
             }
           >
             Eventet kan inte sluta innan det har börjat
@@ -113,10 +150,18 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
         <Form.Control asChild>
           <input
             className={style.Input}
-            type="datetime-local"
+            type={isFullDay ? 'date' : 'datetime-local'}
             required
-            defaultValue={baseEvent.end_time.slice(0, 19)}
-            key={baseEvent.end_time.slice(0, 19)}
+            defaultValue={
+              isFullDay
+                ? baseEvent.end_time.slice(0, 10)
+                : baseEvent.end_time.slice(0, 19)
+            }
+            key={
+              isFullDay
+                ? baseEvent.end_time.slice(0, 10)
+                : baseEvent.end_time.slice(0, 19)
+            }
           />
         </Form.Control>
       </Form.Field>
