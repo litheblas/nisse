@@ -1,4 +1,5 @@
 import json
+from datetime import date
 
 from django.core.management.base import BaseCommand
 
@@ -6,6 +7,7 @@ from django.core.management.base import BaseCommand
 from members.models import (  # GrasMembership,
     Engagement,
     EngagementType,
+    GrasMembership,
     Member,
     Membership,
     MembershipType,
@@ -82,7 +84,7 @@ def do_members():
             newmember.addEnddateToInstrument()
             newmember.purgeGamling()
 
-            Member(
+            mem = Member(
                 id=newmember.id,
                 first_name=newmember.fnamn,
                 last_name=newmember.enamn,
@@ -100,7 +102,27 @@ def do_members():
                 phone_number_3=newmember.jobbnr,
                 arbitrary_text=newmember.fritext,
                 email=newmember.epost,
-            ).save()
+            )
+
+            mem.save()
+
+            infinity_date = date(9999, 12, 31)
+            unsure_date = date(1970, 1, 1)
+            new_date = date(1970, 1, 2)
+
+            if newmember.gras_medlem_till.upper() == "NULL":
+                this_date = date.strftime(newmember.gras_medlem_till, "%Y-%m-%d")
+                if this_date == infinity_date:  # if infinite
+                    GrasMembership(member=mem, status="L").save()
+                elif this_date == unsure_date:  # if unsure
+                    GrasMembership(member=mem, status="U").save()
+                elif this_date == new_date:  # if new
+                    GrasMembership(member=mem, status="N").save()
+                else:
+                    GrasMembership(
+                        member=mem,
+                        status_date=date.strftime(newmember.gras_medlem_till),
+                    ).save()
 
             print(f"Saved member {newmember}")
 
