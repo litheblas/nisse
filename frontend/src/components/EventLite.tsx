@@ -178,12 +178,11 @@ export const EventLite = ({ event }: { event: Event }) => {
   const [searchResults, setSearchResults] = useState<Attendee[]>([]) // State for search results
   const [staticMembers, setStaticMembers] = useState<Attendee[]>([]) // Static list of all members
 
-  useEffect(() => {
-    // Fetch all members once when the component mounts
+  const loadMembers = () => {
     void MembersService.membersList().then((members) =>
       setStaticMembers(members)
     )
-  }, [])
+  }
 
   const changeAttendeesVisibility = () => {
     setShowAttendees((prev) => !prev)
@@ -299,18 +298,23 @@ export const EventLite = ({ event }: { event: Event }) => {
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Lägg till medlemmar..."
+            onClick={() => {
+              if (staticMembers.length === 0) loadMembers()
+            }} // load members when search bar is pressed
           />
-          <div className={style.searchResults}>
-            {searchResults.map((member) => (
-              <div
-                key={member.id}
-                className={style.searchResult}
-                onClick={() => void handleAddMember(member.id)}
-              >
-                {member.full_name}
-              </div>
-            ))}
-          </div>
+          {searchResults.length > 0 && (
+            <div className={style.searchResults}>
+              {searchResults.map((member) => (
+                <div
+                  key={member.id}
+                  className={style.searchResult}
+                  onClick={() => void handleAddMember(member.id)}
+                >
+                  {member.full_name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
