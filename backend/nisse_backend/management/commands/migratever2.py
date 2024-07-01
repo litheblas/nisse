@@ -110,7 +110,7 @@ def do_members():
             unsure_date = date(1970, 1, 1)
             new_date = date(1970, 1, 2)
 
-            if newmember.gras_medlem_till.upper() == "NULL":
+            if newmember.gras_medlem_till.upper() in ["NULL", None, "NONE"]:
                 this_date = date.strftime(newmember.gras_medlem_till, "%Y-%m-%d")
                 if this_date == infinity_date:  # if infinite
                     GrasMembership(member=mem, status="L").save()
