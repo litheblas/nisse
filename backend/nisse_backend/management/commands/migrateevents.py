@@ -42,8 +42,8 @@ class Command(BaseCommand):
                 ImportedEvent(
                     start_date=datetime.strptime(timestring, "%Y-%m-%d %H:%M:%S"),
                     end_date=None,
-                    location=re.sub(r"<.*?>", "", spelning["location"]),
-                    fritext=event_fritext,
+                    location=spelning["location"],
+                    fritext=re.sub(r"<.*?>", "", event_fritext),
                     eventType=EventTypes.CONCERT,
                     name=event_name,
                 )
