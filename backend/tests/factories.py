@@ -57,6 +57,7 @@ class EventFactory(DjangoModelFactory):
     creator = SubFactory(MemberFactory)
     location = Faker("street_address")
     name = Faker("word")
+    full_day = randgen.choice([True, False])
     start_time = FuzzyDateTime(start_dt=datetime(1974, 1, 1, tzinfo=timezone.utc))
     end_time = LazyAttribute(lambda d: d.start_time + timedelta(hours=3))
     event_type = FuzzyChoice([1, 2, 3])
