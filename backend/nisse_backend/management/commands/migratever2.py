@@ -31,7 +31,7 @@ def do_members():
     MembershipType.objects.all().delete()
 
     assignments_file = open("legacy_assignments.json")
-    perosons_file = open("legacy_persons2.json", "r")
+    perosons_file = open("legacy_persons.json", "r")
     id_file = open("legacy_id_to_blapp_id.json")
     members = json.load(perosons_file)
     assignments = json.load(assignments_file)
@@ -88,6 +88,23 @@ def do_members():
                             memberobj["start"],
                         )
                     )
+        for provobj in assignments["memberrelations"]["prov"]:
+            if provobj["persid"] == str(member["legacyid"]):
+                newmember.instruments.append(
+                    ImportedInstrument(
+                        "Provantagen",
+                        provobj["start"],
+                    )
+                )
+
+        for hedersobj in assignments["memberrelations"]["heder"]:
+            if hedersobj["persid"] == str(member["legacyid"]):
+                newmember.instruments.append(
+                    ImportedInstrument(
+                        "Hedersmedlem",
+                        hedersobj["start"],
+                    )
+                )
 
         for gamlingobj in assignments["memberrelations"]["gamling"]:
             if gamlingobj["persid"] == str(member["legacyid"]):
@@ -150,7 +167,6 @@ def do_members():
 
         print(f"Saved member {newmember}")
 
-        # TODO: Fixa så att det lägger in datetime istället för sträng
         for assignment in newmember.assignments:
             Engagement(
                 member_id=newmember.id,
