@@ -31,7 +31,7 @@ def do_members():
     MembershipType.objects.all().delete()
 
     assignments_file = open("legacy_assignments.json")
-    perosons_file = open("legacy_persons.json", "r")
+    perosons_file = open("legacy_persons2.json", "r")
     id_file = open("legacy_id_to_blapp_id.json")
     members = json.load(perosons_file)
     assignments = json.load(assignments_file)

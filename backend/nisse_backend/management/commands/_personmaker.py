@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 
 
 class ImportedAssignment:
@@ -83,7 +84,12 @@ class ImportedPerson:
         self.fritext = fritext
         self.gras_medlem_till = gras_medlem_till
         self.kon = kon
-        self.username = username
+        # Jag använder random int för att det finns krockar med fnamn och enamn. Alla har inte användarnamn verkar det som
+        self.username = (
+            username
+            if username
+            else fnamn[:3] + enamn[:3] + str(randint(0, 999))  # nosec
+        )
 
     def __str__(self) -> str:
         return f"{self.fnamn} {self.smek} {self.enamn} ({self.id})"
