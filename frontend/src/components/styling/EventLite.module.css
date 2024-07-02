@@ -135,7 +135,7 @@
 
 .adminReporting {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 .attendanceStatus {
@@ -150,10 +150,9 @@
 
   position: relative;
 
-  /* Flexbox properties to center content */
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 .attendanceStatus:hover {
@@ -162,9 +161,9 @@
 }
 
 .selected {
-  color: var(--blue); /* Adjust as needed for selected color */
-  border-color: var(--blue); /* Adjust as needed for selected border color */
-  border-width: 2px; /* Make the border thicker */
+  color: var(--blue);
+  border-color: var(--blue);
+  border-width: 2px;
 }
 
 .attendeesSection {

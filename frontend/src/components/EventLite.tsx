@@ -26,6 +26,8 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
 
 interface EventAttendeesListProps {
   attendees: Attendee[]
+  eventID: string
+  refetch: () => void // Used when removing attendees as admin
 }
 
 type AttendanceStatusState = Record<string, string>
@@ -39,7 +41,11 @@ const attendanceStatusList = [
   { id: '6', label: 'SAF' },
 ]
 
-const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
+const EventAttendeesList = ({
+  attendees,
+  eventID,
+  refetch,
+}: EventAttendeesListProps) => {
   const [attendanceStatus, setAttendanceStatus] =
     useState<AttendanceStatusState>({})
 
@@ -51,6 +57,17 @@ const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
       ...prevStatus,
       [attendeeId]: statusId,
     }))
+  }
+
+  const handleUnregisterAttendeeClick = async (attendeeId: string) => {
+    try {
+      await EventsService.eventsUnregisterAttendeesCreate(eventID, {
+        members: [attendeeId],
+      })
+      refetch() // Trigger refetch after successful unregistration
+    } catch (error) {
+      console.error('Error unregistering attendee:', error)
+    }
   }
 
   return (
@@ -89,6 +106,12 @@ const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
                   {label}
                 </div>
               ))}
+              <button
+                onClick={() => void handleUnregisterAttendeeClick(attendee.id)}
+                className="standardButton blueButton"
+              >
+                X
+              </button>
             </div>
           </div>
         ))}
@@ -292,7 +315,11 @@ export const EventLite = ({ event }: { event: Event }) => {
       <div className={style.emptyColumn}></div>
       {showAttendees && (
         <div className={style.attendeesSection}>
-          <EventAttendeesList attendees={data?.attendees || []} />
+          <EventAttendeesList
+            attendees={data?.attendees || []}
+            eventID={event.id}
+            refetch={void refetch}
+          />
           <input
             type="text"
             value={searchQuery}
