@@ -27,7 +27,7 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
 interface EventAttendeesListProps {
   attendees: Attendee[]
   eventID: string
-  refetch: () => void // Used when removing attendees as admin
+  refetch: () => Promise<QueryObserverResult<Event, unknown>> // Used when removing attendees as admin
 }
 
 type AttendanceStatusState = Record<string, string>
@@ -64,7 +64,7 @@ const EventAttendeesList = ({
       await EventsService.eventsUnregisterAttendeesCreate(eventID, {
         members: [attendeeId],
       })
-      refetch() // Trigger refetch after successful unregistration
+      void refetch() // Trigger refetch after successful unregistration, updates the list
     } catch (error) {
       console.error('Error unregistering attendee:', error)
     }
@@ -318,7 +318,7 @@ export const EventLite = ({ event }: { event: Event }) => {
           <EventAttendeesList
             attendees={data?.attendees || []}
             eventID={event.id}
-            refetch={void refetch}
+            refetch={refetch}
           />
           <input
             type="text"
