@@ -24,3 +24,7 @@ updates:
       npm-dependencies:
         patterns:
           - "*"
+    # TODO: remove lock when typescript-eslint supports eslint v9
+    ignore:
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
