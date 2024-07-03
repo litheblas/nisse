@@ -74,3 +74,20 @@ def create_keycloak_user():
             ]
         },
     )
+
+
+def get_keycloak_users():
+    """Get all Keycloak users and their attributes."""
+
+    token = get_keycloak_service_token()
+    if not token:
+        return
+
+    return request(
+        url=ENDPOINT + "/admin/realms/litheblas/users",
+        method="GET",
+        headers={
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+        },
+    )
