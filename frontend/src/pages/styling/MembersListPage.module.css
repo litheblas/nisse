@@ -1,9 +1,16 @@
 /* MemberListPage.module.css */
 
 /* Style the header section */
+
+.headerContainer {
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  align-items: center;
+}
+
 .header {
+  justify-self: start;
   text-align: center;
-  margin-bottom: 10px;
   background-color: var(--yellow);
   color: var(--blue);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -12,7 +19,10 @@
   /* Fit box around title */
   padding-left: 10px;
   padding-right: 10px;
-  display: inline-block;
+}
+
+.newMember {
+  justify-self: end;
 }
 
 .header h1 {

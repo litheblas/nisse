@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { MembersService } from '../api'
+import { CreateMemberPopup } from '../components/CreateMemberPopup'
 import {
   Engagement,
   Member,
@@ -41,6 +42,7 @@ export const MembersListPage = () => {
   // Pagination variables
   const [itemsPerPage, setItemsPerPage] = useState(Infinity)
   const [currentPage, setCurrentPage] = useState(1)
+  const [showPopup, setShowPopup] = useState(false)
 
   // Search filter variables
   const [searchQuery, setSearchQuery] = useState('')
@@ -323,11 +325,22 @@ export const MembersListPage = () => {
 
   // Rendering of page header
   const renderPageHeader = () => {
+    const togglePopup = () => {
+      setShowPopup(!showPopup)
+    }
+
     return (
       <>
-        <header className={style.header}>
-          <h1>Blåsbasen</h1>
-        </header>
+        <div className={style.headerContainer}>
+          <header className={style.header}>
+            <h1>Blåsbasen</h1>
+          </header>
+          <div className={style.newMember}>
+            <button onClick={togglePopup} className="standardButton blueButton">
+              Ny medlem
+            </button>
+          </div>
+        </div>
         <div className={style.inputContainer}>
           <div className={style.searchBarContainer}>
             <input
@@ -335,6 +348,7 @@ export const MembersListPage = () => {
               placeholder="Sök på namn eller aktiv period"
               value={searchQuery}
               onChange={handleSearch}
+              //disabled={showPopup}
             />
             <div className={style.buttonContainer}>
               <select
@@ -441,6 +455,8 @@ export const MembersListPage = () => {
             </div>
           </div>
         )}
+
+        {showPopup && <CreateMemberPopup onClose={togglePopup} />}
       </>
     )
   }
