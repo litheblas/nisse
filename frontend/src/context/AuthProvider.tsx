@@ -75,6 +75,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             import.meta.env.VITE_NISSE_BYPASS_LOGIN_IS_ADMIN === 'true',
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           logout: () => {},
+          getToken: () => new Promise<string>(() => ''),
         }}
       >
         {children}
