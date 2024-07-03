@@ -41,7 +41,7 @@ repos:
     hooks:
       - id: flake8
         args:
-          - "--ignore=E501,W503"
+          - "--ignore=E501,W503,E203"
 
   # Python security
   - repo: https://github.com/PyCQA/bandit

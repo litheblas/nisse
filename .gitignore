@@ -325,3 +325,8 @@ nisse-backend-api-schema.yml
 database_schema.png
 backend/nisse_backend/static/
 backend/nisse_backend/media/
+backend/legacy_assignments.json
+backend/legacy_events.json
+backend/legacy_id_to_blapp_id.json
+backend/legacy_persons.json
+backend/blapp_id_to_legacy_id.json
