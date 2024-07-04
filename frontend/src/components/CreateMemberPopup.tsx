@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MembersService } from '../api'
 import { Member } from '../api/models/Member'
 import style from './styling/CreateMemberPopup.module.css'
@@ -28,6 +29,7 @@ export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
   })
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const navigate = useNavigate()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -53,10 +55,11 @@ export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
         complete_adress: '',
       }
 
-      await MembersService.membersCreate(newMember)
+      const createdMember = await MembersService.membersCreate(newMember)
       setSuccess('Member created successfully!')
       setError('')
       onClose() // Close the popup on success
+      navigate(`/members/edit/${createdMember.id}`)
     } catch (error) {
       setError('Error creating member: ' + (error as Error).message)
       setSuccess('')
@@ -70,7 +73,11 @@ export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
           X
         </button>
         <h2>Skapa ny medlem</h2>
-        <form onSubmit={void handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            void handleSubmit(e)
+          }}
+        >
           <div className={style.formGroup}>
             <label>Användarnamn:</label>
             <input
