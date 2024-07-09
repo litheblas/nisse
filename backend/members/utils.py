@@ -6,13 +6,14 @@ from time import time
 from requests import request
 
 ENDPOINT = getenv("NISSE_KEYCLOAK_SERVER_URL")
+REALM = getenv("NISSE_KEYCLOAK_REALM")
 
 
 def get_keycloak_service_token():
     try:
         # Generate access token using client secret
         req = request(
-            url=ENDPOINT + "/realms/litheblas/protocol/openid-connect/token",
+            url=ENDPOINT + "/realms/" + REALM + "/protocol/openid-connect/token",
             method="POST",
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data={
@@ -75,7 +76,7 @@ def create_keycloak_users(members):
 
     return request(
         # Has to be a partial import, or else we can't specify an ID
-        url=ENDPOINT + "/admin/realms/litheblas/partialImport",
+        url=ENDPOINT + "/admin/realms/" + REALM + "/partialImport",
         method="POST",
         headers={
             "Authorization": "Bearer " + token,
@@ -93,7 +94,7 @@ def get_keycloak_users():
         return
 
     return request(
-        url=ENDPOINT + "/admin/realms/litheblas/users",
+        url=ENDPOINT + "/admin/realms/" + REALM + "/users",
         method="GET",
         headers={
             "Authorization": "Bearer " + token,
