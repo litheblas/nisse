@@ -1,7 +1,10 @@
+import { CircularProgress } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Member, MembersService } from '../api'
 import { EditMemberForm } from '../components/EditMemberForm'
+import useProfilePicFetch from '../utils/FetchProfilePicture'
+import style from './styling/MemberPage.module.css'
 
 export const EditMemberPage = () => {
   const navigate = useNavigate()
@@ -26,13 +29,22 @@ export const EditMemberPage = () => {
       navigate('/members/' + created_member.id)
     },
   })
+  const { isProfilePicLoading, profilePicError } = useProfilePicFetch(
+    data?.profile_picture
+  )
 
-  if (isLoading || isIdle) {
-    return <span>Loading...</span>
+  if (isLoading || isProfilePicLoading || isIdle) {
+    return (
+      <div className={style.loadingSpinnerContainer}>
+        <CircularProgress color="inherit" />
+      </div>
+    )
   }
 
-  if (isError) {
+  if (isError || profilePicError) {
     if (error instanceof Error) return <span>Error: {error.message}</span>
+    else if (profilePicError instanceof Error)
+      return <span>Error: {profilePicError.message}</span>
     else return <span>Unknown error!?</span>
   }
 
