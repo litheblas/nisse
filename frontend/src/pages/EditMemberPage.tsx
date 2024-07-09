@@ -29,9 +29,8 @@ export const EditMemberPage = () => {
       navigate('/members/' + created_member.id)
     },
   })
-  const { isProfilePicLoading, profilePicError } = useProfilePicFetch(
-    data?.profile_picture
-  )
+  const { isProfilePicLoading, profilePicUrl, profilePicError } =
+    useProfilePicFetch(data?.profile_picture)
 
   if (isLoading || isProfilePicLoading || isIdle) {
     return (
@@ -51,6 +50,7 @@ export const EditMemberPage = () => {
   return (
     <EditMemberForm
       baseMember={data}
+      profilePicUrl={profilePicUrl}
       onSubmit={(member) => {
         mutation.mutate(member)
       }}
