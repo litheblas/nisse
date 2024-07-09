@@ -165,7 +165,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*birth_date*/}
-      <Form.Field className={style.FormMember} name="birth_date">
+      <Form.Field className={style.FormField} name="birth_date">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Födelsedag 🎂 </Form.Label>
         </div>
@@ -188,7 +188,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*liu_id*/}
-      <Form.Field className={style.FormMember} name="liu_id">
+      <Form.Field className={style.FormField} name="liu_id">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Liu ID </Form.Label>
         </div>
@@ -204,7 +204,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*pronouns*/}
-      <Form.Field className={style.FormMember} name="pronouns">
+      <Form.Field className={style.FormField} name="pronouns">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Pronomen </Form.Label>
         </div>
@@ -220,7 +220,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*street_address*/}
-      <Form.Field className={style.FormMember} name="street_addres">
+      <Form.Field className={style.FormField} name="street_addres">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Adress 🏡</Form.Label>
         </div>
@@ -236,7 +236,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*postal_code*/}
-      <Form.Field className={style.FormMember} name="postal_code">
+      <Form.Field className={style.FormField} name="postal_code">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Postkod </Form.Label>
         </div>
@@ -252,7 +252,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*postal_country*/}
-      <Form.Field className={style.FormMember} name="postal_country">
+      <Form.Field className={style.FormField} name="postal_country">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Ort? </Form.Label>
         </div>
@@ -268,7 +268,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*phone_number_1*/}
-      <Form.Field className={style.FormMember} name="phone_number_1">
+      <Form.Field className={style.FormField} name="phone_number_1">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Telefon nr. 1 📱</Form.Label>
         </div>
@@ -284,7 +284,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*phone_number_2*/}
-      <Form.Field className={style.FormMember} name="phone_number_2">
+      <Form.Field className={style.FormField} name="phone_number_2">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Telefon nr. 2 📞 </Form.Label>
         </div>
@@ -300,7 +300,7 @@ export const EditMemberForm = ({
       </Form.Field>
 
       {/*phone_number_3*/}
-      <Form.Field className={style.FormMember} name="phone_number_3">
+      <Form.Field className={style.FormField} name="phone_number_3">
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Telefon nr. 3 ☎️ </Form.Label>
         </div>
