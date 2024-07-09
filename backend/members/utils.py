@@ -33,8 +33,41 @@ def get_keycloak_service_token():
     return loads(req.text).get("access_token")
 
 
-def create_keycloak_user():
+def create_keycloak_users(members):
     """Create a Keycloak user."""
+
+    members_json = []
+    for member in members:
+        members_json.append(
+            {
+                # User values
+                "id": str(member.id),
+                "username": member.username,
+                "firstName": member.first_name,
+                "lastName": member.last_name,
+                "email": member.email,
+                "attributes": (  # Maybe skip attribute nickname, as we would need to update Keycloak each time we update a nickname in NISSE
+                    # Not sure if MediaWiki expects a nickname
+                    {"nickname": [member.nickname]}
+                    if member.nickname != ""
+                    else {}
+                ),
+                # Static values
+                "createdTimestamp": str(  # Current timestamp written in milliseconds
+                    round(time() * 1000)
+                ),
+                "enabled": "true",
+                "totp": "false",  # Time Based One-Time Password, disabled
+                "emailVerified": "false",
+                "credentials": [],
+                "disableableCredentialTypes": [],
+                "requiredActions": [],
+                "realmRoles": ["default-roles-litheblas"],
+                "clientRoles": {"nisse": ["user"]},
+                "notBefore": 0,
+                "groups": [],
+            }
+        )
 
     token = get_keycloak_service_token()
     if not token:
@@ -48,31 +81,7 @@ def create_keycloak_user():
             "Authorization": "Bearer " + token,
             "Content-Type": "application/json",
         },
-        json={
-            "users": [
-                # TODO: Add function parameters and insert below
-                {
-                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx",
-                    "createdTimestamp": str(  # Current timestamp written in milliseconds
-                        round(time() * 1000)
-                    ),
-                    "username": "username",
-                    "enabled": "true",
-                    "totp": "false",  # Time Based One-Time Password, disabled
-                    "emailVerified": "false",
-                    "firstName": "firstName",
-                    "lastName": "lastName",
-                    "email": "email@email.com",
-                    "credentials": [],
-                    "disableableCredentialTypes": [],
-                    "requiredActions": [],  # Maybe require an action like update password?
-                    "realmRoles": ["default-roles-litheblas"],
-                    "clientRoles": {"nisse": ["user"]},
-                    "notBefore": 0,
-                    "groups": [],
-                }
-            ]
-        },
+        json={"users": members_json},
     )
 
 
