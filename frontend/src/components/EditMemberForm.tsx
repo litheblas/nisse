@@ -1,4 +1,5 @@
 import * as Form from '@radix-ui/react-form'
+import { ChangeEvent, useState } from 'react'
 import { Member } from '../api'
 import style from './styling/EditMemberForm.module.css'
 
@@ -13,6 +14,13 @@ export const EditMemberForm = ({
   profilePicUrl,
   onSubmit,
 }: EditMemberFormProps) => {
+  const [displayImage, setDisplayImage] = useState<string>(profilePicUrl)
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setDisplayImage(URL.createObjectURL(event.target.files[0]))
+    }
+  }
+
   const handleSubmit = (member: React.FormEvent<HTMLFormElement>) => {
     member.preventDefault()
     const data = Object.fromEntries(new FormData(member.currentTarget))
@@ -59,7 +67,7 @@ export const EditMemberForm = ({
       {/*profile_picture*/}
       <Form.Field className={style.FormField} name="profile_picture">
         <div className={style.profileImageContainer}>
-          <img src={profilePicUrl} alt="Profilbild" />
+          <img src={displayImage} alt="Profilbild" />
         </div>
         <div className={style.FormFieldLabelContainer}>
           <Form.Label className={style.FormLabel}>Profilbild </Form.Label>
@@ -71,6 +79,7 @@ export const EditMemberForm = ({
             key={baseMember.profile_picture}
             accept="image/png, image/jpeg"
             title="Välj profilbild"
+            onChange={handleImageChange}
           ></input>
         </Form.Control>
       </Form.Field>
