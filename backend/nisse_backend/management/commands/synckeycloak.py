@@ -10,13 +10,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         kc_members = [user["id"] for user in loads(get_keycloak_users().text)]
-        members_to_add = Member.objects.all()
+        members_to_add = []
 
         print("Members to export:")
-        for member in members_to_add:
-            if str(member.id) in kc_members:
-                members_to_add = members_to_add.exclude(id=member.id)
-            else:
+        for member in Member.objects.all():
+            if str(member.id) not in kc_members:
+                members_to_add.append(member)
                 print(member)
 
         if len(members_to_add) < 1:
