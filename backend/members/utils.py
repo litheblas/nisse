@@ -35,7 +35,7 @@ def get_keycloak_service_token():
 
 
 def create_keycloak_users(members):
-    """Create a Keycloak user."""
+    """Export members to Keycloak."""
 
     members_json = []
     for member in members:
