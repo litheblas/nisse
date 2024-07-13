@@ -25,11 +25,8 @@ export const Menu = () => {
       <NavLink className={linkStyle} to="/informationskanaler">
         Informationskanaler
       </NavLink>
-      <NavLink
-        className={style.menuItem}
-        to="https://drive.google.com/drive/folders/1DNFzCN0o3qRWROojrVfndK-37J9w27Td?usp=sharing"
-      >
-        Mötesprotokoll och stadgar
+      <NavLink className={linkStyle} to="/stadgar">
+        Stadgar och mötesprotokoll
       </NavLink>
       <NavLink className={style.menuItem} to="https://wiki.litheblas.org">
         Wiki
