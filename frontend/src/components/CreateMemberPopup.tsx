@@ -1,5 +1,5 @@
+import Backdrop from '@mui/material/Backdrop'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import Backdrop from 'react-backdrop'
 import { useNavigate } from 'react-router-dom'
 import { MembersService } from '../api'
 import { Member } from '../api/models/Member'
@@ -68,7 +68,7 @@ export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
   }
 
   return (
-    <Backdrop isOpen={true} onClick={onClose} className={style.popup_overlay}>
+    <Backdrop open={true} onClick={onClose} className={style.popup_overlay}>
       <div className={style.popup} onClick={(e) => e.stopPropagation()}>
         <button className={style.close_button} onClick={onClose}>
           X
