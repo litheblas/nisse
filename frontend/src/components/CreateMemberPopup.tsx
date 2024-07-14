@@ -7,9 +7,13 @@ import style from './styling/CreateMemberPopup.module.css'
 
 interface MemberPopupProps {
   onClose: () => void
+  isOpen: boolean
 }
 
-export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
+export const CreateMemberPopup: React.FC<MemberPopupProps> = ({
+  onClose,
+  isOpen,
+}) => {
   const [formData, setFormData] = useState<
     Omit<
       Member,
@@ -68,7 +72,7 @@ export const CreateMemberPopup: React.FC<MemberPopupProps> = ({ onClose }) => {
   }
 
   return (
-    <Backdrop open={true} onClick={onClose} className={style.popup_overlay}>
+    <Backdrop open={isOpen} onClick={onClose} className={style.popup_overlay}>
       <div className={style.popup} onClick={(e) => e.stopPropagation()}>
         <button className={style.close_button} onClick={onClose}>
           X

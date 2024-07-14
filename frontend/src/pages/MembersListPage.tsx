@@ -325,10 +325,6 @@ export const MembersListPage = () => {
 
   // Rendering of page header
   const renderPageHeader = () => {
-    const togglePopup = () => {
-      setShowPopup(!showPopup)
-    }
-
     return (
       <>
         <div className={style.headerContainer}>
@@ -336,7 +332,10 @@ export const MembersListPage = () => {
             <h1>Blåsbasen</h1>
           </header>
           <div className={style.newMember}>
-            <button onClick={togglePopup} className="standardButton blueButton">
+            <button
+              onClick={() => setShowPopup(true)}
+              className="standardButton blueButton"
+            >
               Ny medlem
             </button>
           </div>
@@ -456,7 +455,10 @@ export const MembersListPage = () => {
           </div>
         )}
 
-        {showPopup && <CreateMemberPopup onClose={togglePopup} />}
+        <CreateMemberPopup
+          onClose={() => setShowPopup(false)}
+          isOpen={showPopup}
+        />
       </>
     )
   }
