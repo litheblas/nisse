@@ -63,7 +63,7 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: '/informationskanaler',
+          path: '/informationChannels',
           element: <InformationChannelsPage />,
         },
         // {
