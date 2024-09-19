@@ -22,7 +22,7 @@ export const Menu = () => {
       </NavLink>
 
       <div className={style.menuHeading}>Information</div>
-      <NavLink className={linkStyle} to="/informationskanaler">
+      <NavLink className={linkStyle} to="/informationChannels">
         Informationskanaler
       </NavLink>
       <NavLink className={linkStyle} to="/stadgar">
