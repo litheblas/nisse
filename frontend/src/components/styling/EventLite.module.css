@@ -88,9 +88,20 @@
 
 .dataRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 10fr;
+  grid-template-columns: 10fr 4fr;
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+@media screen and (max-width: 800px) {
+  .dataRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.attendeeInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 8fr;
 }
 
 .headerRow {
@@ -120,4 +131,65 @@
 .pictureColumn {
   display: grid;
   justify-content: center;
+}
+
+.adminReporting {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.attendanceStatus {
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    color 0.1s ease;
+  border: 1px solid #ddd;
+  width: 80%;
+  min-width: min-content;
+  border-radius: 8px;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.attendanceStatus:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.selected {
+  color: var(--blue);
+  border-color: var(--blue);
+  border-width: 2px;
+}
+
+.attendeesSection {
+  display: grid;
+}
+
+.attendeesSection input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.searchResults {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.searchResult {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.searchResult:hover {
+  background-color: #f0f0f0;
 }

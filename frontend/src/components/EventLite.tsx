@@ -1,7 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
 import { QueryObserverResult, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { Attendee, Event, EventTypeEnum, EventsService } from '../api'
+import {
+  Attendee,
+  Event,
+  EventTypeEnum,
+  EventsService,
+  MembersService,
+} from '../api' // Updated import
 import OtherIcon from '../assets/blottartuban.svg'
 import { AuthContext } from '../context/AuthContext'
 import { DurationPill } from './DurationPill'
@@ -20,9 +26,50 @@ const eventTypeToString = (event_type: EventTypeEnum): string => {
 
 interface EventAttendeesListProps {
   attendees: Attendee[]
+  eventID: string
+  refetch: () => Promise<QueryObserverResult<Event, unknown>> // Used when removing attendees as admin
 }
 
-const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
+type AttendanceStatusState = Record<string, string>
+
+const attendanceStatusList = [
+  { id: '1', label: 'N' },
+  { id: '2', label: 'SA' },
+  { id: '3', label: 'OF' },
+  { id: '4', label: 'AF' },
+  { id: '5', label: 'AS' },
+  { id: '6', label: 'SAF' },
+]
+
+const EventAttendeesList = ({
+  attendees,
+  eventID,
+  refetch,
+}: EventAttendeesListProps) => {
+  const [attendanceStatus, setAttendanceStatus] =
+    useState<AttendanceStatusState>({})
+
+  const handleAttendanceStatusClick = (
+    attendeeId: string,
+    statusId: string
+  ) => {
+    setAttendanceStatus((prevStatus) => ({
+      ...prevStatus,
+      [attendeeId]: statusId,
+    }))
+  }
+
+  const handleUnregisterAttendeeClick = async (attendeeId: string) => {
+    try {
+      await EventsService.eventsUnregisterAttendeesCreate(eventID, {
+        members: [attendeeId],
+      })
+      void refetch() // Trigger refetch after successful unregistration, updates the list
+    } catch (error) {
+      console.error('Error unregistering attendee:', error)
+    }
+  }
+
   return (
     <div className={style.attendeesContainer}>
       <div className={style.attendeesTable}>
@@ -31,18 +78,40 @@ const EventAttendeesList = ({ attendees }: EventAttendeesListProps) => {
         </div>
         {attendees.map((attendee, index) => (
           <div key={index} className={style.dataRow}>
-            <div className={style.attendeeCounter}>
-              <div>{index + 1}</div>
+            <div className={style.attendeeInfoContainer}>
+              <div className={style.attendeeCounter}>
+                <div>{index + 1}</div>
+              </div>
+              <div className={style.pictureColumn}>
+                <img
+                  src={OtherIcon} // TODO: Change to attendee.profile_picture
+                  alt={'No Icon found'}
+                  className={style.profilePicture}
+                />
+              </div>
+              <div className={style.attendeeInfo}>
+                <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+              </div>
             </div>
-            <div className={style.pictureColumn}>
-              <img
-                src={OtherIcon} // TODO: Change to attendee.profile_picture
-                alt={'No Icon found'}
-                className={style.profilePicture}
-              />
-            </div>
-            <div className={style.attendeeInfo}>
-              <Link to={'/members/' + attendee.id}>{attendee.full_name}</Link>
+
+            <div className={style.adminReporting}>
+              {attendanceStatusList.map(({ id, label }) => (
+                <div
+                  key={id}
+                  className={`${style.attendanceStatus} ${
+                    attendanceStatus[attendee.id] === id ? style.selected : ''
+                  }`}
+                  onClick={() => handleAttendanceStatusClick(attendee.id, id)}
+                >
+                  {label}
+                </div>
+              ))}
+              <button
+                onClick={() => void handleUnregisterAttendeeClick(attendee.id)}
+                className="standardButton blueButton"
+              >
+                X
+              </button>
             </div>
           </div>
         ))}
@@ -90,7 +159,6 @@ const RegistrationButton = ({
       .then(() => {
         setIsAttending(!isAttending)
 
-        // Manually trigger a refetch of the query to update attendees list
         return refetchQuery()
       })
       .catch((error) => {
@@ -106,12 +174,8 @@ const RegistrationButton = ({
 }
 
 export const EventLite = ({ event }: { event: Event }) => {
-  // Access the AuthContext, keycloak
   const { getUserInfo } = useContext(AuthContext)
-  // Get userId from keycloak. Keycloak id synced with memberId
   const userInfo = getUserInfo()
-  // Replace with backend member ID like: 'bfa1c0d9-0d2d-4e57-b617-9ccd2c390083' to test.
-  // Should work when keycloak id synced with backend member id.
   const memberId = userInfo.id ? userInfo.id : ''
 
   const start_time = new Date(event.start_time)
@@ -133,6 +197,16 @@ export const EventLite = ({ event }: { event: Event }) => {
   })
 
   const [showAttendees, setShowAttendees] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('') // State for search query
+  const [searchResults, setSearchResults] = useState<Attendee[]>([]) // State for search results
+  const [staticMembers, setStaticMembers] = useState<Attendee[]>([]) // Static list of all members
+
+  const loadMembers = () => {
+    void MembersService.membersList().then((members) =>
+      setStaticMembers(members)
+    )
+  }
+
   const changeAttendeesVisibility = () => {
     setShowAttendees((prev) => !prev)
   }
@@ -142,6 +216,35 @@ export const EventLite = ({ event }: { event: Event }) => {
     queryFn: EventsService.eventsRetrieve.bind(window, event.id),
     enabled: showAttendees,
   })
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+    if (query.length > 0) {
+      const filtered = staticMembers.filter((member) => {
+        const queryLowerCase = query.toLowerCase()
+        const includesQuery = (str: string | undefined) =>
+          str && str.toLowerCase().includes(queryLowerCase)
+        return includesQuery(member.full_name)
+      })
+      setSearchResults(filtered)
+    } else {
+      setSearchResults([])
+    }
+  }
+
+  const handleAddMember = async (memberId: string) => {
+    // Function to handle adding a member with search
+    try {
+      await EventsService.eventsRegisterAttendeesCreate(event.id, {
+        members: [memberId],
+      })
+      await refetch()
+      setSearchQuery('')
+      setSearchResults([])
+    } catch (err) {
+      console.error('Error adding member to event:', err)
+    }
+  }
 
   if (showAttendees && (isLoading || isIdle)) {
     return (
@@ -184,7 +287,6 @@ export const EventLite = ({ event }: { event: Event }) => {
         <div className={style.bottomBar}>
           <div>
             <span>Plats: {event.location}</span>
-            {/* Shows the event creator, if one exists */}
             {event.creator ? (
               <>
                 <br />
@@ -211,11 +313,35 @@ export const EventLite = ({ event }: { event: Event }) => {
         </div>
       </div>
       <div className={style.emptyColumn}></div>
-      {showAttendees === false || (
-        <div>
-          {data && data.attendees ? (
-            <EventAttendeesList attendees={data.attendees} />
-          ) : null}
+      {showAttendees && (
+        <div className={style.attendeesSection}>
+          <EventAttendeesList
+            attendees={data?.attendees || []}
+            eventID={event.id}
+            refetch={refetch}
+          />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="Lägg till medlemmar..."
+            onClick={() => {
+              if (staticMembers.length === 0) loadMembers()
+            }} // load members when search bar is pressed
+          />
+          {searchResults.length > 0 && (
+            <div className={style.searchResults}>
+              {searchResults.map((member) => (
+                <div
+                  key={member.id}
+                  className={style.searchResult}
+                  onClick={() => void handleAddMember(member.id)}
+                >
+                  {member.full_name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
