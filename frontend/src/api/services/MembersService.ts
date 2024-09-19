@@ -40,7 +40,7 @@ export class MembersService {
         });
     }
     /**
-     * @param id A UUID string identifying this user.
+     * @param id A UUID string identifying this member.
      * @param fields
      * @returns Member
      * @throws ApiError
@@ -61,7 +61,7 @@ export class MembersService {
         });
     }
     /**
-     * @param id A UUID string identifying this user.
+     * @param id A UUID string identifying this member.
      * @param formData
      * @returns Member
      * @throws ApiError
@@ -81,7 +81,7 @@ export class MembersService {
         });
     }
     /**
-     * @param id A UUID string identifying this user.
+     * @param id A UUID string identifying this member.
      * @param formData
      * @returns Member
      * @throws ApiError
@@ -101,7 +101,7 @@ export class MembersService {
         });
     }
     /**
-     * @param id A UUID string identifying this user.
+     * @param id A UUID string identifying this member.
      * @returns void
      * @throws ApiError
      */
