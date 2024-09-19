@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--dry-run",
             action="store_false",
-            help="Only lists the members which would be exported without exporting them."
+            help="Only lists the members which would be exported without exporting them.",
         )
 
     def handle(self, *args, **options):
@@ -20,7 +20,7 @@ class Command(BaseCommand):
         members_to_add = []
 
         print("Members to export:")
-        for member in Member.objects.all():
+        for member in Member.objects.exclude(email__exact=""):
             if str(member.id) not in kc_members:
                 members_to_add.append(member)
                 print(member)

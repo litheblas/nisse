@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("auth", "0012_alter_user_first_name_max_length"),
         ("members", "0009_grasmembership_grasmembership_grasstatus"),
