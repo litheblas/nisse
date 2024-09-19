@@ -8,6 +8,13 @@ from members.utils import create_keycloak_users, get_keycloak_users
 class Command(BaseCommand):
     help = "Export members to Keycloak"
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--dry-run",
+            action="store_false",
+            help="Only lists the members which would be exported without exporting them."
+        )
+
     def handle(self, *args, **options):
         kc_members = [user["id"] for user in loads(get_keycloak_users().text)]
         members_to_add = []
@@ -22,7 +29,10 @@ class Command(BaseCommand):
             print("\nNo members to export")
             return
 
-        if ret_code := create_keycloak_users(members_to_add).status_code != 200:
-            print(f"\nSomething went wrong {ret_code}")
+        if options["dry_run"]:
+            if ret_code := create_keycloak_users(members_to_add).status_code != 200:
+                print(f"\nSomething went wrong ({ret_code})")
+            else:
+                print("\nSuccessfully exported members")
         else:
-            print("\nSuccessfully exported members")
+            print("\nDry run, no members were exported")
