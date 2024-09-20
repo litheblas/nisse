@@ -1,13 +1,17 @@
 from django.shortcuts import get_object_or_404
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from members.serializers import MemberSerializer,EngagementSerializer,MembershipSerializer
+from members.serializers import (
+    EngagementSerializer,
+    MemberSerializer,
+    MembershipSerializer,
+)
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
-from .models import Member,Engagement,Membership
+from .models import Engagement, Member, Membership
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -16,6 +20,7 @@ class MemberViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser]
     # permission_classes = [permissions.IsAuthenticated]
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+
     # TODO: Change so only admins can do certain stuff
     @extend_schema(
         parameters=[
@@ -39,6 +44,7 @@ class MemberViewSet(viewsets.ModelViewSet):
         member = get_object_or_404(queryset, pk=pk)
         serializer = MemberSerializer(member, fields=request.query_params.get("fields"))
         return Response(serializer.data)
+
 
 class EngagementViewSet(viewsets.ModelViewSet):
     queryset = Engagement.objects.all()
@@ -69,7 +75,9 @@ class EngagementViewSet(viewsets.ModelViewSet):
         queryset = Engagement.objects.all()
         queryset = Member.objects.all()
         engagement = get_object_or_404(queryset, pk=pk)
-        serializer = EngagementSerializer(engagement, fields=request.query_params.get("fields"))
+        serializer = EngagementSerializer(
+            engagement, fields=request.query_params.get("fields")
+        )
         return Response(serializer.data)
 
     def create(self, request):
@@ -79,7 +87,10 @@ class EngagementViewSet(viewsets.ModelViewSet):
         request=EngagementSerializer,
         responses={200: EngagementSerializer},
     )
-    def update(self, request, ):
+    def update(
+        self,
+        request,
+    ):
         return Response()
 
     @extend_schema(
@@ -89,6 +100,7 @@ class EngagementViewSet(viewsets.ModelViewSet):
     def partial_update(self, request):
         super.partial_upda
         return Response()
+
 
 class MembershipViewSet(viewsets.ModelViewSet):
     queryset = Membership.objects.all()
@@ -119,7 +131,9 @@ class MembershipViewSet(viewsets.ModelViewSet):
         queryset = Membership.objects.all()
         queryset = Member.objects.all()
         membership = get_object_or_404(queryset, pk=pk)
-        serializer = EngagementSerializer(membership, fields=request.query_params.get("fields"))
+        serializer = EngagementSerializer(
+            membership, fields=request.query_params.get("fields")
+        )
         return Response(serializer.data)
 
     @extend_schema(
@@ -127,7 +141,9 @@ class MembershipViewSet(viewsets.ModelViewSet):
         responses={201: MembershipSerializer},
     )
     def create(self, request, *args, **kwargs):
-        serializer = MembershipSerializer(data = request.data, fields = request.query_params.get("fields"))
+        serializer = MembershipSerializer(
+            data=request.data, fields=request.query_params.get("fields")
+        )
         Memb
         return Response()
 

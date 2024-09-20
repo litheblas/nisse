@@ -3,10 +3,10 @@ from typing import Dict, List
 from rest_framework import serializers
 
 from .models import (
-    GrasMembership,
-    Member,
     Engagement,
     EngagementType,
+    GrasMembership,
+    Member,
     Membership,
     MembershipType,
 )
@@ -49,29 +49,26 @@ class EngatementSerializer(DynamicFieldsModelSerializer):
             "end",
         ]
 
+
 class MemberSerializer(DynamicFieldsModelSerializer):
     membershipType = serializers.SerializerMethodField()
 
     class Meta:
         model = Engagement
-        fields = [
-            "id",
-            "membershipType",
-            "member",
-            "start",
-            "end",
-            "is_trial"
-        ]
+        fields = ["id", "membershipType", "member", "start", "end", "is_trial"]
+
 
 class EngagementTypeSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = EngagementType
-        fields = ['id', 'title']
+        fields = ["id", "title"]
+
 
 class MembershipTypeSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = MembershipType
-        fields = ['id', 'instrument']
+        fields = ["id", "instrument"]
+
 
 class MemberSerializer(DynamicFieldsModelSerializer):
     memberships = serializers.SerializerMethodField()
