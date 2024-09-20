@@ -3,15 +3,17 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from members.serializers import (
     EngagementSerializer,
+    EngagementTypeSerializer,
     MemberSerializer,
     MembershipSerializer,
+    MembershipTypeSerializer,
 )
 from nisse_backend.settings import KEYCLOAK_NISSE_DEFAULT_ROLES
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
-from .models import Engagement, Member, Membership
+from .models import Engagement, EngagementType, Member, Membership, MembershipType
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -20,16 +22,18 @@ class MemberViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser]
     # permission_classes = [permissions.IsAuthenticated]
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
-
     # TODO: Change so only admins can do certain stuff
+
+    """All these are overritten because we want to have an endpoint that allows only some of the fields to be retrieved"""
+
     @extend_schema(
         parameters=[
             OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
         ]
     )
     def list(self, request):
-        queryset = Member.objects.all()
-        serializer = MemberSerializer(
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(
             queryset, many=True, fields=request.query_params.get("fields")
         )
         return Response(serializer.data)
@@ -40,9 +44,11 @@ class MemberViewSet(viewsets.ModelViewSet):
         ]
     )
     def retrieve(self, request, pk=None):
-        queryset = Member.objects.all()
+        queryset = self.get_queryset()
         member = get_object_or_404(queryset, pk=pk)
-        serializer = MemberSerializer(member, fields=request.query_params.get("fields"))
+        serializer = self.get_serializer(
+            member, fields=request.query_params.get("fields")
+        )
         return Response(serializer.data)
 
 
@@ -54,14 +60,16 @@ class EngagementViewSet(viewsets.ModelViewSet):
     # TODO: Change so only admins can do certain stuff
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
+    """All these are overritten because we want to have an endpoint that allows only some of the fields to be retrieved"""
+
     @extend_schema(
         parameters=[
             OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
         ]
     )
     def list(self, request):
-        queryset = Engagement.objects.all()
-        serializer = EngagementSerializer(
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(
             queryset, many=True, fields=request.query_params.get("fields")
         )
         return Response(serializer.data)
@@ -72,34 +80,12 @@ class EngagementViewSet(viewsets.ModelViewSet):
         ]
     )
     def retrieve(self, request, pk=None):
-        queryset = Engagement.objects.all()
-        queryset = Member.objects.all()
+        queryset = self.get_queryset()
         engagement = get_object_or_404(queryset, pk=pk)
-        serializer = EngagementSerializer(
+        serializer = self.get_serializer(
             engagement, fields=request.query_params.get("fields")
         )
         return Response(serializer.data)
-
-    def create(self, request):
-        return Response()
-
-    @extend_schema(
-        request=EngagementSerializer,
-        responses={200: EngagementSerializer},
-    )
-    def update(
-        self,
-        request,
-    ):
-        return Response()
-
-    @extend_schema(
-        request=EngagementSerializer,
-        responses={200: EngagementSerializer},
-    )
-    def partial_update(self, request):
-        super.partial_upda
-        return Response()
 
 
 class MembershipViewSet(viewsets.ModelViewSet):
@@ -110,13 +96,15 @@ class MembershipViewSet(viewsets.ModelViewSet):
     # TODO: Change so only admins can do certain stuff
     keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
 
+    """All these are overritten because we want to have an endpoint that allows only some of the fields to be retrieved"""
+
     @extend_schema(
         parameters=[
             OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
         ]
     )
     def list(self, request):
-        queryset = Engagement.objects.all()
+        queryset = self.get_queryset()
         serializer = EngagementSerializer(
             queryset, many=True, fields=request.query_params.get("fields")
         )
@@ -128,35 +116,81 @@ class MembershipViewSet(viewsets.ModelViewSet):
         ]
     )
     def retrieve(self, request, pk=None):
-        queryset = Membership.objects.all()
-        queryset = Member.objects.all()
+        queryset = self.get_queryset()
         membership = get_object_or_404(queryset, pk=pk)
-        serializer = EngagementSerializer(
+        serializer = self.get_serializer(
             membership, fields=request.query_params.get("fields")
         )
         return Response(serializer.data)
 
+
+class MembershipTypeViewSet(viewsets.ModelViewSet):
+    queryset = MembershipType.objects.all()
+    serializer_class = MembershipTypeSerializer
+    parser_classes = [MultiPartParser]
+    # permission_classes = [permissions.IsAuthenticated]
+    # TODO: Change so only admins can do certain stuff
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+
+    """All these are overritten because we want to have an endpoint that allows only some of the fields to be retrieved"""
+
     @extend_schema(
-        request=MembershipSerializer,
-        responses={201: MembershipSerializer},
+        parameters=[
+            OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
+        ]
     )
-    def create(self, request, *args, **kwargs):
-        serializer = MembershipSerializer(
-            data=request.data, fields=request.query_params.get("fields")
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(
+            queryset, many=True, fields=request.query_params.get("fields")
         )
-        Memb
-        return Response()
+        return Response(serializer.data)
 
     @extend_schema(
-        request=MembershipSerializer,
-        responses={200: MembershipSerializer},
+        parameters=[
+            OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
+        ]
     )
-    def update(self, request):
-        return Response()
+    def retrieve(self, request, pk=None):
+        queryset = self.get_queryset()
+        membershiptype = get_object_or_404(queryset, pk=pk)
+        serializer = self.get_serializer(
+            membershiptype, fields=request.query_params.get("fields")
+        )
+        return Response(serializer.data)
+
+
+class EngagementTypeViewSet(viewsets.ModelViewSet):
+    queryset = EngagementType.objects.all()
+    serializer_class = EngagementTypeSerializer
+    parser_classes = [MultiPartParser]
+    # permission_classes = [permissions.IsAuthenticated]
+    # TODO: Change so only admins can do certain stuff
+    keycloak_roles = KEYCLOAK_NISSE_DEFAULT_ROLES
+
+    """All these are overritten because we want to have an endpoint that allows only some of the fields to be retrieved"""
 
     @extend_schema(
-        request=MembershipSerializer,
-        responses={200: MembershipSerializer},
+        parameters=[
+            OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
+        ]
     )
-    def partial_update(self, request, *args, **kwargs):
-        return Response()
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(
+            queryset, many=True, fields=request.query_params.get("fields")
+        )
+        return Response(serializer.data)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("fields", OpenApiTypes.STR, OpenApiParameter.QUERY),
+        ]
+    )
+    def retrieve(self, request, pk=None):
+        queryset = self.get_queryset()
+        membershiptype = get_object_or_404(queryset, pk=pk)
+        serializer = self.get_serializer(
+            membershiptype, fields=request.query_params.get("fields")
+        )
+        return Response(serializer.data)
