@@ -2,7 +2,14 @@ from typing import Dict, List
 
 from rest_framework import serializers
 
-from .models import GrasMembership, Member
+from .models import (
+    GrasMembership,
+    Member,
+    Engagement,
+    EngagementType,
+    Membership,
+    MembershipType,
+)
 
 
 # Copied from https://www.django-rest-framework.org/api-guide/serializers/#dynamically-modifying-fields
@@ -28,6 +35,43 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
 
+
+class EngatementSerializer(DynamicFieldsModelSerializer):
+    engagementType = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Engagement
+        fields = [
+            "id",
+            "EngagementType",
+            "member",
+            "start",
+            "end",
+        ]
+
+class MemberSerializer(DynamicFieldsModelSerializer):
+    membershipType = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Engagement
+        fields = [
+            "id",
+            "membershipType",
+            "member",
+            "start",
+            "end",
+            "is_trial"
+        ]
+
+class EngagementTypeSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = EngagementType
+        fields = ['id', 'title']
+
+class MembershipTypeSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = MembershipType
+        fields = ['id', 'instrument']
 
 class MemberSerializer(DynamicFieldsModelSerializer):
     memberships = serializers.SerializerMethodField()
