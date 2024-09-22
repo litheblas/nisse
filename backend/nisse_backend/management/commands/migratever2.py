@@ -44,9 +44,11 @@ def do_members():
     for member in members["data"]:
         newmember = ImportedPerson(
             legacyid=member["legacyid"],
-            id=str(id_map[str(member["legacyid"])])
-            if str(member["legacyid"]) in id_map
-            else member["legacyid"],
+            id=(
+                str(id_map[str(member["legacyid"])])
+                if str(member["legacyid"]) in id_map
+                else member["legacyid"]
+            ),
             fnamn=member["fnamn"],
             enamn=member["enamn"],
             smek=member["smek"],
@@ -171,9 +173,11 @@ def do_members():
             Engagement(
                 member_id=newmember.id,
                 start=datetime.strptime(assignment.startdate, "%Y-%m-%d").date(),
-                end=datetime.strptime(assignment.enddate, "%Y-%m-%d").date()
-                if assignment.enddate
-                else None,
+                end=(
+                    datetime.strptime(assignment.enddate, "%Y-%m-%d").date()
+                    if assignment.enddate
+                    else None
+                ),
                 engagementType=EngagementType.objects.get_or_create(
                     title=assignment.name
                 )[0],
@@ -183,9 +187,11 @@ def do_members():
             Membership(
                 member_id=newmember.id,
                 start=datetime.strptime(instrument.startdate, "%Y-%m-%d").date(),
-                end=datetime.strptime(instrument.enddate, "%Y-%m-%d").date()
-                if instrument.enddate
-                else None,
+                end=(
+                    datetime.strptime(instrument.enddate, "%Y-%m-%d").date()
+                    if instrument.enddate
+                    else None
+                ),
                 is_trial=instrument.istriall,
                 membershipType=MembershipType.objects.get_or_create(
                     instrument=instrument.instrument

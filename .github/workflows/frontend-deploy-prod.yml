@@ -15,7 +15,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
+          node-version: '20.x'
       - run: npm ci
       - name: Build prod-build
         run: npm run build -- --base=/nisse-frontend-deploy-production/

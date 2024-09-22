@@ -213,8 +213,8 @@ export const MembersListPage = () => {
   const membersToDisplay = searchQuery
     ? filteredMembers || []
     : staticFilteredMembers
-    ? staticFilteredMembers
-    : data || []
+      ? staticFilteredMembers
+      : data || []
 
   // Sort membersToDisplay array based on the selected option
   const sortedMembers = [...membersToDisplay].sort((a, b) => {
