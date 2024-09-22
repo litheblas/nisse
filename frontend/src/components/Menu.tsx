@@ -7,33 +7,47 @@ const linkStyle = ({ isActive }: { isActive: boolean }) => {
   return [style.menuItem, isActive ? style.menuItemActive : ''].join(' ')
 }
 
-export const Menu = () => {
+interface MenuProps {
+  closePopover?: () => void
+}
+
+export const Menu = ({ closePopover }: MenuProps) => {
   const { logout } = useAuth()
+  const handleClosePopover = () => closePopover && closePopover()
 
   return (
     <menu className={style.container}>
       <OpenDoorButton />
       <div className={style.menuHeading}>Sidor</div>
-      <NavLink className={linkStyle} to="/events">
+      <NavLink className={linkStyle} to="/events" onClick={handleClosePopover}>
         Kalender
       </NavLink>
-      <NavLink className={linkStyle} to="/members">
+      <NavLink className={linkStyle} to="/members" onClick={handleClosePopover}>
         Blåsbasen
       </NavLink>
 
       <div className={style.menuHeading}>Information</div>
-      <NavLink className={linkStyle} to="/informationChannels">
+      <NavLink
+        className={linkStyle}
+        to="/informationChannels"
+        onClick={handleClosePopover}
+      >
         Informationskanaler
       </NavLink>
-      <NavLink className={linkStyle} to="/stadgar">
+      <NavLink className={linkStyle} to="/stadgar" onClick={handleClosePopover}>
         Stadgar och mötesprotokoll
       </NavLink>
-      <NavLink className={style.menuItem} to="https://wiki.litheblas.org">
+      <NavLink
+        className={style.menuItem}
+        to="https://wiki.litheblas.org"
+        onClick={handleClosePopover}
+      >
         Wiki
       </NavLink>
       <NavLink
         className={style.menuItem}
         to="https://wiki.litheblas.org/Integritetspolicy"
+        onClick={handleClosePopover}
       >
         Integritetspolicy
       </NavLink>
@@ -42,24 +56,28 @@ export const Menu = () => {
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/danser/"
+        onClick={handleClosePopover}
       >
         Danser
       </NavLink>
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/notarkiv/"
+        onClick={handleClosePopover}
       >
         Notarkiv
       </NavLink>
       <NavLink
         className={style.menuItem}
         to="https://wiki.litheblas.org/Kategori:S%C3%A5ngl%C3%A5tar"
+        onClick={handleClosePopover}
       >
         Sing-a-long
       </NavLink>
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/musik/"
+        onClick={handleClosePopover}
       >
         Inspelningar
       </NavLink>
@@ -68,12 +86,14 @@ export const Menu = () => {
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/galleri/"
+        onClick={handleClosePopover}
       >
         Galleriet
       </NavLink>
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/timeline/"
+        onClick={handleClosePopover}
       >
         Blåsare i tiden
       </NavLink>
@@ -82,6 +102,7 @@ export const Menu = () => {
       <NavLink
         className={style.menuItem}
         to="https://www.litheblas.org/internt/barstat/"
+        onClick={handleClosePopover}
       >
         Barstatistik
       </NavLink>
