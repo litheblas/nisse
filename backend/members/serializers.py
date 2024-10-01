@@ -36,7 +36,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class EngatementSerializer(DynamicFieldsModelSerializer):
+class EngagementSerializer(DynamicFieldsModelSerializer):
     engagementType = serializers.SerializerMethodField()
 
     class Meta:
@@ -50,7 +50,7 @@ class EngatementSerializer(DynamicFieldsModelSerializer):
         ]
 
 
-class MemberSerializer(DynamicFieldsModelSerializer):
+class MembershipSerializer(DynamicFieldsModelSerializer):
     membershipType = serializers.SerializerMethodField()
 
     class Meta:
