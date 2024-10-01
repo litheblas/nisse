@@ -37,3 +37,4 @@ export type Member = {
     readonly engagements: Array<Record<string, any>>;
     readonly complete_adress: string;
 };
+
