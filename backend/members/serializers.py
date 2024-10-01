@@ -38,6 +38,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 class EngagementSerializer(DynamicFieldsModelSerializer):
     engagementType = serializers.SerializerMethodField()
+    member = serializers.SerializerMethodField()
 
     class Meta:
         model = Engagement
@@ -49,13 +50,26 @@ class EngagementSerializer(DynamicFieldsModelSerializer):
             "end",
         ]
 
+    def get_engagementType(self, obj):
+        return obj.engagementType
+
+    def get_member(self, obj):
+        return obj.member
+
 
 class MembershipSerializer(DynamicFieldsModelSerializer):
     membershipType = serializers.SerializerMethodField()
+    member = serializers.SerializerMethodField()
 
     class Meta:
         model = Membership
         fields = ["id", "membershipType", "member", "start", "end", "is_trial"]
+
+    def get_membershipType(self, obj):
+        return obj.memebrshipType
+
+    def get_member(self, obj):
+        return obj.member
 
 
 class EngagementTypeSerializer(DynamicFieldsModelSerializer):
