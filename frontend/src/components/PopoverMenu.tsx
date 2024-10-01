@@ -2,6 +2,7 @@ import { faBars, faBurger } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as Popover from '@radix-ui/react-popover'
 import CSS from 'csstype'
+import { useState } from 'react'
 import { Menu } from './Menu'
 
 export const PopoverMenu = () => {
@@ -11,10 +12,15 @@ export const PopoverMenu = () => {
     buttonIcon = faBurger
   }
 
+  const [showPopover, setShowPopover] = useState(false)
+
   return (
-    <Popover.Root>
+    <Popover.Root open={showPopover}>
       <Popover.Trigger asChild>
-        <button style={style.button}>
+        <button
+          style={style.button}
+          onClick={() => setShowPopover(!showPopover)}
+        >
           <FontAwesomeIcon
             icon={buttonIcon}
             size="2x"
@@ -26,7 +32,7 @@ export const PopoverMenu = () => {
       <Popover.Portal>
         <Popover.Content style={style.menuContainer}>
           <Popover.Arrow />
-          <Menu />
+          <Menu closePopover={() => setShowPopover(false)} />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

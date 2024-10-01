@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
 # imagekit requires newer fork Pillow not the default package PIL
@@ -29,6 +30,7 @@ class Member(AbstractUser):
     """A LiTHe Blas internal sites member"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(blank=True, default="")
     nickname = models.CharField(blank=True, max_length=200)
     birth_date = models.DateField(blank=True, null=True)
     liu_id = models.CharField(blank=True, max_length=8)
@@ -56,6 +58,16 @@ class Member(AbstractUser):
             )
         ],
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("email").desc(),
+                name="unique_or_empty",
+                violation_error_message="Email must be either unique or empty.",
+                condition=~models.Q(email__exact=""),
+            )
+        ]
 
     def set_active_period(self):
         memberships = Membership.objects.filter(member=self).order_by("start")
