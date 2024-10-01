@@ -50,10 +50,10 @@ class EngagementSerializer(DynamicFieldsModelSerializer):
             "end",
         ]
 
-    def get_engagementType(self, obj):
+    def get_engagementType(self, obj) -> Dict:
         return obj.engagementType
 
-    def get_member(self, obj):
+    def get_member(self, obj) -> Dict:
         return obj.member
 
 
@@ -65,10 +65,10 @@ class MembershipSerializer(DynamicFieldsModelSerializer):
         model = Membership
         fields = ["id", "membershipType", "member", "start", "end", "is_trial"]
 
-    def get_membershipType(self, obj):
-        return obj.memebrshipType
+    def get_membershipType(self, obj) -> Dict:
+        return obj.memebershipType
 
-    def get_member(self, obj):
+    def get_member(self, obj) -> Dict:
         return obj.member
 
 
