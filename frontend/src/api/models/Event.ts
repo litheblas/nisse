@@ -20,4 +20,3 @@ export type Event = {
     start_time: string;
     event_type?: EventTypeEnum;
 };
-

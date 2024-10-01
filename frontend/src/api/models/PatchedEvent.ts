@@ -20,4 +20,3 @@ export type PatchedEvent = {
     start_time?: string;
     event_type?: EventTypeEnum;
 };
-

@@ -6,8 +6,7 @@
  * A ModelSerializer that takes an additional `fields` argument that
  * controls which fields should be displayed.
  */
-export type Attendee = {
-    readonly id: string;
-    readonly full_name: string;
-    profile_picture?: string;
+export type PatchedEngagementType = {
+    readonly id?: string;
+    title?: string;
 };

@@ -6,8 +6,11 @@
  * A ModelSerializer that takes an additional `fields` argument that
  * controls which fields should be displayed.
  */
-export type Attendee = {
+export type Membership = {
     readonly id: string;
-    readonly full_name: string;
-    profile_picture?: string;
+    readonly membershipType: Record<string, any>;
+    readonly member: Record<string, any>;
+    start: string;
+    end?: string | null;
+    is_trial: boolean;
 };
