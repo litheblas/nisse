@@ -43,7 +43,7 @@ class EngagementSerializer(DynamicFieldsModelSerializer):
         model = Engagement
         fields = [
             "id",
-            "EngagementType",
+            "engagementType",
             "member",
             "start",
             "end",
@@ -54,7 +54,7 @@ class MembershipSerializer(DynamicFieldsModelSerializer):
     membershipType = serializers.SerializerMethodField()
 
     class Meta:
-        model = Engagement
+        model = Membership
         fields = ["id", "membershipType", "member", "start", "end", "is_trial"]
 
 

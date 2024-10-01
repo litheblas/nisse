@@ -6,10 +6,10 @@ from . import views
 router = routers.DefaultRouter()
 
 router.register(r"", views.MemberViewSet)
-router.register(r"", views.MembershipViewSet)
-router.register(r"", views.MembershipTypeViewSet)
-router.register(r"", views.EngagementViewSet)
-router.register(r"", views.EngagementTypeViewSet)
+router.register(r"membership", views.MembershipViewSet)
+router.register(r"membershiptype", views.MembershipTypeViewSet)
+router.register(r"engagement", views.EngagementViewSet)
+router.register(r"engagementtype", views.EngagementTypeViewSet)
 
 
 urlpatterns = [
