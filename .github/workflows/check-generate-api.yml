@@ -25,15 +25,23 @@ jobs:
         working-directory: frontend/
 
       # Generate API
-      - run: npm run generate-api-client
+      - name: Generate API client
+        run: npm run generate-api-client
         working-directory: frontend/
 
       # Run pre-commit to format the files
-      - uses: pre-commit/action@v3.0.1
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
         continue-on-error: true
 
       # Check if anything changed
-      - run: git add -A && git diff --staged --exit-code
+      - name: Check if anything changed
+        run: |
+          git add -A
+          if ! git diff --staged --exit-code; then
+              echo "::error title={Out of date API client}::ERROR: Uncommitted changes found. This probably means that the generated frontend API is not up to date. Check frontend/README.md to see how to generate it anew."
+              exit 1
+          fi
 
     env:
       # Skip `no-commit-to-branch`, since it isn't relevant in a pipeline.
