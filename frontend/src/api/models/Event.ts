@@ -15,7 +15,7 @@ export type Event = {
     end_time: string;
     readonly id: string;
     location: string;
-    full_day: boolean;
+    full_day?: boolean;
     name: string;
     start_time: string;
     event_type?: EventTypeEnum;

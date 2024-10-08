@@ -10,7 +10,9 @@ interface EditEventFormProps {
 }
 
 export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
-  const [isFullDay, setIsFullDay] = useState<boolean>(baseEvent.full_day)
+  const [isFullDay, setIsFullDay] = useState<boolean | undefined>(
+    baseEvent.full_day
+  )
 
   // This is needed, since the component is rendered before the baseEvent is
   // fully loaded
@@ -94,7 +96,9 @@ export const EditEventForm = ({ baseEvent, onSubmit }: EditEventFormProps) => {
             className={style.Checkbox}
             type="checkbox"
             checked={isFullDay}
-            value={isFullDay.toString()}
+            // This value is actually always true or is not oncluded in form data
+            // input checkbox doesn't support unchecked checkboxes, they just aren't included
+            value={isFullDay ? 'true' : 'false'}
             onChange={() => setIsFullDay(!isFullDay)}
           />
         </Form.Control>
