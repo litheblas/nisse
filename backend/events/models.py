@@ -11,7 +11,7 @@ from .utils import EventTypes
 class Event(models.Model):
     creator = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    full_day = models.BooleanField()
+    full_day = models.BooleanField(blank=True, default=False)
     location = models.CharField(max_length=100)
     end_time = models.DateTimeField()
     name = models.CharField(max_length=280)
@@ -20,7 +20,7 @@ class Event(models.Model):
         choices=EventTypes.choices(), default=EventTypes.OTHER
     )
     attendees = models.ManyToManyField(Member, related_name="+", blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, default="")
 
     objects = models.Manager()
 
